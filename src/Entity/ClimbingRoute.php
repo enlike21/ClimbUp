@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ClimbingRouteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Enum\RouteType;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: ClimbingRouteRepository::class)]
 class ClimbingRoute
@@ -25,8 +27,8 @@ class ClimbingRoute
     #[ORM\Column(nullable: true)]
     private ?float $your_stars = 0;
 
-    #[ORM\Column(length: 255)]
-    private ?string $routeType = null;
+    #[ORM\Column(type: "route_type_enum")]
+    private ?RouteType $routeType = null;
 
     #[ORM\Column(length: 255)]
     private ?string $rating = null;
@@ -90,12 +92,12 @@ class ClimbingRoute
         return $this;
     }
 
-    public function getRouteType(): ?string
+    public function getRouteType(): ?RouteType
     {
         return $this->routeType;
     }
 
-    public function setRouteType(string $routeType): static
+    public function setRouteType(RouteType $routeType): self
     {
         $this->routeType = $routeType;
         return $this;

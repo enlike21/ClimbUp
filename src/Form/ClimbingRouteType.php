@@ -9,6 +9,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Location;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use App\Enum\RouteType;
 
 class ClimbingRouteType extends AbstractType
 {
@@ -21,8 +23,12 @@ class ClimbingRouteType extends AbstractType
             ->add('url', TextType::class, [
                 'label' => 'URL'
             ])
-            ->add('routeType', TextType::class, [
-                'label' => 'Tipo de Ruta'
+            ->add('routeType', ChoiceType::class, [
+                'choices' => RouteType::cases(),
+                'choice_label' => fn(RouteType $choice) => $choice->value,
+                'choice_value' => fn(?RouteType $choice) => $choice?->value,
+                'label' => 'Tipo de Ruta',
+                'placeholder' => 'Seleccione un tipo',
             ])
             ->add('rating', TextType::class, [
                 'label' => 'Rating'

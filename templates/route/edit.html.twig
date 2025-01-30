@@ -5,21 +5,43 @@
 {% block body %}
     <h1 class="text-center">Editar Ruta</h1>
 
-    <div class="card mt-4">
+    <div class="card shadow-lg p-4 mt-4">
         <div class="card-body">
             {{ form_start(form) }}
-            {{ form_row(form.name) }}
-            {{ form_row(form.url) }}
-            {{ form_row(form.routeType) }}
-            {{ form_row(form.rating) }}
-            {{ form_row(form.length) }}
-            {{ form_row(form.pitches) }}
-            {{ form_row(form.location) }}
-            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <div class="mb-3">
+                {{ form_label(form.name, 'Nombre de la ruta', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.url, 'URL de Referencia', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                {{ form_widget(form.url, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.routeType, 'Tipo de Ruta', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                {{ form_widget(form.routeType, {'attr': {'class': 'form-select'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.rating, 'Rating', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                {{ form_widget(form.rating, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.length, 'Longitud (m)', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                {{ form_widget(form.length, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.pitches, 'Número de Largos', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                {{ form_widget(form.pitches, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.location, 'Ubicación', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                {{ form_widget(form.location, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Actualizar Ruta</button>
             {{ form_end(form) }}
         </div>
     </div>
 
-    <a href="{{ path('app_route_index') }}" class="btn btn-secondary mt-3">Volver</a>
-
+    <div class="text-center mt-3">
+        <a href="{{ path('app_route_index') }}" class="btn btn-secondary">Volver al Listado</a>
+    </div>
 {% endblock %}
