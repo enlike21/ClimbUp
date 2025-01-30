@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear Nueva Ruta{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Crear Nueva Ruta</h1>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            {{ form_start(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.url) }}
+            {{ form_row(form.routeType) }}
+            {{ form_row(form.rating) }}
+            {{ form_row(form.length) }}
+            {{ form_row(form.pitches) }}
+            {{ form_row(form.location) }}
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <a href="{{ path('app_route_index') }}" class="btn btn-secondary mt-3">Volver</a>
+
+{% endblock %}

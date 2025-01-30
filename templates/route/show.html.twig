@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Detalle de Ruta{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">{{ route.name }}</h1>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Tipo: {{ route.routeType }}</h5>
+            <p class="card-text">Rating: {{ route.rating }}</p>
+            <p class="card-text">Largo: {{ route.length }} metros</p>
+            <p class="card-text">Número de largos: {{ route.pitches }}</p>
+            <p class="card-text"><a href="{{ route.url }}" target="_blank">Ver más información</a></p>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="{{ path('app_route_index') }}" class="btn btn-secondary">Volver al listado</a>
+        <a href="{{ path('app_route_edit', {'id': route.id}) }}" class="btn btn-warning">Editar</a>
+    </div>
+
+{% endblock %}

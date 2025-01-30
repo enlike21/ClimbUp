@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listado de Rutas{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Listado de Rutas de Escalada</h1>
+
+    <div class="text-end">
+        <a href="{{ path('app_route_new') }}" class="btn btn-success">Añadir Nueva Ruta</a>
+    </div>
+
+    <table class="table mt-4">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Rating</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for route in routes %}
+            <tr>
+                <td>{{ route.name }}</td>
+                <td>{{ route.routeType }}</td>
+                <td>{{ route.rating }}</td>
+                <td>
+                    <a href="{{ path('app_route_show', {'id': route.id}) }}" class="btn btn-info btn-sm">Ver</a>
+                    <a href="{{ path('app_route_edit', {'id': route.id}) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <form action="{{ path('app_route_delete', {'id': route.id}) }}" method="post" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ route.id) }}">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro?')">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center">No hay rutas registradas.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
