@@ -84,6 +84,10 @@
                                         <button type="submit" class="btn btn-sm btn-outline-success shadow-sm">⬆ Conceder Admin</button>
                                     </form>
                                 {% endif %}
+                                <form method="post" action="{{ path('app_delete_user', {'id': user.id}) }}" class="d-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger shadow-sm" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">🗑 Eliminar</button>
+                                </form>
                             </td>
                         </tr>
                     {% else %}

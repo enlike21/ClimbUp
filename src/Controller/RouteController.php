@@ -104,4 +104,17 @@ class RouteController extends AbstractController
 
         return $this->redirectToRoute('app_route_index');
     }
+
+    #[Route('/delete-user/{id}', name: 'app_delete_user', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function deleteUser(User $user, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        if ($this->isCsrfTokenValid('delete_user_' . $user->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'Usuario eliminado correctamente.');
+        }
+
+        return $this->redirectToRoute('app_route_index');
+    }
 }

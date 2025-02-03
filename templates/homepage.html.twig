@@ -6,11 +6,18 @@
     <section class="hero-section d-flex align-items-center justify-content-center text-center" style="background-image: url('https://example.com/your-mountain-image.jpg'); background-size: cover; background-position: center; height: 100vh; color: white; border-radius: 20px;">
         <div class="container">
             <i class="fas fa-mountain fa-10x mb-4"></i>
-            <h1 class="display-4 mb-4" style="font-family: 'Montserrat', sans-serif; font-weight: 700;">¡Bienvenido a EscaladaApp!</h1>
+            <h1 class="display-4 mb-4" style="font-family: 'Montserrat', sans-serif; font-weight: 700;">
+                ¡Bienvenido a EscaladaApp!
+                {% if app.user %} {{ app.user.email }}{% endif %}
+            </h1>
 
             <div class="d-flex justify-content-center">
-                <a href="{{ path('app_route_user_view') }}" class="btn btn-lg btn-outline-light m-3" style="border-radius: 50px; padding: 20px 40px; font-size: 1.5rem;">Acceder como Usuario</a>
-                <a href="{{ path('app_route_index') }}" class="btn btn-lg btn-outline-warning m-3" style="border-radius: 50px; padding: 20px 40px; font-size: 1.5rem;">Acceder como Administrador</a>
+                <a href="{{ path('app_route_user_view') }}" class="btn btn-lg btn-outline-light m-3" style="border-radius: 50px; padding: 20px 40px; font-size: 1.5rem;">
+                    {% if is_granted('ROLE_USER') %}Mostrar Rutas{% else %}Acceder como Usuario{% endif %}
+                </a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_route_index') }}" class="btn btn-lg btn-outline-warning m-3" style="border-radius: 50px; padding: 20px 40px; font-size: 1.5rem;">Acceder como Administrador</a>
+                {% endif %}
             </div>
         </div>
     </section>
