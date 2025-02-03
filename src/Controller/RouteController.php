@@ -65,4 +65,15 @@ class RouteController extends AbstractController
         }
         return $this->redirectToRoute('app_route_index');
     }
+
+    #[Route('/routes/user', name: 'app_route_user_view', methods: ['GET'])]
+    public function userView(ClimbingRouteRepository $routeRepository): Response
+    {
+        $routes = $routeRepository->findAll();
+
+        return $this->render('route/user_view.html.twig', [
+            'routes' => $routes,
+        ]);
+    }
+
 }
