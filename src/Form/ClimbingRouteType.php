@@ -24,11 +24,12 @@ class ClimbingRouteType extends AbstractType
                 'label' => 'URL'
             ])
             ->add('routeType', ChoiceType::class, [
-                'choices' => RouteType::cases(),
-                'choice_label' => fn(RouteType $choice) => $choice->value,
-                'choice_value' => fn(?RouteType $choice) => $choice?->value,
-                'label' => 'Tipo de Ruta',
-                'placeholder' => 'Seleccione un tipo',
+                'choices' => [
+                    'Boulder' => RouteType::BOULDER,
+                    'Sport' => RouteType::SPORT,
+                    'Trad' => RouteType::TRAD,
+                ],
+                'choice_label' => fn($choice) => $choice->value,
             ])
             ->add('rating', TextType::class, [
                 'label' => 'Rating'

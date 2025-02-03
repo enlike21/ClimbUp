@@ -27,8 +27,8 @@ class ClimbingRoute
     #[ORM\Column(nullable: true)]
     private ?float $your_stars = 0;
 
-    #[ORM\Column(type: "route_type_enum")]
-    private ?RouteType $routeType = null;
+    #[ORM\Column(type: "string", length: 20)]
+    private string $routeType;
 
     #[ORM\Column(length: 255)]
     private ?string $rating = null;
@@ -92,16 +92,17 @@ class ClimbingRoute
         return $this;
     }
 
-    public function getRouteType(): ?RouteType
+    public function getRouteType(): RouteType
     {
-        return $this->routeType;
+        return RouteType::from($this->routeType);
     }
 
     public function setRouteType(RouteType $routeType): self
     {
-        $this->routeType = $routeType;
+        $this->routeType = $routeType->value;
         return $this;
     }
+
 
     public function getRating(): ?string
     {
