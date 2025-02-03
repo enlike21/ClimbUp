@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block body %}
+    <div class="container-fluid p-0">
+        <!-- Sección de bienvenida -->
+        <div class="row g-0">
+            <div class="col-md-6 d-flex flex-column justify-content-center align-items-center bg-primary text-white p-5">
+                <h2 class="mb-3">Soy administrador</h2>
+                <p class="mb-4">Gestiona rutas, calificaciones y más.</p>
+                <a href="{{ path('app_route_index') }}" class="btn btn-light btn-lg">Ir a administración</a>
+            </div>
+            <div class="col-md-6 d-flex flex-column justify-content-center align-items-center bg-warning text-dark p-5">
+                <h2 class="mb-3">Soy usuario</h2>
+                <p class="mb-4">Explora rutas de escalada disponibles.</p>
+                <a href="{{ path('app_route_user_view') }}" class="btn btn-dark btn-lg">Ver rutas</a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container-fluid {
+            height: 100%;
+        }
+        .row {
+            height: 100%;
+        }
+        .btn-lg {
+            border-radius: 30px;
+            padding: 10px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
