@@ -57,6 +57,44 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Tabla de Usuarios para Administradores -->
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="container mt-5">
+                <h2 class="text-center mb-4 text-gradient">Gestión de Usuarios</h2>
+                <table class="table table-hover shadow-lg rounded">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr class="align-middle">
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.roles|join(', ') }}</td>
+                            <td class="text-center">
+                                {% if 'ROLE_ADMIN' not in user.roles %}
+                                    <form method="post" action="{{ path('app_grant_admin', {'id': user.id}) }}" class="d-inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('grant_admin_' ~ user.id) }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-success shadow-sm">⬆ Conceder Admin</button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">No hay usuarios registrados.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
     </div>
 
     <style>
@@ -72,6 +110,7 @@
         .btn-outline-info:hover { background-color: #17a2b8; color: white; }
         .btn-outline-warning:hover { background-color: #ffc107; color: black; }
         .btn-outline-danger:hover { background-color: #dc3545; color: white; }
+        .btn-outline-success:hover { background-color: #28a745; color: white; }
         .bg-gradient {
             background: linear-gradient(to right, #007bff, #6610f2);
         }

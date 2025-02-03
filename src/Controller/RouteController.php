@@ -7,7 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\ClimbingRoute;
+use App\Entity\User;
 use App\Repository\ClimbingRouteRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ClimbingRouteType;
@@ -17,10 +19,15 @@ class RouteController extends AbstractController
 {
     #[Route(name: 'app_route_index', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function index(ClimbingRouteRepository $routeRepository): Response
+    public function index(ClimbingRouteRepository $routeRepository, UserRepository $userRepository): Response
     {
         $routes = $routeRepository->findAll();
-        return $this->render('route/index.html.twig', ['routes' => $routes]);
+        $users = $userRepository->findAll();
+
+        return $this->render('route/index.html.twig', [
+            'routes' => $routes,
+            'users' => $users
+        ]);
     }
 
     #[Route('/new', name: 'app_route_new', methods: ['GET', 'POST'])]
@@ -84,5 +91,17 @@ class RouteController extends AbstractController
         ]);
     }
 
+    #[Route('/grant-admin/{id}', name: 'app_grant_admin', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function grantAdmin(User $user, EntityManagerInterface $entityManager): Response
+    {
+        if (!in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            $user->setRoles(['ROLE_ADMIN']);
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'El usuario ahora es administrador.');
+        }
 
+        return $this->redirectToRoute('app_route_index');
+    }
 }
