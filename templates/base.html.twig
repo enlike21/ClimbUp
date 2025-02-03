@@ -27,6 +27,7 @@
                         <a class="nav-link" href="{{ path('app_route_user_view') }}">Ver Rutas</a>
                     </li>
                 {% endif %}
+
                 {% if app.user %}
                     <li class="nav-item">
                         <a class="nav-link text-danger" href="{{ path('logout') }}">Cerrar sesión</a>
@@ -34,6 +35,9 @@
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link text-light" href="{{ path('login') }}">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="{{ path('app_register') }}">Registrarse</a>
                     </li>
                 {% endif %}
             </ul>

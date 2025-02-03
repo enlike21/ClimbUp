@@ -76,4 +76,13 @@ class RouteController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}', name: 'app_route_show', methods: ['GET'])]
+    public function show(ClimbingRoute $route): Response
+    {
+        return $this->render('route/show.html.twig', [
+            'route' => $route,
+        ]);
+    }
+
+
 }

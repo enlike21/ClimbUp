@@ -36,7 +36,7 @@
                 {% for route in routes %}
                     <tr class="align-middle">
                         <td class="fw-bold">{{ route.name }}</td>
-                        <td><span class="badge bg-gradient text-light">{{ route.routeType }}</span></td>
+                        <td><span class="badge bg-gradient text-light">{{ route.routeType.value }}</span></td>
                         <td>{{ route.rating }}</td>
                         <td class="text-center d-flex justify-content-center gap-2">
                             <a href="{{ path('app_route_show', {'id': route.id}) }}" class="btn btn-sm btn-outline-info shadow-sm">👁 Ver</a>
@@ -56,11 +56,6 @@
                 {% endfor %}
                 </tbody>
             </table>
-        </div>
-
-        <!-- Enlace de Registro -->
-        <div class="text-center mt-4">
-            <a href="{{ path('app_register') }}" class="btn btn-lg btn-outline-primary shadow">Crear una cuenta</a>
         </div>
     </div>
 
