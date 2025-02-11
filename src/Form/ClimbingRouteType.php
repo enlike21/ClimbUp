@@ -20,9 +20,6 @@ class ClimbingRouteType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Nombre de la Ruta'
             ])
-            ->add('url', TextType::class, [
-                'label' => 'URL'
-            ])
             ->add('routeType', ChoiceType::class, [
                 'choices' => [
                     'Boulder' => RouteType::BOULDER,

@@ -20,6 +20,10 @@
                     {{ form_label(registrationForm.plainPassword.second, 'Repetir Contraseña', {'label_attr': {'class': 'form-label fw-bold'}}) }}
                     {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
                 </div>
+                <div class="mb-3">
+                    {{ form_label(registrationForm.name, 'Nombre', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                    {{ form_widget(registrationForm.name, {'attr': {'class': 'form-control'}}) }}
+                </div>
                 <button type="submit" class="btn btn-primary w-100">Registrarse</button>
                 {{ form_end(registrationForm) }}
             </div>

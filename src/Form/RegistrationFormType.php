@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,15 +18,15 @@ class RegistrationFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Correo Electrónico'
             ])
+            ->add('name', TextType::class, [
+                'label' => 'Nombre',
+                'required' => true,
+            ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options'  => ['label' => 'Contraseña'],
                 'second_options' => ['label' => 'Repetir Contraseña'],
                 'mapped' => false,
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Registrarse',
-                'attr' => ['class' => 'btn btn-primary w-100']
             ]);
     }
 

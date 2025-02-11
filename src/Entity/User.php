@@ -24,6 +24,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "string")]
     private ?string $password = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
+    #[Assert\NotBlank(message: "El nombre no puede estar vacío.")]
+    private string $name;
+
+    // Getters y Setters
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

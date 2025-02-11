@@ -18,15 +18,6 @@ class ClimbingRoute
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $url = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?float $avg_stars = 0;
-
-    #[ORM\Column(nullable: true)]
-    private ?float $your_stars = 0;
-
     #[ORM\Column(type: "string", length: 20)]
     private string $routeType;
 
@@ -56,39 +47,6 @@ class ClimbingRoute
     public function setName(string $name): static
     {
         $this->name = $name;
-        return $this;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(string $url): static
-    {
-        $this->url = $url;
-        return $this;
-    }
-
-    public function getAvgStars(): ?float
-    {
-        return $this->avg_stars;
-    }
-
-    public function setAvgStars(?float $avg_stars): static
-    {
-        $this->avg_stars = $avg_stars;
-        return $this;
-    }
-
-    public function getYourStars(): ?float
-    {
-        return $this->your_stars;
-    }
-
-    public function setYourStars(?float $your_stars): static
-    {
-        $this->your_stars = $your_stars;
         return $this;
     }
 
