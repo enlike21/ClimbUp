@@ -4,7 +4,51 @@
 
 {% block stylesheets %}
     {{ parent() }}
+
     <style>
+        .filter-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-container input, .filter-container select, .filter-container button {
+            height: 50px;
+            border-radius: 12px;
+            border: none;
+        }
+
+        .filter-container button {
+            background: linear-gradient(45deg, #3498DB, #2ECC71);
+            color: white;
+            font-weight: bold;
+        }
+
+        .filter-container button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(45deg, #3498DB, #2ECC71);
+            border: none;
+        }
+
+        .pagination .page-item .page-link {
+            color: #3498DB;
+            font-weight: bold;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .pagination .page-item .page-link:hover {
+            background: rgba(52, 152, 219, 0.1);
+            transform: translateY(-2px);
+        }
+
         .dashboard-container {
             padding: 2rem;
             margin-top: 2rem;
@@ -360,6 +404,7 @@
 
 {% block body %}
     <div class="dashboard-container">
+
         <h1 class="section-title">Panel de Control</h1>
 
         {% for message in app.flashes('success') %}
@@ -381,6 +426,20 @@
             </div>
         {% endif %}
 
+        <div class="filter-container">
+            <form method="get" class="d-flex gap-2 align-items-center">
+                <input type="text" name="name" class="form-control" placeholder="Buscar por nombre..." value="{{ app.request.query.get('name', '') }}">
+                <select name="route_type" class="form-select">
+                    <option value="">Todos los tipos</option>
+                    <option value="Sport" {% if app.request.query.get('route_type') == 'Sport' %}selected{% endif %}>Sport</option>
+                    <option value="Trad" {% if app.request.query.get('route_type') == 'Trad' %}selected{% endif %}>Trad</option>
+                    <option value="Boulder" {% if app.request.query.get('route_type') == 'Boulder' %}selected{% endif %}>Boulder</option>
+                </select>
+                <input type="text" name="rating" class="form-control" placeholder="Dificultad..." value="{{ app.request.query.get('rating', '') }}">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </form>
+        </div>
+
         <div class="glass-card">
             <div class="table-container">
                 <div class="table-responsive">
@@ -394,11 +453,24 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for route in routes %}
+
+                        {% set filtered_routes = routes|filter(route =>
+                            (not app.request.query.get('name') or route.name matches '/.*' ~ app.request.query.get('name') ~ '.*/i') and
+                            (not app.request.query.get('route_type') or route.routeType.value == app.request.query.get('route_type')) and
+                            (not app.request.query.get('rating') or route.rating matches '/.*' ~ app.request.query.get('rating') ~ '.*/i')
+                            ) %}
+
+                        {% set page = app.request.query.get('page', 1) %}
+                        {% set per_page = 50 %}
+                        {% set total_routes = filtered_routes|length %}
+                        {% set total_pages = (total_routes / per_page)|round(0, 'ceil') %}
+                        {% set paginated_routes = filtered_routes|slice((page - 1) * per_page, per_page) %}
+
+                        {% for route in paginated_routes %}
                             <tr>
-                                <td data-label="Nombre" class="fw-bold">{{ route.name }}</td>
-                                <td data-label="Tipo"><span class="route-type-badge">{{ route.routeType.value }}</span></td>
-                                <td data-label="Dificultad">
+                                <td>{{ route.name }}</td>
+                                <td><span class="route-type-badge">{{ route.routeType.value }}</span></td>
+                                <td>
                                     <div class="rating-stars">
                                         {% for i in 1..5 %}
                                             {% if i <= route.rating %}
@@ -411,27 +483,19 @@
                                 </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="{{ path('app_route_show', {'id': route.id}) }}"
-                                           class="btn btn-action btn-view"
-                                           title="Ver detalles">
+                                        <a href="{{ path('app_route_show', {'id': route.id}) }}" class="btn btn-action btn-view" title="Ver detalles">
                                             <i class="fas fa-eye"></i>
                                             <span>Ver</span>
                                         </a>
                                         {% if is_granted('ROLE_ADMIN') %}
-                                            <a href="{{ path('app_route_edit', {'id': route.id}) }}"
-                                               class="btn btn-action btn-edit"
-                                               title="Editar ruta">
+                                            <a href="{{ path('app_route_edit', {'id': route.id}) }}" class="btn btn-action btn-edit" title="Editar ruta">
                                                 <i class="fas fa-edit"></i>
                                                 <span>Editar</span>
                                             </a>
-                                            <form action="{{ path('app_route_delete', {'id': route.id}) }}"
-                                                  method="post"
-                                                  class="d-inline"
+                                            <form action="{{ path('app_route_delete', {'id': route.id}) }}" method="post" class="d-inline"
                                                   onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta ruta?')">
                                                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ route.id) }}">
-                                                <button type="submit"
-                                                        class="btn btn-action btn-delete"
-                                                        title="Eliminar ruta">
+                                                <button type="submit" class="btn btn-action btn-delete" title="Eliminar ruta">
                                                     <i class="fas fa-trash"></i>
                                                     <span>Eliminar</span>
                                                 </button>
@@ -440,19 +504,37 @@
                                     </div>
                                 </td>
                             </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="4" class="empty-state">
-                                    <i class="fas fa-route"></i>
-                                    <p>No hay rutas registradas en este momento</p>
-                                </td>
-                            </tr>
                         {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+
+        <!-- Paginación -->
+        <div class="d-flex justify-content-center mt-4">
+            <nav>
+                <ul class="pagination">
+                    {% if page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': page - 1})) }}">Anterior</a>
+                        </li>
+                    {% endif %}
+                    {% for p in 1..total_pages %}
+                        <li class="page-item {% if p == page %}active{% endif %}">
+                            <a class="page-link" href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': p})) }}">{{ p }}</a>
+                        </li>
+                    {% endfor %}
+                    {% if page < total_pages %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': page + 1})) }}">Siguiente</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+
+    </div>
 
         {% if is_granted('ROLE_ADMIN') %}
             <h2 class="section-title mt-5">Gestión de Usuarios</h2>
