@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mapa de Andalucía{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            width: 100%;
+            height: 600px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="text-center">Mapa de Andalucía</h1>
+        <p class="text-center">Haz clic en un marcador para ver las rutas disponibles.</p>
+        <div id="map"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var map = L.map('map').setView([37.5, -4.5], 7); // Centro aproximado de Andalucía
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            fetch("{{ path('api_locations') }}")
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(location => {
+                        L.marker([location.latitude, location.longitude])
+                            .addTo(map)
+                            .bindPopup(`<strong>${location.name}</strong><br>
+                                        <a href="{{ path('location_routes', {id: 'ID_REPLACE'}) }}"
+                                           class="btn btn-sm btn-primary">
+                                           Ver rutas
+                                        </a>`.replace('ID_REPLACE', location.id));
+                    });
+                })
+                .catch(error => console.error("Error cargando ubicaciones:", error));
+        });
+    </script>
+{% endblock %}
