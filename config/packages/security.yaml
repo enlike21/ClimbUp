@@ -33,5 +33,4 @@ security:
     - { path: ^/route/new, roles: ROLE_ADMIN }
     - { path: ^/route/edit, roles: ROLE_ADMIN }
     - { path: ^/route/delete, roles: ROLE_ADMIN }
-    - { path: ^/route, roles: ROLE_USER }
     - { path: ^/, roles: PUBLIC_ACCESS }

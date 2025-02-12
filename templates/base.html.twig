@@ -229,40 +229,37 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if app.request.get('_route') == 'app_route_index' %}active{% endif %}"
-                           href="{{ path('app_route_index') }}">
-                            <i class="fas fa-route me-2"></i>Rutas
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if app.request.get('_route') == 'app_route_new' %}active{% endif %}"
-                           href="{{ path('app_route_new') }}">
-                            <i class="fas fa-plus me-2"></i>Añadir Ruta
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if app.request.get('_route') == 'app_route_user_view' %}active{% endif %}"
-                           href="{{ path('app_route_user_view') }}">
-                            <i class="fas fa-map-marked-alt me-2"></i>Ver Rutas
-                        </a>
-                    </li>
-                {% endif %}
+
+                <!-- Ver Rutas (Siempre Visible) -->
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.get('_route') == 'app_route_user_view' %}active{% endif %}"
+                       href="{{ path('app_route_user_view') }}">
+                        <i class="fas fa-map-marked-alt me-2"></i>Ver Rutas
+                    </a>
+                </li>
+
+                <!-- Ver Mapa (Siempre Visible) -->
+                <li class="nav-item">
+                    <a class="nav-link btn-custom btn-primary-custom ms-2" href="{{ path('map') }}">
+                        <i class="fas fa-map me-2"></i>Ver Mapa
+                    </a>
+                </li>
 
                 {% if app.user %}
+                    <!-- Cerrar Sesión -->
                     <li class="nav-item">
                         <a class="nav-link btn-custom btn-secondary-custom ms-2" href="{{ path('logout') }}">
                             <i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión
                         </a>
                     </li>
                 {% else %}
+                    <!-- Iniciar Sesión -->
                     <li class="nav-item">
                         <a class="nav-link btn-custom btn-secondary-custom" href="{{ path('login') }}">
                             <i class="fas fa-sign-in-alt me-2"></i>Iniciar sesión
                         </a>
                     </li>
+                    <!-- Registrarse -->
                     <li class="nav-item">
                         <a class="nav-link btn-custom btn-primary-custom ms-2" href="{{ path('app_register') }}">
                             <i class="fas fa-user-plus me-2"></i>Registrarse
@@ -273,6 +270,7 @@
         </div>
     </div>
 </nav>
+
 
 <!-- Main Content -->
 <div class="main-container">
