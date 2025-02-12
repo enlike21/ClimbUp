@@ -8,6 +8,7 @@
         .dashboard-container {
             padding: 2rem;
             margin-top: 2rem;
+            min-height: calc(100vh - 4rem);
         }
 
         .glass-card {
@@ -17,97 +18,159 @@
             padding: 2rem;
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
         }
 
         .section-title {
-            font-family: 'Montserrat', sans-serif;
-            color: white;
+            font-family: 'Poppins', sans-serif;
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 2rem;
             text-align: center;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(45deg, #3498DB, #2ECC71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
         }
 
-        .table {
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #3498DB, #2ECC71);
+            border-radius: 2px;
+        }
+
+        .table-container {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             overflow: hidden;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .table {
+            margin-bottom: 0;
         }
 
         .table thead {
-            background: linear-gradient(45deg, #2C4A35, #7a9f3f);
+            background: linear-gradient(45deg, #2C3E50, #3498DB);
             color: white;
         }
 
         .table th {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Poppins', sans-serif;
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.9rem;
             padding: 1.2rem 1rem;
             border: none;
+            letter-spacing: 0.5px;
         }
 
         .table td {
-            padding: 1rem;
+            padding: 1.2rem 1rem;
             vertical-align: middle;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Poppins', sans-serif;
+            color: #2C3E50;
+            font-size: 0.95rem;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
         }
 
         .table tbody tr:hover {
-            background: rgba(122, 159, 63, 0.05);
+            background: rgba(52, 152, 219, 0.05);
+            transform: scale(1.01);
         }
 
         .route-type-badge {
-            background: linear-gradient(45deg, #2C4A35, #7a9f3f);
+            background: linear-gradient(45deg, #2C3E50, #3498DB);
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: inline-block;
-        }
-
-        .btn-action {
             padding: 0.5rem 1.2rem;
             border-radius: 25px;
-            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
             font-weight: 500;
+            display: inline-block;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
-            margin: 0 0.3rem;
-            border: none;
+        }
+
+        .route-type-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn-view {
-            background: rgba(44, 74, 53, 0.1);
-            color: #2C4A35;
+            background: rgba(142, 68, 173, 0.1);
+            color: #8E44AD;
         }
 
         .btn-edit {
-            background: rgba(122, 159, 63, 0.1);
-            color: #7a9f3f;
+            background: rgba(230, 126, 34, 0.1);
+            color: #E67E22;
         }
 
         .btn-delete {
-            background: rgba(220, 53, 69, 0.1);
-            color: #dc3545;
+            background: rgba(192, 57, 43, 0.1);
+            color: #C0392B;
         }
 
         .btn-action:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-view:hover {
+            color: #9B59B6;
+        }
+
+        .btn-edit:hover {
+            color: #D35400;
+        }
+
+        .btn-delete:hover {
+            color: #E74C3C;
+        }
+
+        .route-type-badge {
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .role-badge-admin {
+            background: linear-gradient(45deg, #3498DB, #2ECC71);
+            color: white;
+        }
+
+        .role-badge-user {
+            background: linear-gradient(45deg, #2980B9, #3498DB);
+            color: white;
         }
 
         .btn-add-new {
-            background: linear-gradient(45deg, #2C4A35, #7a9f3f);
+            background: linear-gradient(45deg, #3498DB, #2ECC71);
             color: white;
             padding: 1rem 2rem;
-            border-radius: 50px;
-            font-family: 'Montserrat', sans-serif;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
             font-weight: 600;
             transition: all 0.3s ease;
             border: none;
@@ -115,51 +178,180 @@
             align-items: center;
             gap: 0.5rem;
             margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .btn-add-new:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 25px rgba(142, 68, 173, 0.3);
             color: white;
         }
 
         .rating-stars {
-            color: #ffd700;
-            font-size: 1.2rem;
+            display: flex;
+            gap: 0.2rem;
+            color: #F1C40F;
+            font-size: 1.1rem;
         }
 
         .alert {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
             margin-bottom: 2rem;
             border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideIn 0.5s ease;
         }
 
         .alert-success {
-            border-left: 5px solid #7a9f3f;
+            border-left: 4px solid #2ECC71;
+            color: #27AE60;
         }
 
         .empty-state {
             text-align: center;
-            padding: 3rem;
-            color: rgba(255, 255, 255, 0.8);
+            padding: 4rem 2rem;
+            color: rgba(44, 62, 80, 0.6);
             font-style: italic;
+            font-size: 1.1rem;
         }
 
-        @media (max-width: 768px) {
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 992px) {
             .dashboard-container {
                 padding: 1rem;
             }
 
-            .btn-action {
-                padding: 0.4rem 1rem;
-                font-size: 0.9rem;
-                margin: 0.2rem;
+            .section-title {
+                font-size: 1.8rem;
             }
 
+            .glass-card {
+                padding: 1rem;
+            }
+
+            .btn-add-new {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .table-container {
+                background: transparent;
+                box-shadow: none;
+            }
+
+            .table, .table-responsive {
+                display: block;
+            }
+
+            .table thead {
+                display: none;
+            }
+
+            .table tbody tr {
+                display: block;
+                background: rgba(255, 255, 255, 0.95);
+                margin-bottom: 1rem;
+                border-radius: 12px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .table td {
+                display: flex;
+                padding: 0.8rem 1rem;
+                text-align: left;
+                border: none;
+                align-items: center;
+            }
+
+            .table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                width: 120px;
+                min-width: 120px;
+                color: #2C3E50;
+            }
+
+            .route-type-badge {
+                margin: 0;
+            }
+
+            .action-buttons {
+                flex-direction: row;
+                width: 100%;
+                gap: 0.5rem;
+                padding: 0.5rem 0;
+            }
+
+            .btn-action {
+                flex: 1;
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .btn-action span {
+                display: none;
+            }
+
+            .btn-action i {
+                margin: 0;
+                font-size: 1.1rem;
+            }
+
+            .rating-stars {
+                margin-left: auto;
+            }
+        }
+
+        @media (max-width: 576px) {
             .section-title {
+                font-size: 1.5rem;
+            }
+
+            .section-title::after {
+                width: 60px;
+            }
+
+            .alert {
+                padding: 0.8rem;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .empty-state {
+                padding: 2rem 1rem;
+            }
+
+            .empty-state i {
                 font-size: 2rem;
             }
         }
@@ -168,12 +360,15 @@
 
 {% block body %}
     <div class="dashboard-container">
-        <h1 class="section-title">Panel de Control de Rutas</h1>
+        <h1 class="section-title">Panel de Control</h1>
 
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">
-                <i class="fas fa-check-circle me-2"></i>
-                {{ message }}
+                <i class="fas fa-check-circle fa-lg"></i>
+                <div>
+                    <strong>¡Éxito!</strong>
+                    <p class="mb-0">{{ message }}</p>
+                </div>
             </div>
         {% endfor %}
 
@@ -181,112 +376,151 @@
             <div class="text-center">
                 <a href="{{ path('app_route_new') }}" class="btn btn-add-new">
                     <i class="fas fa-plus-circle"></i>
-                    Añadir Nueva Ruta
+                    Crear Nueva Ruta
                 </a>
             </div>
         {% endif %}
 
         <div class="glass-card">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th>Dificultad</th>
-                        <th class="text-center">Acciones</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for route in routes %}
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
                         <tr>
-                            <td class="fw-bold">{{ route.name }}</td>
-                            <td><span class="route-type-badge">{{ route.routeType.value }}</span></td>
-                            <td>
-                                <div class="rating-stars">
-                                    {% for i in 1..5 %}
-                                        {% if i <= route.rating %}
-                                            <i class="fas fa-star"></i>
-                                        {% else %}
-                                            <i class="far fa-star"></i>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Dificultad</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for route in routes %}
+                            <tr>
+                                <td data-label="Nombre" class="fw-bold">{{ route.name }}</td>
+                                <td data-label="Tipo"><span class="route-type-badge">{{ route.routeType.value }}</span></td>
+                                <td data-label="Dificultad">
+                                    <div class="rating-stars">
+                                        {% for i in 1..5 %}
+                                            {% if i <= route.rating %}
+                                                <i class="fas fa-star"></i>
+                                            {% else %}
+                                                <i class="far fa-star"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="{{ path('app_route_show', {'id': route.id}) }}"
+                                           class="btn btn-action btn-view"
+                                           title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                            <span>Ver</span>
+                                        </a>
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <a href="{{ path('app_route_edit', {'id': route.id}) }}"
+                                               class="btn btn-action btn-edit"
+                                               title="Editar ruta">
+                                                <i class="fas fa-edit"></i>
+                                                <span>Editar</span>
+                                            </a>
+                                            <form action="{{ path('app_route_delete', {'id': route.id}) }}"
+                                                  method="post"
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta ruta?')">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ route.id) }}">
+                                                <button type="submit"
+                                                        class="btn btn-action btn-delete"
+                                                        title="Eliminar ruta">
+                                                    <i class="fas fa-trash"></i>
+                                                    <span>Eliminar</span>
+                                                </button>
+                                            </form>
                                         {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <a href="{{ path('app_route_show', {'id': route.id}) }}" class="btn btn-action btn-view">
-                                    <i class="fas fa-eye"></i> Ver
-                                </a>
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path('app_route_edit', {'id': route.id}) }}" class="btn btn-action btn-edit">
-                                        <i class="fas fa-edit"></i> Editar
-                                    </a>
-                                    <form action="{{ path('app_route_delete', {'id': route.id}) }}" method="post" class="d-inline">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ route.id) }}">
-                                        <button type="submit" class="btn btn-action btn-delete" onclick="return confirm('¿Estás seguro de que deseas eliminar esta ruta?')">
-                                            <i class="fas fa-trash"></i> Eliminar
-                                        </button>
-                                    </form>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="4" class="empty-state">No hay rutas registradas</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="empty-state">
+                                    <i class="fas fa-route"></i>
+                                    <p>No hay rutas registradas en este momento</p>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
         {% if is_granted('ROLE_ADMIN') %}
             <h2 class="section-title mt-5">Gestión de Usuarios</h2>
             <div class="glass-card">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Email</th>
-                            <th>Roles</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for user in users %}
+                <div class="table-container">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
                             <tr>
-                                <td>{{ user.id }}</td>
-                                <td>{{ user.email }}</td>
-                                <td>
-                                    {% for role in user.roles %}
-                                        <span class="route-type-badge">{{ role }}</span>
-                                    {% endfor %}
-                                </td>
-                                <td class="text-center">
-                                    {% if 'ROLE_ADMIN' not in user.roles %}
-                                        <form method="post" action="{{ path('app_grant_admin', {'id': user.id}) }}" class="d-inline">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('grant_admin_' ~ user.id) }}">
-                                            <button type="submit" class="btn btn-action btn-edit">
-                                                <i class="fas fa-user-shield"></i> Hacer Admin
-                                            </button>
-                                        </form>
-                                    {% endif %}
-                                    <form method="post" action="{{ path('app_delete_user', {'id': user.id}) }}" class="d-inline">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
-                                        <button type="submit" class="btn btn-action btn-delete" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">
-                                            <i class="fas fa-user-minus"></i> Eliminar
-                                        </button>
-                                    </form>
-                                </td>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Roles</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="4" class="empty-state">No hay usuarios registrados</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td data-label="ID">#{{ user.id }}</td>
+                                    <td data-label="Email">{{ user.email }}</td>
+                                    <td data-label="Roles">
+                                        {% for role in user.roles %}
+                                            <span class="route-type-badge {% if role == 'ROLE_ADMIN' %}role-badge-admin{% else %}role-badge-user{% endif %}">
+            {{ role }}
+        </span>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            {% if 'ROLE_ADMIN' not in user.roles %}
+                                                <form method="post"
+                                                      action="{{ path('app_grant_admin', {'id': user.id}) }}"
+                                                      class="d-inline">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('grant_admin_' ~ user.id) }}">
+                                                    <button type="submit"
+                                                            class="btn btn-action btn-edit"
+                                                            title="Conceder permisos de administrador">
+                                                        <i class="fas fa-user-shield"></i>
+                                                        <span>Hacer Admin</span>
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                            <form method="post"
+                                                  action="{{ path('app_delete_user', {'id': user.id}) }}"
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                                                <button type="submit"
+                                                        class="btn btn-action btn-delete"
+                                                        title="Eliminar usuario">
+                                                    <i class="fas fa-user-minus"></i>
+                                                    <span>Eliminar</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="empty-state">
+                                        <i class="fas fa-users"></i>
+                                        <p>No hay usuarios registrados en el sistema</p>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         {% endif %}
