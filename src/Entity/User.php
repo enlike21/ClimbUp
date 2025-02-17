@@ -1,10 +1,13 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "users")]
@@ -28,16 +31,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: "El nombre no puede estar vacío.")]
     private string $name;
 
-    // Getters y Setters
-    public function getName(): string
-    {
-        return $this->name;
-    }
+    #[ORM\OneToMany(mappedBy: "user", targetEntity: UserRoute::class, cascade: ["remove"], orphanRemoval: true)]
+    private Collection $savedRoutes;
 
-    public function setName(string $name): self
+    public function __construct()
     {
-        $this->name = $name;
-        return $this;
+        $this->savedRoutes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,5 +87,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return $this->email;
+    }
+
+    // Métodos para la relación con UserRoute
+    public function getSavedRoutes(): Collection
+    {
+        return $this->savedRoutes;
+    }
+
+    public function addSavedRoute(UserRoute $userRoute): self
+    {
+        if (!$this->savedRoutes->contains($userRoute)) {
+            $this->savedRoutes->add($userRoute);
+            $userRoute->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeSavedRoute(UserRoute $userRoute): self
+    {
+        if ($this->savedRoutes->removeElement($userRoute)) {
+            if ($userRoute->getUser() === $this) {
+                $userRoute->setUser(null);
+            }
+        }
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
     }
 }

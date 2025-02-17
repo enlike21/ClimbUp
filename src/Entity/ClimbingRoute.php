@@ -3,9 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ClimbingRouteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Enum\RouteType;
-use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: ClimbingRouteRepository::class)]
 class ClimbingRoute
@@ -34,6 +35,14 @@ class ClimbingRoute
     #[ORM\JoinColumn(nullable: false)]
     private ?Location $location = null;
 
+    #[ORM\OneToMany(mappedBy: "route", targetEntity: UserRoute::class, cascade: ["remove"], orphanRemoval: true)]
+    private Collection $savedByUsers;
+
+    public function __construct()
+    {
+        $this->savedByUsers = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,7 +69,6 @@ class ClimbingRoute
         $this->routeType = $routeType->value;
         return $this;
     }
-
 
     public function getRating(): ?string
     {
@@ -103,6 +111,31 @@ class ClimbingRoute
     public function setLocation(?Location $location): static
     {
         $this->location = $location;
+        return $this;
+    }
+
+    // Métodos para la relación con UserRoute
+    public function getSavedByUsers(): Collection
+    {
+        return $this->savedByUsers;
+    }
+
+    public function addSavedByUser(UserRoute $userRoute): self
+    {
+        if (!$this->savedByUsers->contains($userRoute)) {
+            $this->savedByUsers->add($userRoute);
+            $userRoute->setRoute($this);
+        }
+        return $this;
+    }
+
+    public function removeSavedByUser(UserRoute $userRoute): self
+    {
+        if ($this->savedByUsers->removeElement($userRoute)) {
+            if ($userRoute->getRoute() === $this) {
+                $userRoute->setRoute(null);
+            }
+        }
         return $this;
     }
 }

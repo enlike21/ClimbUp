@@ -225,7 +225,8 @@
         </div>
 
         <div class="action-buttons">
-            <a href="{{ path('app_route_index') }}" class="btn btn-action btn-back">
+            <a href="{% if is_granted('ROLE_ADMIN') %}{{ path('app_route_index') }}{% else %}{{ path('app_route_user_view') }}{% endif %}"
+               class="btn btn-action btn-back">
                 <i class="fas fa-arrow-left"></i>
                 Volver al listado
             </a>

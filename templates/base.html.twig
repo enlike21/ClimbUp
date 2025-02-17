@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}EscaladaApp{% endblock %}</title>
+    <title>{% block title %}ClimbUp{% endblock %}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -237,6 +237,11 @@
                     <li class="nav-item">
                         <a class="nav-link btn-custom btn-secondary-custom ms-2" href="{{ path('app_profile') }}">
                             <i class="fas fa-user-circle me-2"></i>Tu Perfil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-custom btn-secondary-custom ms-2" href="{{ path('app_saved_routes') }}">
+                            <i class="fas fa-list me-2"></i>Por Hacer
                         </a>
                     </li>
                 {% else %}

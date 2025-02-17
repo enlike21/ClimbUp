@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bienvenido a CLIMBUP{% endblock %}
+{% block title %}Bienvenido a ClimbUP{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -61,17 +61,49 @@
         }
 
         .btn-hero {
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(45deg, #3498DB, #2ECC71);
+            color: white;
+            font-weight: bold;
+            font-size: xx-large;
             padding: 1rem 2rem;
-            font-size: 1.2rem;
-            font-weight: 600;
+            border: none;
             border-radius: 12px;
-            transition: all 0.3s ease;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: 2px solid transparent;
         }
+
+        .btn-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: skewX(-20deg);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .btn-hero:hover::before {
+            left: 100%;
+        }
+
+        .btn-hero:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.5);
+        }
+
+        .btn-save:disabled {
+            background: linear-gradient(45deg, #95A5A6, #7F8C8D);
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
 
         .btn-primary {
             background: linear-gradient(45deg, #3498DB, #1F618D);
@@ -136,7 +168,7 @@
                     <a href="{{ path('app_login_user') }}" class="btn-hero btn-primary">Acceder como Usuario</a>
                     <a href="{{ path('app_login_admin') }}" class="btn-hero btn-secondary">Acceder como Admin</a>
                 {% elseif is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('app_route_user_view') }}" class="btn-hero btn-primary">Explorar Rutas</a>
+                    <a href="{{ path('app_route_user_view') }}" class="btn-hero">Explorar Rutas</a>
                 {% elseif is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('app_route_user_view') }}" class="btn-hero btn-primary">Explorar Rutas</a>
                     <a href="{{ path('app_route_index') }}" class="btn-hero btn-secondary">Panel de Control</a>

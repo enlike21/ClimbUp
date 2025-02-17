@@ -46,10 +46,6 @@ class ProfileType extends AbstractType
                         'minMessage' => 'La contraseña debe tener al menos 6 caracteres',
                     ]),
                 ],
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Actualizar Perfil',
-                'attr' => ['class' => 'btn btn-primary w-100'],
             ]);
     }
 
