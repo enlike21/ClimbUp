@@ -14,6 +14,7 @@
             border-radius: 10px;
             margin-top: 1rem;
         }
+
         .btn-save {
             position: relative;
             display: inline-block;
@@ -282,14 +283,22 @@
         <!-- Filtro de búsqueda -->
         <div class="filter-container">
             <form method="get">
-                <input type="text" name="name" class="form-control" placeholder="Buscar por nombre..." value="{{ app.request.query.get('name', '') }}">
+                <input type="text" name="name" class="form-control" placeholder="Buscar por nombre..."
+                       value="{{ app.request.query.get('name', '') }}">
                 <select name="route_type" class="form-select">
                     <option value="">Todos los tipos</option>
-                    <option value="Sport" {% if app.request.query.get('route_type') == 'Sport' %}selected{% endif %}>Sport</option>
-                    <option value="Trad" {% if app.request.query.get('route_type') == 'Trad' %}selected{% endif %}>Trad</option>
-                    <option value="Boulder" {% if app.request.query.get('route_type') == 'Boulder' %}selected{% endif %}>Boulder</option>
+                    <option value="Sport" {% if app.request.query.get('route_type') == 'Sport' %}selected{% endif %}>
+                        Sport
+                    </option>
+                    <option value="Trad" {% if app.request.query.get('route_type') == 'Trad' %}selected{% endif %}>
+                        Trad
+                    </option>
+                    <option value="Boulder"
+                            {% if app.request.query.get('route_type') == 'Boulder' %}selected{% endif %}>Boulder
+                    </option>
                 </select>
-                <input type="text" name="rating" class="form-control" placeholder="Dificultad..." value="{{ app.request.query.get('rating', '') }}">
+                <input type="text" name="rating" class="form-control" placeholder="Dificultad..."
+                       value="{{ app.request.query.get('rating', '') }}">
                 <button type="submit" class="btn btn-primary">Filtrar</button>
             </form>
         </div>
@@ -360,9 +369,10 @@
                                 </div>
 
                                 {% if app.user %}
-                                        <button class="btn w-100 mt-2 save-route-btn btn-save" data-route-id="{{ route.id }}">
-                                            <i class="fas fa-bookmark"></i> Guardar en Por Hacer
-                                        </button>
+                                    <button class="btn w-100 mt-2 save-route-btn btn-save"
+                                            data-route-id="{{ route.id }}">
+                                        <i class="fas fa-bookmark"></i> Guardar en Por Hacer
+                                    </button>
                                 {% endif %}
                                 <div id="success-message" class="success-message">
                                     <i class="fas fa-check-circle"></i> ¡Ruta guardada en Por Hacer!
@@ -379,17 +389,20 @@
                     <ul class="pagination">
                         {% if page > 1 %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': page - 1})) }}">Anterior</a>
+                                <a class="page-link"
+                                   href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': page - 1})) }}">Anterior</a>
                             </li>
                         {% endif %}
                         {% for p in 1..total_pages %}
                             <li class="page-item {% if p == page %}active{% endif %}">
-                                <a class="page-link" href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': p})) }}">{{ p }}</a>
+                                <a class="page-link"
+                                   href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': p})) }}">{{ p }}</a>
                             </li>
                         {% endfor %}
                         {% if page < total_pages %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': page + 1})) }}">Siguiente</a>
+                                <a class="page-link"
+                                   href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': page + 1})) }}">Siguiente</a>
                             </li>
                         {% endif %}
                     </ul>
@@ -411,7 +424,7 @@
                     // Verificar si la ruta ya está guardada
                     fetch("{{ path('app_check_saved_route') }}", {
                         method: "POST",
-                        body: JSON.stringify({ id: routeId }),
+                        body: JSON.stringify({id: routeId}),
                         headers: {
                             "Content-Type": "application/json",
                             "X-Requested-With": "XMLHttpRequest"
@@ -430,7 +443,7 @@
                     button.addEventListener("click", function () {
                         fetch("{{ path('app_save_route') }}", {
                             method: "POST",
-                            body: JSON.stringify({ id: routeId }),
+                            body: JSON.stringify({id: routeId}),
                             headers: {
                                 "Content-Type": "application/json",
                                 "X-Requested-With": "XMLHttpRequest"

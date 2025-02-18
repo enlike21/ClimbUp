@@ -4,7 +4,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <style>
 
         .map-container {
@@ -90,7 +90,8 @@
         <div class="map-container">
             <div class="map-header">
                 <h1 class="text-center">📍 Mapa de Andalucía</h1>
-                <p class="text-center">Explora las rutas de escalada. Haz clic en un marcador para ver más información.</p>
+                <p class="text-center">Explora las rutas de escalada. Haz clic en un marcador para ver más
+                    información.</p>
             </div>
             <div id="map"></div>
         </div>
@@ -122,7 +123,7 @@
                                    class="btn-view-routes">
                                    🧗 Ver rutas
                                 </a>
-                            </div>`.replace('ID_REPLACE', location.id), { closeButton: false });
+                            </div>`.replace('ID_REPLACE', location.id), {closeButton: false});
 
                         marker.on("click", function () {
                             marker.openPopup();

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -66,7 +67,7 @@ class RouteController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, ClimbingRoute $route, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$route->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $route->getId(), $request->request->get('_token'))) {
             $entityManager->remove($route);
             $entityManager->flush();
         }
