@@ -12,6 +12,7 @@
 - **Manejo de Rutas:** Doctrine ORM
 - **Paginación:** Pagerfanta
 - **Mapas:** Leaflet.js con datos de OpenStreetMap
+- **Testing:** Cypress para pruebas E2E
 
 ## Instalación
 ### 1. Requisitos previos
@@ -61,6 +62,7 @@ npm run build
 - **Sistema de favoritos:** Guardar rutas en "Por Hacer" y marcarlas como completadas.
 - **Mapa interactivo:** Ver todas las rutas en un mapa con Leaflet.js.
 - **Autenticación y roles:** Diferenciación entre usuarios y administradores.
+- **Pruebas End-to-End:** Cypress para la validación de flujos principales de la aplicación.
 
 ## Seguridad y Configuración
 El sistema de seguridad se basa en `security.yaml` y proporciona protección de accesos según roles:
@@ -83,4 +85,3 @@ Las contribuciones son bienvenidas. Para ello, crea un **fork**, realiza tus cam
 
 ## Licencia
 Este proyecto está bajo una licencia **propietaria**. Su distribución y modificación está regulada según los términos especificados en el repositorio.
-
