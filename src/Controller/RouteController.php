@@ -24,7 +24,7 @@ class RouteController extends AbstractController
         $routes = $routeRepository->findAll();
         $users = $userRepository->findAll();
 
-        return $this->render('route/index.html.twig', [
+        return $this->render('route/list/index.html.twig', [
             'routes' => $routes,
             'users' => $users
         ]);
@@ -44,7 +44,7 @@ class RouteController extends AbstractController
             return $this->redirectToRoute('app_route_index');
         }
 
-        return $this->render('route/new.html.twig', ['form' => $form->createView()]);
+        return $this->render('route/management/new.html.twig', ['form' => $form->createView()]);
     }
 
     #[Route('/{id}/edit', name: 'app_route_edit', methods: ['GET', 'POST'])]
@@ -59,7 +59,7 @@ class RouteController extends AbstractController
             return $this->redirectToRoute('app_route_index');
         }
 
-        return $this->render('route/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('route/management/edit.html.twig', ['form' => $form->createView()]);
     }
 
     #[Route('/{id}/delete', name: 'app_route_delete', methods: ['POST'])]
@@ -78,7 +78,7 @@ class RouteController extends AbstractController
     {
         $routes = $routeRepository->findAll();
 
-        return $this->render('route/user_view.html.twig', [
+        return $this->render('route/list/user_view.html.twig', [
             'routes' => $routes,
         ]);
     }
@@ -86,7 +86,7 @@ class RouteController extends AbstractController
     #[Route('/{id}', name: 'app_route_show', methods: ['GET'])]
     public function show(ClimbingRoute $route): Response
     {
-        return $this->render('route/show.html.twig', [
+        return $this->render('route/details/show.html.twig', [
             'route' => $route,
         ]);
     }

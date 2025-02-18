@@ -6,42 +6,127 @@
     {{ parent() }}
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
+
+        .map-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .map-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
         #map {
             width: 100%;
             height: 600px;
             border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+
+        .btn-center {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+            background: linear-gradient(45deg, #2980B9, #3498DB);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .btn-center:hover {
+            background: linear-gradient(45deg, #3498DB, #2ECC71);
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+        }
+
+        .leaflet-popup-content {
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .leaflet-marker-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .leaflet-marker-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .btn-view-routes {
+            background: linear-gradient(45deg, #3498DB, #2ECC71);
+            color: white;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            margin-top: 5px;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-view-routes:hover {
+            background: linear-gradient(45deg, #2ECC71, #27AE60);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
         }
     </style>
 {% endblock %}
 
 {% block body %}
     <div class="container mt-4">
-        <h1 class="text-center">Mapa de Andalucía</h1>
-        <p class="text-center">Haz clic en un marcador para ver las rutas disponibles.</p>
-        <div id="map"></div>
+        <div class="map-container">
+            <div class="map-header">
+                <h1 class="text-center">📍 Mapa de Andalucía</h1>
+                <p class="text-center">Explora las rutas de escalada. Haz clic en un marcador para ver más información.</p>
+            </div>
+            <div id="map"></div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var map = L.map('map').setView([37.5, -4.5], 7); // Centro aproximado de Andalucía
+            var map = L.map('map').setView([37.5, -4.5], 7);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
             }).addTo(map);
 
+            function resetMap() {
+                map.setView([37.5, -4.5], 7);
+            }
+
             fetch("{{ path('api_locations') }}")
                 .then(response => response.json())
                 .then(data => {
                     data.forEach(location => {
-                        L.marker([location.latitude, location.longitude])
-                            .addTo(map)
-                            .bindPopup(`<strong>${location.name}</strong><br>
-                                        <a href="{{ path('location_routes', {id: 'ID_REPLACE'}) }}"
-                                           class="btn btn-sm btn-primary">
-                                           Ver rutas
-                                        </a>`.replace('ID_REPLACE', location.id));
+                        var marker = L.marker([location.latitude, location.longitude]).addTo(map);
+
+                        marker.bindPopup(`
+                            <div style="text-align:center;">
+                                <strong>${location.name}</strong><br>
+                                <a href="{{ path('location_routes', {id: 'ID_REPLACE'}) }}"
+                                   class="btn-view-routes">
+                                   🧗 Ver rutas
+                                </a>
+                            </div>`.replace('ID_REPLACE', location.id), { closeButton: false });
+
+                        marker.on("click", function () {
+                            marker.openPopup();
+                        });
                     });
                 })
                 .catch(error => console.error("Error cargando ubicaciones:", error));
