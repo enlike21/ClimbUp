@@ -37,9 +37,9 @@
 .nav-link {
     color: var(--light) !important;
     font-weight: 500;
-    padding: 0.5rem 1rem !important;
-    margin: 0 0.2rem;
-    border-radius: 8px;
+    padding: 0.7rem 1.2rem !important;
+    margin: 0.3rem 0.5rem;
+    border-radius: 10px;
     transition: all 0.3s ease;
 }
 
@@ -51,4 +51,44 @@
 .nav-link.active {
     background: rgba(52, 152, 219, 0.2);
     color: var(--accent) !important;
+}
+
+/* 🔹 Ajustes para vista móvil */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.8rem 1rem;
+    }
+
+    .navbar-toggler {
+        border: none;
+        background: transparent;
+        font-size: 1.5rem;
+        color: var(--light);
+        padding: 0.5rem;
+    }
+
+    .navbar-collapse {
+        background: rgba(44, 62, 80, 0.98);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+    }
+
+    .nav-link {
+        padding: 1rem !important;
+        margin: 0.4rem 0;
+        text-align: center;
+        width: 100%;
+        display: block;
+    }
+
+    .nav-item {
+        margin-bottom: 0.5rem;
+    }
+
+    .navbar-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }

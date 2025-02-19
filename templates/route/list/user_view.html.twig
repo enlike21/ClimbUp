@@ -43,7 +43,7 @@
 
         <!-- Paginación -->
         {% set page = app.request.query.get('page', 1) %}
-        {% set per_page = 50 %}
+        {% set per_page = 30 %}
         {% set total_routes = filtered_routes|length %}
         {% set total_pages = (total_routes / per_page)|round(0, 'ceil') %}
         {% set paginated_routes = filtered_routes|slice((page - 1) * per_page, per_page) %}
@@ -78,6 +78,22 @@
                                         <div class="detail-value">
                                             <span>{{ route.difficulty }}</span>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="route-detail">
+                                    <i class="fas fa-ruler-vertical detail-icon"></i>
+                                    <div class="detail-content">
+                                        <div class="detail-label">Longitud</div>
+                                        <div class="detail-value">{{ route.length }} metros</div>
+                                    </div>
+                                </div>
+
+                                <div class="route-detail">
+                                    <i class="fas fa-layer-group detail-icon"></i>
+                                    <div class="detail-content">
+                                        <div class="detail-label">Número de largos</div>
+                                        <div class="detail-value">{{ route.pitches }}</div>
                                     </div>
                                 </div>
 
