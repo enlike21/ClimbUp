@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Location;
 
 use App\Repository\ClimbingRouteRepository;
 use App\Repository\LocationRepository;
@@ -18,7 +18,7 @@ throw $this->createNotFoundException("Ubicación no encontrada.");
 
 $routes = $routeRepository->findBy(['location' => $location]);
 
-return $this->render('location_routes.html.twig', [
+return $this->render('location/location_routes.html.twig', [
 'location' => $location,
 'routes' => $routes
 ]);

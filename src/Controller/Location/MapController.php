@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Location;
 
 use App\Repository\ClimbingRouteRepository;
 use App\Repository\LocationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
 
 class MapController extends AbstractController
 {
     #[Route('/map', name: 'map')]
     public function index()
     {
-        return $this->render('map.html.twig');
+        return $this->render('location/map.html.twig');
     }
 
     #[Route('/api/locations', name: 'api_locations')]

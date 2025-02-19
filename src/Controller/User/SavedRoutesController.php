@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\User;
 
-use App\Entity\UserRoute;
 use App\Entity\ClimbingRoute;
+use App\Entity\CompletedRoute;
+use App\Entity\UserRoute;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\CompletedRoute;
 
 
 #[Route('/mis-rutas')]
@@ -26,7 +26,7 @@ class SavedRoutesController extends AbstractController
         $savedRoutes = $entityManager->getRepository(UserRoute::class)->findBy(['user' => $user]);
         $completedRoutes = $entityManager->getRepository(CompletedRoute::class)->findBy(['user' => $user]);
 
-        return $this->render('saved_routes/index.html.twig', [
+        return $this->render('saved_routes/saved_routes.html.twig', [
             'savedRoutes' => $savedRoutes,
             'completedRoutes' => $completedRoutes,
         ]);

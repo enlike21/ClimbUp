@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Route;
 
+use App\Entity\ClimbingRoute;
+use App\Entity\User;
+use App\Form\ClimbingRouteType;
+use App\Repository\ClimbingRouteRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use App\Entity\ClimbingRoute;
-use App\Entity\User;
-use App\Repository\ClimbingRouteRepository;
-use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Form\ClimbingRouteType;
 
 #[Route('/route')]
 class RouteController extends AbstractController
@@ -25,7 +24,7 @@ class RouteController extends AbstractController
         $routes = $routeRepository->findAll();
         $users = $userRepository->findAll();
 
-        return $this->render('route/list/index.html.twig', [
+        return $this->render('route/list/admin_view.html.twig', [
             'routes' => $routes,
             'users' => $users
         ]);
@@ -74,7 +73,7 @@ class RouteController extends AbstractController
         return $this->redirectToRoute('app_route_index');
     }
 
-    #[Route('/routes/user', name: 'app_route_user_view', methods: ['GET'])]
+    #[Route('/user_routes', name: 'app_route_user_view', methods: ['GET'])]
     public function userView(ClimbingRouteRepository $routeRepository): Response
     {
         $routes = $routeRepository->findAll();
