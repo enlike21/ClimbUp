@@ -28,8 +28,8 @@ class ClimbingRouteType extends AbstractType
                 ],
                 'choice_label' => fn($choice) => $choice->value,
             ])
-            ->add('rating', TextType::class, [
-                'label' => 'Rating'
+            ->add('difficulty', TextType::class, [
+                'label' => 'difficulty'
             ])
             ->add('length', TextType::class, [ // Asegúrate de que 'length' coincide con la entidad
                 'label' => 'Longitud (en metros)',

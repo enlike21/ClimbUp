@@ -26,7 +26,7 @@ const ClimbingRoutes = ({ routes }) => {
                 <tr>
                     <th>Nombre</th>
                     <th>Tipo</th>
-                    <th>Rating</th>
+                    <th>Dificultad</th>
                     <th>Acciones</th>
                 </tr>
                 </thead>
@@ -35,7 +35,7 @@ const ClimbingRoutes = ({ routes }) => {
                     <tr key={route.id}>
                         <td>{route.name}</td>
                         <td>{route.routeType}</td>
-                        <td>{route.rating}</td>
+                        <td>{route.difficulty}</td>
                         <td>
                             <button className="btn btn-warning btn-sm me-2">
                                 Editar

@@ -23,7 +23,7 @@ class ClimbingRoute
     private string $routeType;
 
     #[ORM\Column(length: 255)]
-    private ?string $rating = null;
+    private ?string $difficulty = null;
 
     #[ORM\Column]
     private ?int $pitches = 1;
@@ -70,14 +70,14 @@ class ClimbingRoute
         return $this;
     }
 
-    public function getRating(): ?string
+    public function getDifficulty(): ?string
     {
-        return $this->rating;
+        return $this->difficulty;
     }
 
-    public function setRating(string $rating): static
+    public function setDifficulty(string $difficulty): static
     {
-        $this->rating = $rating;
+        $this->difficulty = $difficulty;
         return $this;
     }
 

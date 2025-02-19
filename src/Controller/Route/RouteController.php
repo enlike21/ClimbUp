@@ -59,7 +59,7 @@ class RouteController extends AbstractController
             return $this->redirectToRoute('app_route_index');
         }
 
-        return $this->render('route/management/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('route/management/edit_profile.html.twig', ['form' => $form->createView()]);
     }
 
     #[Route('/{id}/delete', name: 'app_route_delete', methods: ['POST'])]
