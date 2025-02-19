@@ -1,87 +1,109 @@
-# ClimbUP - Plataforma de Rutas de Escalada
+# ClimbUP - Plataforma de Rutas de Escalada 🧗‍♂️
 
-## Descripción
-**ClimbUP** es una plataforma diseñada para escaladores que permite explorar rutas de escalada, gestionarlas y calificarlas. Esta aplicación ofrece una experiencia intuitiva y eficiente tanto para usuarios como para administradores.
+## 🚀 Descripción
+**ClimbUP** es una plataforma innovadora para escaladores, diseñada para explorar rutas de escalada, gestionarlas y calificarlas. Ofrece una experiencia fluida y profesional para usuarios y administradores.
 
-## Tecnologías Utilizadas
-- **Backend:** Symfony 6.4 con PHP 8.1
-- **Base de Datos:** mySQL
-- **Frontend:** Twig, Bootstrap, JavaScript, Leaflet.js
-- **Seguridad:** Symfony Security Bundle
-- **Autenticación:** Login con hash de contraseñas seguras y roles de usuario
-- **Manejo de Rutas:** Doctrine ORM
-- **Paginación:** Pagerfanta
-- **Mapas:** Leaflet.js con datos de OpenStreetMap
-- **Testing:** Cypress para pruebas E2E
+---
 
-## Instalación
-### 1. Requisitos previos
-Asegúrate de tener instalados:
+## 🛠 Tecnologías Utilizadas
+| Tecnología  | Descripción |
+|------------|------------|
+| ![Symfony](https://img.shields.io/badge/Symfony-6.4-blue?style=flat&logo=symfony) | Backend PHP con Symfony 6.4 |
+| ![MySQL](https://img.shields.io/badge/MySQL-Database-informational?style=flat&logo=mysql) | Base de datos relacional |
+| ![Twig](https://img.shields.io/badge/Twig-Templating-green?style=flat&logo=twig) | Motor de plantillas |
+| ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.0-purple?style=flat&logo=bootstrap) | Estilización y diseño UI |
+| ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?style=flat&logo=javascript) | Dinamismo del frontend |
+| ![Leaflet](https://img.shields.io/badge/Leaflet-Maps-green?style=flat&logo=leaflet) | Integración con OpenStreetMap |
+| ![Cypress](https://img.shields.io/badge/Cypress-E2E-red?style=flat&logo=cypress) | Pruebas End-to-End |
+| ![Docker](https://img.shields.io/badge/Docker-Containerization-blue?style=flat&logo=docker) | Virtualización para desarrollo |
+
+---
+
+## 📥 Instalación
+### 1️⃣ Requisitos previos
 - PHP 8.1+
 - Composer
 - Symfony CLI
-- Docker (opcional, para desarrollo local)
+- Docker (opcional para desarrollo local)
 
-### 2. Clonar el repositorio
+### 2️⃣ Clonar el repositorio
 ```bash
 git clone https://github.com/usuario/climbup.git
 cd climbup
 ```
 
-### 3. Instalar dependencias
+### 3️⃣ Instalar dependencias
 ```bash
 composer install
 npm install
 ```
 
-### 4. Configurar variables de entorno
-Renombrar el archivo `.env.local.example` a `.env.local` y actualizar los valores correspondientes:
+### 4️⃣ Configurar variables de entorno
+Renombrar `.env.local.example` a `.env.local` y modificar:
 ```bash
 DATABASE_URL="mysql://root:@mysql/escalada_db"
 ```
 
-### 5. Ejecutar migraciones
+### 5️⃣ Ejecutar migraciones
 ```bash
 php bin/console doctrine:migrations:migrate
 ```
 
-### 6. Ejecutar el servidor
+### 6️⃣ Levantar el servidor
 ```bash
 symfony server:start
 docker-compose up -d
 ```
 
-### 7. Compilar assets
+### 7️⃣ Compilar assets
 ```bash
 npm run build
 ```
 
-## Características Principales
-- **Exploración de rutas:** Ver y buscar rutas de escalada según ubicación y tipo.
-- **Gestor de rutas:** Crear, editar y eliminar rutas (solo administradores).
-- **Sistema de favoritos:** Guardar rutas en "Por Hacer" y marcarlas como completadas.
-- **Mapa interactivo:** Ver todas las rutas en un mapa con Leaflet.js.
-- **Autenticación y roles:** Diferenciación entre usuarios y administradores.
-- **Pruebas End-to-End:** Cypress para la validación de flujos principales de la aplicación.
+---
 
-## Seguridad y Configuración
-El sistema de seguridad se basa en `security.yaml` y proporciona protección de accesos según roles:
-- **Usuarios:** Acceso a exploración y gestión personal de rutas.
-- **Administradores:** Permisos para crear, editar y eliminar rutas.
+## 🌟 Características Principales
+✅ **Exploración de rutas:** Filtrar y buscar rutas de escalada por ubicación y tipo.  
+✅ **Gestión de rutas:** Crear, editar y eliminar rutas (solo administradores).  
+✅ **Favoritos y progreso:** Guardar rutas en "Por Hacer" y marcarlas como completadas.  
+✅ **Mapa interactivo:** Visualización con Leaflet.js y OpenStreetMap.  
+✅ **Autenticación y roles:** Diferenciación entre usuarios y administradores.  
+✅ **Pruebas E2E:** Cypress para validar flujos principales.
 
-## API REST (Opcional)
-Para integraciones externas, la aplicación puede exponer una API REST para obtener rutas y ubicaciones.
+---
 
-## Despliegue en Producción
-Para desplegar la aplicación en un servidor:
+## 🔐 Seguridad y Configuración
+El sistema de seguridad se basa en `security.yaml`, estableciendo accesos según roles:
+- **Usuarios:** Pueden explorar y gestionar rutas personales.
+- **Administradores:** Tienen permisos completos sobre rutas y usuarios.
+
+---
+
+## 📡 API REST (Opcional)
+Se puede exponer una API REST para integraciones externas, permitiendo la consulta de rutas y ubicaciones.
+
+---
+
+## 🚀 Despliegue en Producción
 ```bash
 composer install --no-dev --optimize-autoloader
 npm run build
 php bin/console cache:clear --env=prod
 ```
 
-## Contribución
-Las contribuciones son bienvenidas. Para ello, crea un **fork**, realiza tus cambios y envía un **pull request**.
+---
 
-## Licencia
-Este proyecto está bajo una licencia **propietaria**. Su distribución y modificación está regulada según los términos especificados en el repositorio.
+## 🛠 Contribución
+Las contribuciones son bienvenidas. Para colaborar:
+1. **Fork** del repositorio.
+2. Crear una rama con la mejora o corrección.
+3. Enviar un **Pull Request**.
+
+---
+
+## 📜 Licencia
+Este proyecto está bajo una licencia **propietaria**. Su distribución y modificación están reguladas según los términos del repositorio.
+
+---
+
+🚀 **ClimbUP - Lleva tu escalada a otro nivel!** 🏔
