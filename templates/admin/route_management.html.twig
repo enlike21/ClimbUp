@@ -12,16 +12,6 @@
 
         <h1 class="section-routes-title">Panel de Control</h1>
 
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-                <i class="fas fa-check-circle fa-lg"></i>
-                <div>
-                    <strong>¡Éxito!</strong>
-                    <p class="mb-0">{{ message }}</p>
-                </div>
-            </div>
-        {% endfor %}
-
         {% if is_granted('ROLE_ADMIN') %}
             <div class="text-center">
                 <a href="{{ path('app_route_new') }}" class="btn btn-add-new">

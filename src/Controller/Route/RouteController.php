@@ -43,7 +43,7 @@ class RouteController extends AbstractController
     {
         $users = $userRepository->findAll();
 
-        return $this->render('admin/users.html.twig', [
+        return $this->render('admin/users_management.html.twig', [
             'users' => $users,
         ]);
     }
@@ -121,7 +121,7 @@ class RouteController extends AbstractController
             $this->addFlash('success', 'El usuario ahora es administrador.');
         }
 
-        return $this->redirectToRoute('app_route_index');
+        return $this->redirectToRoute('app_user_management');
     }
 
     #[Route('/delete-user/{id}', name: 'app_delete_user', methods: ['POST'])]

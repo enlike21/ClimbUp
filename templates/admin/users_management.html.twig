@@ -7,6 +7,15 @@
 {% endblock %}
 
 {% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle fa-lg"></i>
+            <div>
+                <strong>¡Éxito!</strong>
+                <p class="mb-0">{{ message }}</p>
+            </div>
+        </div>
+    {% endfor %}
     <div class="user-container" style="margin-top: 5rem">
         <h1 class="text-center">Gestión de Usuarios</h1>
         <div class="glass-card" style="margin-top: 2rem">
