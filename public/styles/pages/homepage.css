@@ -20,7 +20,7 @@
 }
 
 .hero-content img {
-    width: 300px;
+    width: 500px;
     max-width: 80%;
     margin-bottom: 1.5rem;
     animation: fadeInDown 1s ease-out;
@@ -28,7 +28,7 @@
 
 .welcome-title {
     font-family: 'Poppins', sans-serif;
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 700;
     margin-bottom: 1rem;
     animation: fadeInUp 1s ease-out;
