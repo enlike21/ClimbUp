@@ -24,11 +24,30 @@ class RouteController extends AbstractController
         $routes = $routeRepository->findAll();
         $users = $userRepository->findAll();
 
-        return $this->render('route/list/admin_view.html.twig', [
+        return $this->render('admin/route_management.html.twig', [
             'routes' => $routes,
             'users' => $users
         ]);
     }
+
+    #[Route('/admin', name: 'app_admin_dashboard', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function adminDashboard(): Response
+    {
+        return $this->render('admin/dashboard.html.twig');
+    }
+
+    #[Route('/admin/users', name: 'app_user_management', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function manageUsers(UserRepository $userRepository): Response
+    {
+        $users = $userRepository->findAll();
+
+        return $this->render('admin/users.html.twig', [
+            'users' => $users,
+        ]);
+    }
+
 
     #[Route('/new', name: 'app_route_new', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]

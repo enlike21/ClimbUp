@@ -38,7 +38,7 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('app_profile');
         }
 
-        return $this->render('profile/edit_profile.html.twig', [
+        return $this->render('profile/profile.html.twig', [
             'form' => $form->createView(),
         ]);
     }

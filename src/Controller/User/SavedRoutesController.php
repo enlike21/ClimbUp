@@ -162,4 +162,18 @@ class SavedRoutesController extends AbstractController
         }
     }
 
+    #[Route('/check-completed', name: 'app_check_completed_route', methods: ['GET'])]
+    public function checkCompletedRoutes(EntityManagerInterface $entityManager): JsonResponse
+    {
+        $user = $this->getUser();
+
+        $completedRoutes = $entityManager->getRepository(CompletedRoute::class)->findBy(['user' => $user]);
+
+        $completedRouteIds = array_map(fn($route) => $route->getRoute()->getId(), $completedRoutes);
+
+        return new JsonResponse(['completedRoutes' => $completedRouteIds]);
+    }
+
+
+
 }

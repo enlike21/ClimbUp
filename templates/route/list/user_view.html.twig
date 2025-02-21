@@ -157,60 +157,83 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                document.querySelectorAll(".save-route-btn").forEach(button => {
-                    let routeId = button.dataset.routeId;
+                fetch("{{ path('app_check_completed_route') }}", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        let completedRoutes = data.completedRoutes; // Lista de IDs de rutas completadas
+                        console.log("Rutas completadas:", completedRoutes);
 
-                    // Verificar si la ruta ya está guardada
-                    fetch("{{ path('app_check_saved_route') }}", {
-                        method: "POST",
-                        body: JSON.stringify({id: routeId}),
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest"
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.saved) {
-                                button.classList.add("saved");
-                                button.innerHTML = '<i class="fas fa-check"></i> Guardada';
+                        document.querySelectorAll(".save-route-btn").forEach(button => {
+                            let routeId = parseInt(button.dataset.routeId);
+
+                            if (completedRoutes.includes(routeId)) {
+                                // Si la ruta está completada, deshabilitar botón y cambiar el texto
+                                button.classList.add("completed");
+                                button.innerHTML = '<i class="fas fa-check-circle"></i> Completada';
                                 button.disabled = true;
+                            } else {
+                                // Si la ruta no está completada, verificar si está guardada
+                                fetch("{{ path('app_check_saved_route') }}", {
+                                    method: "POST",
+                                    body: JSON.stringify({ id: routeId }),
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "X-Requested-With": "XMLHttpRequest"
+                                    }
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.saved) {
+                                            button.classList.add("saved");
+                                            button.innerHTML = '<i class="fas fa-check"></i> Guardada';
+                                            button.disabled = true;
+                                        } else {
+                                            // Si la ruta NO está guardada ni completada, permitir guardar
+                                            button.addEventListener("click", function () {
+                                                fetch("{{ path('app_save_route') }}", {
+                                                    method: "POST",
+                                                    body: JSON.stringify({ id: routeId }),
+                                                    headers: {
+                                                        "Content-Type": "application/json",
+                                                        "X-Requested-With": "XMLHttpRequest"
+                                                    }
+                                                })
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        if (data.success) {
+                                                            let messageBox = document.createElement("div");
+                                                            messageBox.className = "success-message";
+                                                            messageBox.innerHTML = '<i class="fas fa-check-circle"></i> ¡Ruta guardada en Por Hacer!';
+                                                            button.parentElement.appendChild(messageBox);
+                                                            messageBox.style.display = "block";
+
+                                                            setTimeout(() => {
+                                                                messageBox.style.display = "none";
+                                                                messageBox.remove();
+                                                            }, 3000);
+
+                                                            button.classList.add("saved");
+                                                            button.innerHTML = '<i class="fas fa-check"></i> Guardada';
+                                                            button.disabled = true;
+                                                        }
+                                                    })
+                                                    .catch(error => console.error("Error al guardar la ruta:", error));
+                                            });
+                                        }
+                                    })
+                                    .catch(error => console.error("Error al verificar si está guardada:", error));
                             }
                         });
-
-                    // Manejar el clic para guardar la ruta
-                    button.addEventListener("click", function () {
-                        fetch("{{ path('app_save_route') }}", {
-                            method: "POST",
-                            body: JSON.stringify({id: routeId}),
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-Requested-With": "XMLHttpRequest"
-                            }
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    let messageBox = document.createElement("div");
-                                    messageBox.className = "success-message";
-                                    messageBox.innerHTML = '<i class="fas fa-check-circle"></i> ¡Ruta guardada en Por Hacer!';
-                                    button.parentElement.appendChild(messageBox);
-                                    messageBox.style.display = "block";
-
-                                    setTimeout(() => {
-                                        messageBox.style.display = "none";
-                                        messageBox.remove();
-                                    }, 3000);
-
-                                    button.classList.add("saved");
-                                    button.innerHTML = '<i class="fas fa-check"></i> Guardada';
-                                    button.disabled = true;
-                                }
-                            })
-                            .catch(error => console.error("Error:", error));
-                    });
-                });
+                    })
+                    .catch(error => console.error("Error al obtener rutas completadas:", error));
             });
         </script>
+
     </div>
 {% endblock %}

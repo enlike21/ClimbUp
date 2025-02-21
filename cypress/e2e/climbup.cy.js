@@ -15,7 +15,7 @@ describe('ClimbUP - Tests de Integración', () => {
     });
 
     it('Ver rutas de escalada', () => {
-        cy.visit('/routes/user');
+        cy.visit('/route/user_routes');
         cy.contains('Explorar Rutas de Escalada').should('be.visible');
     });
 

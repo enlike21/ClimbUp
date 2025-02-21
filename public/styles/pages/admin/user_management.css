@@ -1,0 +1,212 @@
+:root {
+    --table-bg: #f9f9f9;
+    --table-header: #2c3e50;
+    --table-border: #ddd;
+    --row-hover: #ecf0f1;
+    --btn-edit: #2980b9;
+    --btn-delete: #c0392b;
+    --badge-admin: #27ae60;
+    --badge-user: #2980b9;
+    --text-dark: #2d3436;
+    --background-glass: rgba(255, 255, 255, 0.15);
+}
+
+.user-container {
+    max-width: 1100px;
+    margin: 3rem auto;
+    padding: 1rem;
+}
+
+.glass-card {
+    background: var(--background-glass);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.table-container {
+    background: var(--table-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: var(--table-header);
+}
+
+th {
+    color: #ffffff;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--table-border);
+    font-family: "Poppins", sans-serif;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+tbody tr {
+    transition: background-color 0.3s ease-in-out;
+}
+
+tbody tr:hover {
+    background-color: var(--row-hover);
+}
+
+.route-type-badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-block;
+    color: #ffffff;
+}
+
+.role-badge-admin {
+    background: var(--badge-admin);
+}
+
+.role-badge-user {
+    background: var(--badge-user);
+}
+
+.btn-action {
+    padding: 0.5rem 0.8rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+.btn-edit {
+    background: var(--btn-edit);
+}
+
+.btn-delete {
+    background: var(--btn-delete);
+}
+
+.btn-delete:hover {
+    color: white;
+    transform: translateY(-2px);
+    background-color: #ae0000;
+}
+
+.btn-edit:hover{
+    color: white;
+    transform: translateY(-2px);
+    background-color: #36a2ec;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #7f8c8d;
+    font-style: italic;
+    font-size: 1rem;
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+}
+
+/* 🌍 Responsive Design */
+@media (max-width: 768px) {
+    .glass-card {
+        padding: 1.5rem;
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        background: white;
+        border: 1px solid var(--table-border);
+        padding: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    td {
+        border: none;
+        padding: 0.8rem;
+        position: relative;
+        text-align: right;
+    }
+
+    td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        font-weight: bold;
+        color: var(--text-dark);
+    }
+
+    .action-buttons {
+        justify-content: flex-start;
+        margin-top: 0.5rem;
+    }
+
+    .btn-action {
+        padding: 0.7rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-action i {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-container {
+        padding: 0 0.5rem;
+    }
+
+    .glass-card {
+        padding: 1rem;
+    }
+
+    td {
+        padding: 0.7rem;
+    }
+
+    .btn-action {
+        font-size: 0.85rem;
+    }
+}
