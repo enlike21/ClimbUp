@@ -134,6 +134,6 @@ class RouteController extends AbstractController
             $this->addFlash('success', 'Usuario eliminado correctamente.');
         }
 
-        return $this->redirectToRoute('app_route_index');
+        return $this->redirectToRoute('app_user_management');
     }
 }
