@@ -15,7 +15,7 @@
             {% if error %}
                 <div class="alert-error">
                     <i class="fas fa-exclamation-circle"></i>
-                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                    Contraseña incorrecta
                 </div>
             {% endif %}
 
@@ -52,10 +52,6 @@
                             placeholder="Ingresa tu contraseña"
                     >
                     <i class="fas fa-lock input-icon"></i>
-                </div>
-
-                <div class="forgot-password">
-                    <a href="#"><i class="fas fa-question-circle me-1"></i>¿Olvidaste tu contraseña?</a>
                 </div>
 
                 <button type="submit" class="btn btn-auth">
