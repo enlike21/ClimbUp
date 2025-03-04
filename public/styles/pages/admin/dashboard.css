@@ -1,0 +1,101 @@
+.admin-dashboard {
+    text-align: center;
+    padding: 50px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-title {
+    font-size: 2.5rem;
+    color: #5bb98c;
+    margin-bottom: 40px;
+    position: relative;
+    display: inline-block;
+}
+
+.dashboard-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 4px;
+    background: linear-gradient(to right, #4a90e2, #5bb98c);
+    border-radius: 2px;
+}
+
+.options-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.admin-option {
+    text-decoration: none;
+    padding: 30px;
+    width: 250px;
+    background: #ffffff;
+    border-radius: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.option-icon {
+    background: linear-gradient(135deg, #4a90e2, #5bb98c);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.admin-option:hover .option-icon {
+    transform: scale(1.1);
+}
+
+.option-icon i {
+    font-size: 32px;
+    color: white;
+}
+
+.admin-option h2 {
+    color: #5bb98c;
+    font-size: 1.2rem;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.admin-option:hover h2 {
+    color: #4a90e2;
+}
+
+@media (max-width: 768px) {
+    .options-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .admin-option {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .dashboard-title {
+        font-size: 2rem;
+    }
+}

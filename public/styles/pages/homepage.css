@@ -1,13 +1,13 @@
 /* styles/pages/homepage.css */
-
 .hero-section {
     position: relative;
-    min-height: 100vh;
+    height: 90%;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     background-size: cover;
+    background-position: center;
 }
 
 .hero-content {
@@ -135,3 +135,45 @@
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+@media (max-width: 768px) {
+    .hero-section {
+        position: relative;
+        height: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+    }
+
+    .hero-content img {
+        width: 300px;
+        max-width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .welcome-title {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .welcome-subtitle {
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .buttons-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-hero {
+        font-size: large;
+        padding: 0.8rem 1.5rem;
+    }
+}
+
+

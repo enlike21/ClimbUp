@@ -23,6 +23,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         return await response.json();
     };
 
+    let perPage = window.innerWidth <= 768 ? 15 : 30;
+    let urlParams = new URLSearchParams(window.location.search);
+
+    if (!urlParams.has('per_page') || urlParams.get('per_page') !== perPage.toString()) {
+        urlParams.set('per_page', perPage);
+        window.location.href = window.location.pathname + '?' + urlParams.toString();
+    }
+
     try {
         const { completedRoutes = [] } = await fetchData(checkCompletedUrl);
 
