@@ -40,12 +40,6 @@ class ProfileType extends AbstractType
                     'label' => 'Confirmar Nueva Contraseña',
                     'attr' => ['class' => 'form-control', 'placeholder' => 'Repite tu nueva contraseña']
                 ],
-                'constraints' => [
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'La contraseña debe tener al menos 6 caracteres',
-                    ]),
-                ],
             ]);
     }
 

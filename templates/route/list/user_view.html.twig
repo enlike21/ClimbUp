@@ -51,7 +51,7 @@
         {% if paginated_routes|length > 0 %}
             <div class="row g-4">
                 {% for route in paginated_routes %}
-                    <div class="col-12 col-md-6 col-lg-4">
+                    <div class="col-12 {% if filtered_routes|length <= 2 %}col-md-6 col-12{% else %}col-lg-4{% endif %}">
                         <div class="route-card">
                             <div class="route-card-header">
                                 <h2 class="route-name">{{ route.name }}</h2>
@@ -121,7 +121,6 @@
                     </div>
                 {% endfor %}
             </div>
-
             {% set maxVisiblePages = app.request.query.get('mobile', false) ? 5 : 30 %}
             {% set range = (maxVisiblePages / 2)|round(0, 'floor') %}
             {% set start = (page - range) > 1 ? (page - range) : 1 %}
