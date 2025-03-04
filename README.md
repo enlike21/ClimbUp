@@ -28,7 +28,7 @@
 
 ### 2️⃣ Clonar el repositorio
 ```bash
-git clone https://github.com/usuario/climbup.git
+git clone https://github.com/enlike21/climbup.git
 cd climbup
 ```
 
@@ -51,20 +51,14 @@ php bin/console doctrine:migrations:migrate
 
 ### 6️⃣ Levantar el servidor
 ```bash
-symfony server:start
 docker-compose up -d
-```
-
-### 7️⃣ Compilar assets
-```bash
-npm run build
 ```
 
 ---
 
 ## 🌟 Características Principales
 ✅ **Exploración de rutas:** Filtrar y buscar rutas de escalada por ubicación y tipo.  
-✅ **Gestión de rutas:** Crear, editar y eliminar rutas (solo administradores).  
+✅ **Gestión de rutas:** Crear, editar y eliminar rutas, además de gestionar usuarios (solo administradores).  
 ✅ **Favoritos y progreso:** Guardar rutas en "Por Hacer" y marcarlas como completadas.  
 ✅ **Mapa interactivo:** Visualización con Leaflet.js y OpenStreetMap.  
 ✅ **Autenticación y roles:** Diferenciación entre usuarios y administradores.  
@@ -79,17 +73,8 @@ El sistema de seguridad se basa en `security.yaml`, estableciendo accesos según
 
 ---
 
-## 📡 API REST (Opcional)
+## 📡 API REST
 Se puede exponer una API REST para integraciones externas, permitiendo la consulta de rutas y ubicaciones.
-
----
-
-## 🚀 Despliegue en Producción
-```bash
-composer install --no-dev --optimize-autoloader
-npm run build
-php bin/console cache:clear --env=prod
-```
 
 ---
 
