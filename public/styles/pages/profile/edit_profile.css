@@ -87,6 +87,10 @@
     transition: all 0.3s ease;
 }
 
+.form-control:disabled{
+    color: grey;
+}
+
 .form-control:focus {
     background: rgba(255, 255, 255, 0.15);
     border-color: rgba(52, 152, 219, 0.5);

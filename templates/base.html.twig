@@ -38,14 +38,14 @@
             <ul class="navbar-nav ms-auto align-items-center">
 
                 <li class="nav-item">
-                    <a class="nav-link {% if app.request.get('_route') == 'app_route_user_view' %}active{% endif %}"
+                    <a class="nav-link btn-custom btn-primary-custom {% if app.request.get('_route') == 'app_route_user_view' %}active{% endif %}"
                        href="{{ path('app_route_user_view') }}">
                         <i class="fas fa-map-marked-alt me-2"></i>Ver Rutas
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link btn-custom btn-primary-custom ms-2" href="{{ path('map') }}">
+                    <a class="nav-link btn-custom btn-secondary-custom ms-2" href="{{ path('map') }}">
                         <i class="fas fa-map me-2"></i>Ver Mapa
                     </a>
                 </li>

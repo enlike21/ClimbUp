@@ -43,7 +43,7 @@
 
         <!-- Paginación -->
         {% set page = app.request.query.get('page', 1) %}
-        {% set per_page = 30 %}
+        {% set per_page = app.request.query.get('per_page', 30) %}
         {% set total_routes = filtered_routes|length %}
         {% set total_pages = (total_routes / per_page)|round(0, 'ceil') %}
         {% set paginated_routes = filtered_routes|slice((page - 1) * per_page, per_page) %}
@@ -122,6 +122,10 @@
                 {% endfor %}
             </div>
 
+            {% set maxVisiblePages = app.request.query.get('mobile', false) ? 5 : 30 %}
+            {% set range = (maxVisiblePages / 2)|round(0, 'floor') %}
+            {% set start = (page - range) > 1 ? (page - range) : 1 %}
+            {% set end = (start + maxVisiblePages - 1) < total_pages ? (start + maxVisiblePages - 1) : total_pages %}
             <!-- Paginación -->
             <div class="d-flex justify-content-center mt-4">
                 <nav>
@@ -132,12 +136,34 @@
                                    href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': page - 1})) }}">Anterior</a>
                             </li>
                         {% endif %}
-                        {% for p in 1..total_pages %}
+
+                        {% if start > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': 1})) }}">1</a>
+                            </li>
+                            {% if start > 2 %}
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                        {% endif %}
+
+                        {% for p in start..end %}
                             <li class="page-item {% if p == page %}active{% endif %}">
                                 <a class="page-link"
                                    href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': p})) }}">{{ p }}</a>
                             </li>
                         {% endfor %}
+
+                        {# Mostrar '...' al final si hay páginas ocultas después #}
+                        {% if end < total_pages %}
+                            {% if end < total_pages - 1 %}
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': total_pages})) }}">{{ total_pages }}</a>
+                            </li>
+                        {% endif %}
+
                         {% if page < total_pages %}
                             <li class="page-item">
                                 <a class="page-link"
