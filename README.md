@@ -16,11 +16,9 @@
 - [E2E con Cypress](#e2e-con-cypress)
 - [Rutas principales de la aplicación](#rutas-principales-de-la-aplicación)
 - [Despliegue en producción (resumen)](#despliegue-en-producción-resumen)
-- [Buenas prácticas y seguridad](#buenas-prácticas-y-seguridad)
 - [Solución de problemas](#solución-de-problemas)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Contribución](#contribución)
-- [Licencia](#licencia)
 
 ---
 
