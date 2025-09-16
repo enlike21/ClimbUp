@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   # PHP-FPM (Symfony)
@@ -22,14 +21,10 @@ services:
       MYSQL_DATABASE: escalada_db
       MYSQL_USER: user
       MYSQL_PASSWORD: userpassword
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "--silent"]
-      retries: 5
-      start_period: 30s
     volumes:
       - database_data:/var/lib/mysql
-      - ./docker/escalada_db.sql:/docker-entrypoint-initdb.d/escalada_db.sql
-    command: --skip-ssl
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - ./docker/db-ssl:/etc/mysql/ssl:ro
 
   # Mailpit (dev mail)
   mailer:
