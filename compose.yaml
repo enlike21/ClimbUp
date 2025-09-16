@@ -1,25 +1,20 @@
 version: '3.8'
 
 services:
-  ###> Web service (Symfony + PHP) ###
+  # PHP-FPM (Symfony)
   web:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "8081:80"
+    expose:
+      - "9000"
     volumes:
       - .:/var/www/html
     depends_on:
       - database
       - mailer
-    environment:
-      APP_ENV: dev
-      DATABASE_URL: "mysql://user:userpassword@database:3306/escalada_db?serverVersion=10.6&charset=utf8mb4"
-      MAILER_DSN: smtp://mailer:1025
-    entrypoint: ["sh", "-c", "until php bin/console doctrine:query:sql 'SELECT 1' > /dev/null 2>&1; do sleep 2; done; php-fpm"]
 
-  ###> MariaDB service ###
+  # MariaDB
   database:
     image: mariadb:10.6
     environment:
@@ -36,25 +31,28 @@ services:
       - ./docker/escalada_db.sql:/docker-entrypoint-initdb.d/escalada_db.sql
     command: --skip-ssl
 
-  ###> Mailer (MailHog) ###
+  # Mailpit (dev mail)
   mailer:
-    image: mailhog/mailhog
+    image: axllent/mailpit
     ports:
-      - "8025:8025"
       - "1025:1025"
+      - "8025:8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
-  ###> Nginx service ###
+  # Nginx
   nginx:
     image: nginx:alpine
     ports:
       - "8080:80"
     volumes:
-      - .:/var/www/html
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - .:/var/www/html:ro
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
     depends_on:
       - web
 
-  ###> Adminer service ###
+  # Adminer (DB UI)
   adminer:
     image: adminer
     ports:
