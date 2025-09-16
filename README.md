@@ -1,94 +1,260 @@
-# ClimbUP - Plataforma de Rutas de Escalada 🧗‍♂️
+# ClimbUP — Plataforma de Rutas de Escalada 🧗‍♂️
 
-## 🚀 Descripción
-**ClimbUP** es una plataforma innovadora para escaladores, diseñada para explorar rutas de escalada, gestionarlas y calificarlas. Ofrece una experiencia fluida y profesional para usuarios y administradores.
-
----
-
-## 🛠 Tecnologías Utilizadas
-| Tecnología  | Descripción |
-|------------|------------|
-| ![Symfony](https://img.shields.io/badge/Symfony-6.4-blue?style=flat&logo=symfony) | Backend PHP con Symfony 6.4 |
-| ![MySQL](https://img.shields.io/badge/MySQL-Database-informational?style=flat&logo=mysql) | Base de datos relacional |
-| ![Twig](https://img.shields.io/badge/Twig-Templating-green?style=flat&logo=twig) | Motor de plantillas |
-| ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.0-purple?style=flat&logo=bootstrap) | Estilización y diseño UI |
-| ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?style=flat&logo=javascript) | Dinamismo del frontend |
-| ![Leaflet](https://img.shields.io/badge/Leaflet-Maps-green?style=flat&logo=leaflet) | Integración con OpenStreetMap |
-| ![Cypress](https://img.shields.io/badge/Cypress-E2E-red?style=flat&logo=cypress) | Pruebas End-to-End |
-| ![Docker](https://img.shields.io/badge/Docker-Containerization-blue?style=flat&logo=docker) | Virtualización para desarrollo |
+**ClimbUP** es una plataforma web para explorar, gestionar y seguir rutas de escalada. Permite consultar rutas en un **mapa interactivo**, guardar favoritas, marcarlas como completadas y administrarlas con roles y permisos.
 
 ---
 
-## 📥 Instalación
-### 1️⃣ Requisitos previos
-- PHP 8.1+
-- Composer
-- Symfony CLI
-- Docker (opcional para desarrollo local)
+## Tabla de Contenidos
 
-### 2️⃣ Clonar el repositorio
+- [Tecnologías](#tecnologías)
+- [Arquitectura & Módulos](#arquitectura--módulos)
+- [Requisitos](#requisitos)
+- [Configuración de entorno](#configuración-de-entorno)
+- [Arranque rápido con Docker](#arranque-rápido-con-docker)
+- [Base de datos: migraciones e importación de dump](#base-de-datos-migraciones-e-importación-de-dump)
+- [Usuarios & Roles](#usuarios--roles)
+- [E2E con Cypress](#e2e-con-cypress)
+- [Rutas principales de la aplicación](#rutas-principales-de-la-aplicación)
+- [Despliegue en producción (resumen)](#despliegue-en-producción-resumen)
+- [Buenas prácticas y seguridad](#buenas-prácticas-y-seguridad)
+- [Solución de problemas](#solución-de-problemas)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Contribución](#contribución)
+- [Licencia](#licencia)
+
+---
+
+## Tecnologías
+
+| Capa            | Tecnología                                                          |
+|-----------------|----------------------------------------------------------------------|
+| Backend         | **Symfony** (PHP 8.2+), **Doctrine ORM**                             |
+| Frontend        | **Twig**, **Leaflet** (OpenStreetMap) para mapas |
+| Base de datos   | **MariaDB/MySQL**                                                    |
+| Infra (dev)     | **Docker Compose**: php-fpm, **Nginx**, MariaDB, Adminer      |
+| Testing         | **Cypress** (End-to-End)                                             |
+
+---
+
+## Arquitectura & Módulos
+
+- **Módulo público**: listado de rutas, mapa interactivo, detalle de ruta.
+- **Área de usuario**: guardar rutas como “por hacer”, marcarlas como **completadas**, y gestionar perfil.
+- **Administración**: crear/editar/eliminar rutas y ubicaciones (rutas protegidas por rol).
+- **API interna (JSON)**: endpoints de **ubicaciones** y **rutas por ubicación** para alimentar el mapa.
+- **Seguridad**: autenticación, autorización por roles, **CSRF** en formularios sensibles.
+
+---
+
+## Requisitos
+
+- **Opción recomendada**: Docker + Docker Compose  
+- **Opción clásica**: PHP 8.2+, Composer, (opcional) Symfony CLI  
+- (Opcional) Node 18+ si quieres ejecutar Cypress fuera de Docker
+
+---
+
+## Configuración de entorno
+
+Este repo **no incluye** `.env` con secretos. Debes crear el tuyo a partir de la plantilla:
+
 ```bash
-git clone https://github.com/enlike21/climbup.git
-cd climbup
+cp .env.example .env
 ```
 
-### 3️⃣ Instalar dependencias
-```bash
-composer install
-npm install
+Edita los placeholders del `.env` (no los subas al repo).  
+**Plantilla sugerida** (`.env.example`):
+
+```dotenv
+###> symfony/framework-bundle ###
+APP_ENV=dev
+APP_DEBUG=1
+APP_SECRET=ChangeMeToAStrongRandomValue
+###< symfony/framework-bundle ###
+
+###> doctrine/doctrine-bundle ###
+# Docker local (servicio "database")
+DATABASE_URL="mysql://user:userpassword@database:3306/escalada_db?serverVersion=10.6&charset=utf8mb4"
+###< doctrine/doctrine-bundle ###
+
+###> symfony/mailer ###
+# Correo en desarrollo con Mailpit (contenedor "mailer")
+MAILER_DSN=smtp://mailer:1025
+###< symfony/mailer ###
+
+###> symfony/messenger ###
+MESSENGER_TRANSPORT_DSN=doctrine://default
+###< symfony/messenger ###
+
+# Cypress (desarrollo)
+CYPRESS_BASE_URL=http://localhost:8080
+CYPRESS_USER_EMAIL=admin@example.com
+CYPRESS_USER_PASSWORD=changeme123
 ```
 
-### 4️⃣ Configurar variables de entorno
-Renombrar `.env.local.example` a `.env.local` y modificar:
+> **Importante**: Mantén `.env` y `.env.*` fuera del control de versiones (usa solo `.env.example` en el repo). No subas dumps `*.sql` ni backups.
+
+---
+
+## Arranque rápido con Docker
+
+Desde la raíz del proyecto:
+
 ```bash
-DATABASE_URL="mysql://root:@mysql/escalada_db"
+cp .env.example .env
+
+docker compose up -d --build
+
+docker compose exec web composer install --no-interaction
+
+docker compose exec web php bin/console cache:clear
 ```
 
-### 5️⃣ Ejecutar migraciones
+**URLs por defecto**
+
+- App: **http://localhost:8080**
+- Adminer (DB web): **http://localhost:8082** *(si está incluido)*
+- Mailpit (UI): **http://localhost:8025** (SMTP en 1025)
+
+**Notas de red/puertos**
+
+- **Nginx** sirve la app en `8080 → 80` (host → contenedor).  
+- **php-fpm** no expone puertos al host (solo `expose: 9000` para Nginx).  
+- En desarrollo, puedes publicar `3306:3306` para conectar con DBeaver; en producción **no** publiques la BD.
+
+---
+
+## Base de datos: migraciones e importación de dump
+
+Tienes dos caminos: **migraciones** o **importar** un **dump SQL**.
+
+### Opción A) Esquema vacío + migraciones
+
 ```bash
-php bin/console doctrine:migrations:migrate
+docker compose exec web php bin/console doctrine:migrations:migrate --no-interaction
 ```
 
-### 6️⃣ Levantar el servidor
+Crea después usuarios desde la UI o vía DB.
+
+### Opción B) Importar dump SQL
+
+**Con DBeaver (GUI)**  
+1. Conexión nueva → MariaDB/MySQL  
+   - Host: `localhost`  
+   - Puerto: `3306`  
+   - DB: `escalada_db`  
+   - Usuario: `user` / Password: `userpassword`  
+2. Ejecuta tu `dump.sql` sobre `escalada_db`.
+
+**Por consola (rápido)**
+
 ```bash
-docker-compose up -d
+docker compose exec -T database sh -c 'mysql -uuser -puserpassword escalada_db' < ./ruta/a/tu_dump.sql
+```
+
+> Si tu dump ya trae **esquema + datos**, puede que **no necesites migraciones** (y si las ejecutas, podrían chocar). Importa primero y evalúa.
+
+---
+
+## Usuarios & Roles
+
+- Registro/login de usuarios desde la propia app.
+- Para elevar a **admin**, establece el campo `roles` en la tabla de usuarios como JSON `["ROLE_ADMIN"]` (vía DBeaver o script).
+- Formularios protegidos con **CSRF**.  
+- Controladores con anotaciones/atributos de seguridad en rutas sensibles.
+
+---
+
+## E2E con Cypress
+
+Configura `baseUrl` y credenciales vía variables de entorno:
+
+```js
+// cypress.config.js (ejemplo)
+module.exports = {
+  e2e: {
+    baseUrl: process.env.CYPRESS_BASE_URL || "http://localhost:8080",
+    env: {
+      USER_EMAIL: process.env.CYPRESS_USER_EMAIL,
+      USER_PASSWORD: process.env.CYPRESS_USER_PASSWORD
+    }
+  }
+}
+```
+
+Comandos:
+
+```bash
+# Interactivo
+npx cypress open
+
+# Headless
+npx cypress run
+```
+
+**Recomendaciones**
+
+- Usa `cy.session()` para cachear el login entre tests.
+- Añade `data-testid` a elementos clave para selectores robustos.
+- No hardcodees credenciales en los specs; usa `Cypress.env()`.
+
+---
+
+## Rutas principales de la aplicación
+
+- **/** — Home / dashboard básico  
+- **/login**, **/register**, **/logout** — Autenticación  
+- **/map** — Mapa interactivo (Leaflet + OSM)  
+- **/user_routes** — Listado/gestión de rutas de usuario (favoritas/completadas)  
+- **/perfil**, **/mis-rutas** — Área de usuario  
+- **/admin** — Administración (protegido por rol)
+
+**API (interno para el mapa)**
+
+- **/api/locations** — Listado de ubicaciones  
+- **/api/routes-by-location/{id}** — Rutas por ubicación
+
+> Para exponer públicamente una API estable, utiliza **Serializer + groups** y añade **cabeceras de caché**.
+
+---
+
+## Solución de problemas
+
+- **502/Bad Gateway**: Nginx no alcanza php-fpm → asegúrate de que `web` (php-fpm) **no** expone puertos y Nginx hace `fastcgi_pass web:9000`.  
+- **No conecta DBeaver**: publica `3306:3306` en `database` en dev o usa Adminer.  
+- **Migraciones chocan con dump**: si ya importaste un dump con esquema, omite migraciones o revísalas.  
+- **Permisos en `var/`**:
+  ```bash
+  docker compose exec web sh -lc 'chown -R www-data:www-data var && chmod -R u+rwX,g+rwX var'
+  ```
+- **Cypress no encuentra elementos**: añade `data-testid` y evita `{force:true}`; usa `cy.session()` para login.
+
+---
+
+## Estructura del proyecto
+
+```
+.
+├─ assets/                 # estáticos (si aplica)
+├─ bin/
+├─ config/
+├─ cypress/                # tests E2E
+├─ docker/                 # conf nginx, mailer, scripts; sin datos ni dumps
+├─ migrations/             # Doctrine migrations
+├─ public/                 # document root (nginx)
+├─ src/                    # código Symfony
+├─ templates/              # vistas Twig
+├─ translations/
+├─ compose.yaml            # stack base dev
+├─ composer.json
+├─ .env.example            # plantilla sin secretos
+└─ README.md
 ```
 
 ---
 
-## 🌟 Características Principales
-✅ **Exploración de rutas:** Filtrar y buscar rutas de escalada por ubicación y tipo.  
-✅ **Gestión de rutas:** Crear, editar y eliminar rutas, además de gestionar usuarios (solo administradores).  
-✅ **Favoritos y progreso:** Guardar rutas en "Por Hacer" y marcarlas como completadas.  
-✅ **Mapa interactivo:** Visualización con Leaflet.js y OpenStreetMap.  
-✅ **Autenticación y roles:** Diferenciación entre usuarios y administradores.  
-✅ **Pruebas E2E:** Cypress para validar flujos principales.
+## Contribución
 
----
-
-## 🔐 Seguridad y Configuración
-El sistema de seguridad se basa en `security.yaml`, estableciendo accesos según roles:
-- **Usuarios:** Pueden explorar y gestionar rutas personales.
-- **Administradores:** Tienen permisos completos sobre rutas y usuarios.
-
----
-
-## 📡 API REST
-Se puede exponer una API REST para integraciones externas, permitiendo la consulta de rutas y ubicaciones.
-
----
-
-## 🛠 Contribución
-Las contribuciones son bienvenidas. Para colaborar:
-1. **Fork** del repositorio.
-2. Crear una rama con la mejora o corrección.
-3. Enviar un **Pull Request**.
-
----
-
-## 📜 Licencia
-Este proyecto está bajo una licencia **propietaria**. Su distribución y modificación están reguladas según los términos del repositorio.
-
----
-
-🚀 **ClimbUP - Lleva tu escalada a otro nivel!** 🏔
+1. Fork del repositorio  
+2. Rama `feature/mi-cambio`  
+3. Ejecuta tests y prepara PR con pasos de prueba
