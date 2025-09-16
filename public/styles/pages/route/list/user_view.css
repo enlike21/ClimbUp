@@ -1,0 +1,292 @@
+.success-message {
+    display: none;
+    background: #2ECC71;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+.btn-save {
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(45deg, #2980B9, #3498DB);
+    color: white;
+    font-weight: bold;
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-save::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: skewX(-20deg);
+    transition: all 0.5s ease-in-out;
+}
+
+.btn-save:hover::before {
+    left: 100%;
+}
+
+.btn-save:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.5);
+}
+
+.btn-save:disabled {
+    background: linear-gradient(45deg, #95A5A6, #7F8C8D);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.filter-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 1.5rem;
+    width: 50%;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.filter-container form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.filter-container input,
+.filter-container select {
+    height: 50px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.filter-container input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.filter-container button {
+    height: 50px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(45deg, #3498DB, #2ECC71);
+    color: white;
+    font-weight: bold;
+    padding: 0 20px;
+    transition: all 0.3s ease;
+}
+
+.filter-container button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+.pagination .page-item.active .page-link {
+    background: linear-gradient(45deg, #3498DB, #2ECC71);
+    border: none;
+    color: white;
+}
+
+.pagination .page-item .page-link {
+    color: #3498DB;
+    font-weight: bold;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    margin: 0.1rem;
+}
+
+.pagination .page-item .page-link:hover {
+    background: white;
+    transform: translateY(-2px);
+    background: linear-gradient(45deg, #3498DB, #2ECC71);
+    color: white;
+}
+
+.explore-container {
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    background: linear-gradient(45deg, #3498DB, #2ECC71);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+}
+
+.page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(45deg, #3498DB, #2ECC71);
+    border-radius: 2px;
+}
+
+.route-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    overflow: hidden;
+}
+
+.route-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.route-card-header {
+    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+    padding: 1.5rem;
+    border-radius: 20px 20px 0 0;
+    position: relative;
+}
+
+.route-name {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.route-content {
+    padding: 1.5rem;
+}
+
+.route-detail {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.route-detail:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.detail-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    color: #3498DB;
+    font-size: 1.2rem;
+}
+
+.detail-content {
+    flex: 1;
+}
+
+.detail-label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.2rem;
+}
+
+.detail-value {
+    font-size: 1rem;
+    color: white;
+    font-weight: 500;
+}
+
+.route-type-badge {
+    background: linear-gradient(45deg, #2ECC71, #27AE60);
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.3);
+    margin-bottom: 1rem;
+}
+
+.empty-state-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .explore-container {
+        padding: 1rem;
+    }
+
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .route-card {
+        margin-bottom: 1.5rem;
+    }
+
+    .pagination {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.3rem;
+    }
+    .pagination .page-item {
+        flex: 1 1 auto;
+        text-align: center;
+    }
+
+    .pagination .page-link {
+        display: block;
+        width: auto;
+        min-width: 40px;
+    }
+    .filter-container{
+        width: 100%;
+    }
+}

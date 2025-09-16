@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ClimbUp{% endblock %}</title>
+    <link rel="icon" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/climbUP_logo_top-Vhyq54TxeAPZOR5OTDnr3obGrk06zV.png" type="image/png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('styles/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/buttons.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/navbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/responsive.css') }}">
+
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{{ path('homepage') }}">
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/climbUP_logo_top-Vhyq54TxeAPZOR5OTDnr3obGrk06zV.png" alt="CLIMBUP Logo">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars" style="color: var(--light)"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+
+                <li class="nav-item">
+                    <a class="nav-link btn-custom btn-primary-custom {% if app.request.get('_route') == 'app_route_user_view' %}active{% endif %}"
+                       href="{{ path('app_route_user_view') }}">
+                        <i class="fas fa-map-marked-alt me-2"></i>Explorar Rutas
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link btn-custom btn-secondary-custom ms-2" href="{{ path('map') }}">
+                        <i class="fas fa-map me-2"></i>Ver Mapa
+                    </a>
+                </li>
+
+                {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link btn-custom btn-secondary-custom ms-2" href="{{ path('app_saved_routes') }}">
+                            <i class="fas fa-list me-2"></i>Mis Rutas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-custom btn-secondary-custom ms-2" href="{{ path('app_profile') }}">
+                            <i class="fas fa-user-circle me-2"></i>Tu Perfil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-custom btn-secondary-custom ms-2" href="{{ path('logout') }}">
+                            <i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión
+                        </a>
+                    </li>
+                {% else %}
+                    <!-- Iniciar Sesión -->
+                    <li class="nav-item">
+                        <a class="nav-link btn-custom btn-secondary-custom" href="{{ path('login') }}">
+                            <i class="fas fa-sign-in-alt me-2"></i>Iniciar sesión
+                        </a>
+                    </li>
+                    <!-- Registrarse -->
+                    <li class="nav-item">
+                        <a class="nav-link btn-custom btn-primary-custom ms-2" href="{{ path('app_register') }}">
+                            <i class="fas fa-user-plus me-2"></i>Registrarse
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- Main Content -->
+<div class="main-container">
+    {% block body %}{% endblock %}
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

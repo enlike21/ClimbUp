@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestión de Usuarios - ClimbUp{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/admin/user_management.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle fa-lg"></i>
+            <div>
+                <strong>¡Éxito!</strong>
+                <p class="mb-0">{{ message }}</p>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="user-container" style="margin-top: 5rem">
+        <h1 class="text-center">Gestión de Usuarios</h1>
+        <div class="glass-card" style="margin-top: 2rem">
+            <div class="table-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Roles</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td data-label="ID">#{{ user.id }}</td>
+                            <td data-label="Email">{{ user.email }}</td>
+                            <td data-label="Roles">
+                                {% for role in user.roles %}
+                                    <span class="route-type-badge {% if role == 'ROLE_ADMIN' %}role-badge-admin{% else %}role-badge-user{% endif %}">
+                                        {{ role }}
+                                    </span>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    {% if 'ROLE_ADMIN' not in user.roles %}
+                                        <form method="post"
+                                              action="{{ path('app_grant_admin', {'id': user.id}) }}"
+                                              class="d-inline">
+                                            <input type="hidden" name="_token"
+                                                   value="{{ csrf_token('grant_admin_' ~ user.id) }}">
+                                            <button type="submit"
+                                                    class="btn btn-action btn-edit"
+                                                    title="Conceder permisos de administrador">
+                                                <i class="fas fa-user-shield"></i>
+                                                <span>Hacer Admin</span>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                    <form method="post"
+                                          action="{{ path('app_delete_user', {'id': user.id}) }}"
+                                          class="d-inline"
+                                          onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?')">
+                                        <input type="hidden" name="_token"
+                                               value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                                        <button type="submit"
+                                                class="btn btn-action btn-delete"
+                                                title="Eliminar usuario">
+                                            <i class="fas fa-user-minus"></i>
+                                            <span>Eliminar</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="empty-state">
+                                <i class="fas fa-users"></i>
+                                <p>No hay usuarios registrados en el sistema</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

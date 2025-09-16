@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mapa de Andalucía{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet" href="{{ asset('styles/pages/location/map.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="map-container">
+            <div class="map-header">
+                <h1 class="text-center">📍 Mapa de Andalucía</h1>
+                <p class="text-center">Explora las rutas de escalada. Haz clic en un marcador para ver más
+                    información.</p>
+            </div>
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var map = L.map('map').setView([37.5, -4.5], 7);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            function resetMap() {
+                map.setView([37.5, -4.5], 7);
+            }
+
+            fetch("{{ path('api_locations') }}")
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(location => {
+                        var marker = L.marker([location.latitude, location.longitude]).addTo(map);
+
+                        marker.bindPopup(`
+                            <div style="text-align:center;">
+                                <strong>${location.name}</strong><br>
+                                <a href="{{ path('location_routes', {id: 'ID_REPLACE'}) }}"
+                                   class="btn-view-routes" style="color:white">
+                                   🧗 Ver rutas
+                                </a>
+                            </div>`.replace('ID_REPLACE', location.id), {closeButton: false});
+
+                        marker.on("click", function () {
+                            marker.openPopup();
+                        });
+                    });
+                })
+                .catch(error => console.error("Error cargando ubicaciones:", error));
+        });
+    </script>
+{% endblock %}

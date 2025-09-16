@@ -1,0 +1,179 @@
+/* styles/pages/homepage.css */
+.hero-section {
+    position: relative;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    max-width: 800px;
+    padding: 2rem;
+}
+
+.hero-content img {
+    width: 500px;
+    max-width: 80%;
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease-out;
+}
+
+.welcome-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease-out;
+}
+
+.welcome-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease-out 0.3s;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeInUp 1s ease-out 0.6s;
+}
+
+.btn-hero {
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(45deg, #3498DB, #2ECC71);
+    color: white;
+    font-weight: bold;
+    font-size: xx-large;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
+
+.btn-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: skewX(-20deg);
+    transition: all 0.5s ease-in-out;
+}
+
+.btn-hero:hover::before {
+    left: 100%;
+}
+
+.btn-hero:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.5);
+}
+
+.btn-save:disabled {
+    background: linear-gradient(45deg, #95A5A6, #7F8C8D);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #3498DB, #1F618D);
+    color: white;
+    border: 2px solid #1F618D;
+}
+
+.btn-primary:hover {
+    background: #1F618D;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(48, 213, 200, 0.2);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.btn-secondary:hover {
+    background: white;
+    color: var(--primary);
+    transform: translateY(-3px);
+}
+
+.logo-index {
+    filter: brightness(0) invert(1);
+    transition: all ease-in-out 0.5s;
+}
+
+.logo-index:hover{
+    scale: 1.1;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        position: relative;
+        height: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+    }
+
+    .hero-content img {
+        width: 300px;
+        max-width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .welcome-title {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .welcome-subtitle {
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .buttons-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-hero {
+        font-size: large;
+        padding: 0.8rem 1.5rem;
+    }
+}
+
+

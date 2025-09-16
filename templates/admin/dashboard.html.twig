@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panel de Administración - ClimbUp{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/admin/dashboard.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="admin-dashboard">
+        <h1 class="dashboard-title">Panel de Administración</h1>
+        <div class="options-container">
+            <a href="{{ path('app_route_index') }}" class="admin-option">
+                <div class="option-icon">
+                    <i class="fas fa-mountain"></i>
+                </div>
+                <h2>Administrar Rutas</h2>
+            </a>
+            <a href="{{ path('app_user_management') }}" class="admin-option">
+                <div class="option-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h2>Administrar Usuarios</h2>
+            </a>
+        </div>
+    </div>
+{% endblock %}

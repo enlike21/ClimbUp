@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear Nueva Ruta{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/route/management/new_edit_route.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="edit-container">
+        <h1 class="edit-title">Crear Nueva Ruta</h1>
+
+        <div class="edit-card">
+            {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.name, 'Nombre de la ruta', {'label_attr': {'class': 'form-label'}}) }}
+                <i class="fas fa-map-signs input-icon"></i>
+                {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Ejemplo: La Gran Pared'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.routeType, 'Tipo de Ruta', {'label_attr': {'class': 'form-label'}}) }}
+                <i class="fas fa-mountain input-icon"></i>
+                {{ form_widget(form.routeType, {'attr': {'class': 'form-select'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.difficulty, 'Dificultad', {'label_attr': {'class': 'form-label'}}) }}
+                <i class="fas fa-star input-icon"></i>
+                {{ form_widget(form.difficulty, {'attr': {'class': 'form-control', 'placeholder': 'Ejemplo: 6a+'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.length, 'Longitud (m)', {'label_attr': {'class': 'form-label'}}) }}
+                <i class="fas fa-ruler input-icon"></i>
+                {{ form_widget(form.length, {'attr': {'class': 'form-control', 'placeholder': 'Ejemplo: 35'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.pitches, 'Número de Largos', {'label_attr': {'class': 'form-label'}}) }}
+                <i class="fas fa-layer-group input-icon"></i>
+                {{ form_widget(form.pitches, {'attr': {'class': 'form-control', 'placeholder': 'Ejemplo: 2'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.location, 'Ubicación', {'label_attr': {'class': 'form-label'}}) }}
+                <i class="fas fa-map-marker-alt input-icon"></i>
+                {{ form_widget(form.location, {'attr': {'class': 'form-control', 'placeholder': 'Ejemplo: Montserrat'}}) }}
+            </div>
+
+            <button type="submit" class="btn btn-edit">
+                <i class="fas fa-save me-2"></i>Guardar Ruta
+            </button>
+            {{ form_end(form) }}
+        </div>
+
+        <div class="text-center">
+            <a href="{{ path('app_route_index') }}" class="edit-link">
+                <i class="fas fa-arrow-left"></i> Volver al Listado
+            </a>
+        </div>
+    </div>
+{% endblock %}

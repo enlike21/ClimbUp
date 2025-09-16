@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ route.name }} - Detalle de Ruta{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/route/details/show.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="route-detail-container">
+        <div class="route-header">
+            <h1 class="route-title">{{ route.name }}</h1>
+            <span class="route-type-badge">
+                <i class="fas fa-mountain me-2"></i>
+                {{ route.routeType.value }}
+            </span>
+        </div>
+
+        <div class="detail-card">
+            <div class="detail-item">
+                <i class="fas fa-star-half-alt detail-icon"></i>
+                <div class="detail-content">
+                    <div class="detail-label">Dificultad</div>
+                    <div class="detail-value">
+                        <span>{{ route.difficulty }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <i class="fas fa-ruler-vertical detail-icon"></i>
+                <div class="detail-content">
+                    <div class="detail-label">Longitud</div>
+                    <div class="detail-value">{{ route.length }} metros</div>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <i class="fas fa-layer-group detail-icon"></i>
+                <div class="detail-content">
+                    <div class="detail-label">Número de largos</div>
+                    <div class="detail-value">{{ route.pitches }}</div>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <i class="fas fa-map-marker-alt detail-icon"></i>
+                <div class="detail-content">
+                    <div class="detail-label">Ubicación</div>
+                    <div class="detail-value">{{ route.location.name }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="{% if is_granted('ROLE_ADMIN') %}{{ path('app_route_index') }}{% else %}{{ path('app_route_user_view') }}{% endif %}"
+               class="btn btn-action btn-back">
+                <i class="fas fa-arrow-left"></i>
+                Volver al listado
+            </a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('app_route_edit', {'id': route.id}) }}" class="btn btn-action btn-edit">
+                    <i class="fas fa-edit"></i>
+                    Editar ruta
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

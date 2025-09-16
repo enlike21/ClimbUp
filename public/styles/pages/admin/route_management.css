@@ -1,0 +1,347 @@
+:root {
+    --table-bg: #f9f9f9;
+    --table-header: #2c3e50;
+    --table-border: #ddd;
+    --row-hover: #ecf0f1;
+    --btn-view: #8E44AD;
+    --btn-edit: #2980b9;
+    --btn-delete: #c0392b;
+    --btn-create: linear-gradient(45deg, #3498DB, #2ECC71);
+    --badge-type: linear-gradient(45deg, #2C3E50, #3498DB);
+    --pagination-bg: linear-gradient(45deg, #3498DB, #2ECC71);
+    --text-dark: #2d3436;
+    --background-glass: rgba(255, 255, 255, 0.15);
+    --difficulty-easy: #27ae60;
+    --difficulty-medium: #f1c40f;
+    --difficulty-hard: #c0392b;
+}
+
+.section-routes-title {
+    text-align: center;
+    font-size: 3rem;
+    color: #5bb98c;
+    margin-bottom: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.section-routes-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 4px;
+    background: linear-gradient(to right, #4a90e2, #5bb98c);
+    border-radius: 2px;
+}
+
+.btn-add-new {
+    background: var(--btn-create);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 🌟 Estilo General del Dashboard */
+.dashboard-container {
+    max-width: 1000px;
+    margin: 3rem auto;
+    padding: 1rem;
+}
+
+/* 🌟 Título Centrado */
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    font-family: "Poppins", sans-serif;
+    margin-bottom: 2rem;
+    color: var(--table-header);
+}
+
+/* 🌟 Estilo del Formulario de Filtros */
+.route-filter-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.route-filter-container button {
+    background: var(--btn-create);
+    color: white;
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+.route-filter-container button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+}
+
+.route-filter-container button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+}
+
+/* 🌟 Tabla Más Estrecha */
+.table-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--table-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: var(--table-header);
+}
+
+th {
+    color: #ffffff;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--table-border);
+    font-family: "Poppins", sans-serif;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+tbody tr {
+    transition: background-color 0.3s ease-in-out;
+}
+
+tbody tr:hover {
+    background-color: var(--row-hover);
+}
+
+.difficulty-easy {
+    color: var(--difficulty-easy);
+    font-weight: bold;
+}
+
+.difficulty-medium {
+    color: var(--difficulty-medium);
+    font-weight: bold;
+}
+
+.difficulty-hard {
+    color: var(--difficulty-hard);
+    font-weight: bold;
+}
+
+.difficulty-easy:hover,
+.difficulty-medium:hover,
+.difficulty-hard:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-action {
+    padding: 0.5rem 0.8rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+.btn-view {
+    background: var(--btn-view);
+}
+
+.btn-edit {
+    background: var(--btn-edit);
+}
+
+.btn-delete {
+    background: var(--btn-delete);
+}
+
+.btn-delete:hover {
+    background-color: #ae0000;
+    transform: translateY(-2px);
+}
+
+.btn-edit:hover {
+    background-color: #36a2ec;
+    transform: translateY(-2px);
+}
+
+.btn-view:hover {
+    background-color: #9B59B6;
+    transform: translateY(-2px);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+/* 🌟 Paginación Mejorada */
+.    .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem;
+}
+.pagination .page-item {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+.pagination .page-link {
+    display: block;
+    width: auto;
+    min-width: 40px;
+}
+
+.pagination .page-item.active .page-link {
+    background: linear-gradient(45deg, #3498DB, #2ECC71);
+    border: none;
+    color: white;
+}
+
+.pagination .page-item .page-link {
+    color: #3498DB;
+    font-weight: bold;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    margin: 0.1rem;
+}
+
+.pagination .page-item .page-link:hover {
+    color:white;
+    background: linear-gradient(45deg, #3498DB, #2ECC71);
+    transform: translateY(-2px);
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 768px) {
+    .glass-card {
+        padding: 1.5rem;
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        background: white;
+        border: 1px solid var(--table-border);
+        padding: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    td {
+        border: none;
+        padding: 0.8rem;
+        position: relative;
+        text-align: left;
+    }
+
+    td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        font-weight: bold;
+        color: var(--text-dark);
+    }
+
+    .pagination {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.3rem;
+    }
+    .pagination .page-item {
+        flex: 1 1 auto;
+        text-align: center;
+    }
+
+    .pagination .page-link {
+        display: block;
+        width: auto;
+        min-width: 40px;
+    }
+
+    .route-filter-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .route-filter-container form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .route-filter-container input,
+    .route-filter-container select,
+    .route-filter-container button {
+        width: 100%;
+        max-width: 400px;
+        display: block;
+    }
+
+    .section-routes-title {
+        font-size: 2rem;
+    }
+}

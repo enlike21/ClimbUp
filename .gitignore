@@ -1,0 +1,79 @@
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.test
+.env.prod
+
+# Symfony specific
+/public/bundles/
+/var/
+/vendor/
+/public/assets/
+
+# Dependencies
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# Cache and logs
+/var/cache/*
+/var/log/*
+/var/sessions/*
+!var/cache/.gitkeep
+!var/log/.gitkeep
+!var/sessions/.gitkeep
+
+# Parameters
+/config/secrets/prod/prod.decrypt.private.php
+/config/secrets/**/prod/*
+
+# PHPUnit
+/phpunit.xml
+.phpunit.result.cache
+/coverage/
+
+# Docker
+/docker/mysql/
+docker-compose.override.yml
+
+# Tools and misc
+.php-cs-fixer.cache
+.copilotdiffstate
+.DS_Store
+Thumbs.db
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> cypress ###
+cypress/videos/
+cypress/screenshots/
+###< cypress ###

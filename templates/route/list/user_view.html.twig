@@ -1,0 +1,192 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Explorar Rutas{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/route/list/user_view.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="explore-container">
+        <h1 class="page-title">Explorar Rutas de Escalada</h1>
+
+        <!-- Filtro de búsqueda -->
+        <div class="filter-container">
+            <form method="get">
+                <input type="text" name="name" class="form-control" placeholder="Buscar por nombre..."
+                       value="{{ app.request.query.get('name', '') }}">
+                <select name="route_type" class="form-select">
+                    <option value="">Todos los tipos</option>
+                    <option value="Sport" {% if app.request.query.get('route_type') == 'Sport' %}selected{% endif %}>
+                        Sport
+                    </option>
+                    <option value="Trad" {% if app.request.query.get('route_type') == 'Trad' %}selected{% endif %}>
+                        Trad
+                    </option>
+                    <option value="Boulder"
+                            {% if app.request.query.get('route_type') == 'Boulder' %}selected{% endif %}>Boulder
+                    </option>
+                </select>
+                <input type="text" name="difficulty" class="form-control" placeholder="Dificultad..."
+                       value="{{ app.request.query.get('difficulty', '') }}">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </form>
+        </div>
+
+        <!-- Filtrar rutas -->
+        {% set filtered_routes = routes|filter(route =>
+            (not app.request.query.get('name') or route.name matches '/.*' ~ app.request.query.get('name') ~ '.*/i') and
+            (not app.request.query.get('route_type') or route.routeType.value == app.request.query.get('route_type')) and
+            (not app.request.query.get('difficulty') or route.difficulty matches '/.*' ~ app.request.query.get('difficulty') ~ '.*/i')
+            ) %}
+
+        <!-- Paginación -->
+        {% set page = app.request.query.get('page', 1) %}
+        {% set per_page = app.request.query.get('per_page', 30) %}
+        {% set total_routes = filtered_routes|length %}
+        {% set total_pages = (total_routes / per_page)|round(0, 'ceil') %}
+        {% set paginated_routes = filtered_routes|slice((page - 1) * per_page, per_page) %}
+
+        {% if paginated_routes|length > 0 %}
+            <div class="row g-4">
+                {% for route in paginated_routes %}
+                    <div class="col-12 {% if filtered_routes|length <= 2 %}col-md-6 col-12{% else %}col-lg-4{% endif %}">
+                        <div class="route-card">
+                            <div class="route-card-header">
+                                <h2 class="route-name">{{ route.name }}</h2>
+                            </div>
+                            <div class="route-content">
+                                <div class="route-detail">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-mountain"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <div class="detail-label">Tipo de Ruta</div>
+                                        <div class="detail-value">
+                                            <span class="route-type-badge">{{ route.routeType.value }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="route-detail">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <div class="detail-label">Dificultad</div>
+                                        <div class="detail-value">
+                                            <span>{{ route.difficulty }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="route-detail">
+                                    <i class="fas fa-ruler-vertical detail-icon"></i>
+                                    <div class="detail-content">
+                                        <div class="detail-label">Longitud</div>
+                                        <div class="detail-value">{{ route.length }} metros</div>
+                                    </div>
+                                </div>
+
+                                <div class="route-detail">
+                                    <i class="fas fa-layer-group detail-icon"></i>
+                                    <div class="detail-content">
+                                        <div class="detail-label">Número de largos</div>
+                                        <div class="detail-value">{{ route.pitches }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="route-detail">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <div class="detail-label">Ubicación</div>
+                                        <div class="detail-value">{{ route.location.name }}</div>
+                                    </div>
+                                </div>
+
+                                {% if app.user %}
+                                    <button class="btn w-100 mt-2 save-route-btn btn-save"
+                                            data-route-id="{{ route.id }}">
+                                        <i class="fas fa-bookmark"></i> Guardar en Por Hacer
+                                    </button>
+                                {% endif %}
+                                <div id="success-message" class="success-message">
+                                    <i class="fas fa-check-circle"></i> ¡Ruta guardada en Por Hacer!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% set maxVisiblePages = app.request.query.get('mobile', false) ? 5 : 30 %}
+            {% set range = (maxVisiblePages / 2)|round(0, 'floor') %}
+            {% set start = (page - range) > 1 ? (page - range) : 1 %}
+            {% set end = (start + maxVisiblePages - 1) < total_pages ? (start + maxVisiblePages - 1) : total_pages %}
+            <!-- Paginación -->
+            <div class="d-flex justify-content-center mt-4">
+                <nav>
+                    <ul class="pagination">
+                        {% if page > 1 %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': page - 1})) }}">Anterior</a>
+                            </li>
+                        {% endif %}
+
+                        {% if start > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': 1})) }}">1</a>
+                            </li>
+                            {% if start > 2 %}
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                        {% endif %}
+
+                        {% for p in start..end %}
+                            <li class="page-item {% if p == page %}active{% endif %}">
+                                <a class="page-link"
+                                   href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': p})) }}">{{ p }}</a>
+                            </li>
+                        {% endfor %}
+
+                        {# Mostrar '...' al final si hay páginas ocultas después #}
+                        {% if end < total_pages %}
+                            {% if end < total_pages - 1 %}
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': total_pages})) }}">{{ total_pages }}</a>
+                            </li>
+                        {% endif %}
+
+                        {% if page < total_pages %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page': page + 1})) }}">Siguiente</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-route empty-state-icon"></i>
+                <p class="empty-state-text">No hay rutas disponibles en este momento.</p>
+            </div>
+        {% endif %}
+    </div>
+    <div id="routes-data"
+         data-check-completed="{{ path('app_check_completed_route') }}"
+         data-check-saved="{{ path('app_check_saved_route') }}"
+         data-save-route="{{ path('app_save_route') }}">
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/user_view/pagination_completed_saved_routes.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rutas en {{ location.name }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/location/location_routes.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="explore-container">
+        <h1 class="page-title">Rutas en {{ location.name }}</h1>
+        <p class="text-center text-light">Ubicación GPS: {{ location.latitude }}, {{ location.longitude }}</p>
+
+        {% if routes %}
+            <div class="row g-4">
+                {% for route in routes %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="route-card">
+                            <div class="route-card-header">
+                                <h2 class="route-name">{{ route.name }}</h2>
+                            </div>
+                            <div class="route-content">
+                                <div class="route-detail">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <div class="detail-label">Ubicación</div>
+                                        <div class="detail-value">
+                                            <a href="https://www.google.com/maps?q={{ location.latitude }},{{ location.longitude }}"
+                                               target="_blank"
+                                               class="map-link">
+                                                <i class="fas fa-map-marker-alt"></i> {{ location.name }}
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="route-detail">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-mountain"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <div class="detail-label">Tipo de Ruta</div>
+                                        <div class="detail-value">
+                                            <span class="route-type-badge">{{ route.routeType.value }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="route-detail">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <div class="detail-label">Dificultad</div>
+                                        <div class="detail-value">
+                                            <span>{{ route.difficulty }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="route-detail">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-ruler-vertical"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <div class="detail-label">Longitud</div>
+                                        <div class="detail-value">{{ route.length }} metros</div>
+                                    </div>
+                                </div>
+
+                                <div class="route-detail">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-layer-group"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <div class="detail-label">Número de tramos</div>
+                                        <div class="detail-value">{{ route.pitches }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-route empty-state-icon"></i>
+                <p class="empty-state-text">No hay rutas disponibles en esta ubicación.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

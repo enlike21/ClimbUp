@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registro - ClimbUp{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/security/login_register_form.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="auth-container">
+        <h1 class="auth-title">Únete a ClimbUp</h1>
+
+        <div class="auth-card">
+            {{ form_start(registrationForm) }}
+            <div class="form-group">
+                {{ form_label(registrationForm.email, 'Correo Electrónico', {'label_attr': {'class': 'form-label'}}) }}
+                <i class="fas fa-envelope input-icon"></i>
+                {{ form_widget(registrationForm.email, {
+                    'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'ejemplo@email.com'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.email, {'attr': {'class': 'form-error'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(registrationForm.plainPassword.first, 'Contraseña', {'label_attr': {'class': 'form-label'}}) }}
+                <i class="fas fa-lock input-icon"></i>
+                {{ form_widget(registrationForm.plainPassword.first, {
+                    'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Ingresa tu contraseña'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.plainPassword.first, {'attr': {'class': 'form-error'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(registrationForm.plainPassword.second, 'Confirmar Contraseña', {'label_attr': {'class': 'form-label'}}) }}
+                <i class="fas fa-lock input-icon"></i>
+                {{ form_widget(registrationForm.plainPassword.second, {
+                    'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Repite tu contraseña'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.plainPassword.second, {'attr': {'class': 'form-error'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(registrationForm.name, 'Nombre', {'label_attr': {'class': 'form-label'}}) }}
+                <i class="fas fa-user input-icon"></i>
+                {{ form_widget(registrationForm.name, {
+                    'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Tu nombre'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.name, {'attr': {'class': 'form-error'}}) }}
+            </div>
+
+            <button type="submit" class="btn btn-auth">
+                <i class="fas fa-user-plus me-2"></i>
+                Crear cuenta
+            </button>
+            {{ form_end(registrationForm) }}
+        </div>
+
+        <div class="text-center">
+            <a href="{{ path('login') }}" class="auth-link">
+                <i class="fas fa-sign-in-alt"></i>
+                ¿Ya tienes una cuenta? Inicia sesión
+            </a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenido a ClimbUP{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/homepage.css') }}">
+{% endblock %}
+
+
+{% block body %}
+    <section class="hero-section">
+        <div class="hero-content">
+            <img class="logo-index" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/climbUP_logo_top-Vhyq54TxeAPZOR5OTDnr3obGrk06zV.png" alt="CLIMBUP Logo">
+            <h1 class="welcome-title">Descubre tu próxima aventura</h1>
+            <p class="welcome-subtitle">Únete a la comunidad de escaladores y encuentra las mejores rutas.</p>
+            <div class="buttons-container">
+                {% if is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_route_user_view') }}" class="btn-hero">Explorar Rutas</a>
+                {% elseif is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_route_user_view') }}" class="btn-hero btn-primary">Explorar Rutas</a>
+                    <a href="{{ path('app_admin_dashboard') }}" class="btn-hero btn-secondary">Panel de Control</a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

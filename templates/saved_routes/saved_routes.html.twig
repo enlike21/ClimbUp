@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mis Rutas Guardadas{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/saved_routes/saved_routes.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center">Mis Rutas Guardadas</h1>
+
+        <h2 class="mt-4">Rutas en "Por Hacer"</h2>
+        <div class="row" id="todo-routes">
+            {% for savedRoute in savedRoutes %}
+                <div class="col-md-4" id="route-{{ savedRoute.route.id }}">
+                    <div class="route-card">
+                        <h5>{{ savedRoute.route.name }}</h5>
+                        <p class="route-info"><strong>Ubicación:</strong> {{ savedRoute.route.location.name }}</p>
+                        <p class="route-info"><strong>Tipo:</strong> {{ savedRoute.route.routeType.value }}</p>
+
+                        <button class="btn btn-success btn-action complete-btn" data-route-id="{{ savedRoute.route.id }}">
+                            <i class="fas fa-check"></i> Marcar como Completada
+                        </button>
+
+                        <button class="btn btn-danger btn-action delete-btn" data-route-id="{{ savedRoute.route.id }}">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h2 class="mt-5">Rutas Completadas</h2>
+        <div class="row" id="completed-routes">
+            {% for completedRoute in completedRoutes %}
+                <div class="col-md-4 fade-in" id="completed-{{ completedRoute.route.id }}">
+                    <div class="route-card completed-card">
+                        <h5>{{ completedRoute.route.name }}</h5>
+                        <p class="route-info"><strong>Ubicación:</strong> {{ completedRoute.route.location.name }}</p>
+                        <p class="route-info"><strong>Tipo:</strong> {{ completedRoute.route.routeType.value }}</p>
+                        <p class="route-info"><strong>Completada el:</strong> {{ completedRoute.completedAt|date("d/m/Y") }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll(".delete-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                let routeId = this.dataset.routeId;
+                let routeElement = document.getElementById("route-" + routeId);
+
+                fetch(`/mis-rutas/eliminar/${routeId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            routeElement.classList.add("fade-out");
+                            setTimeout(() => routeElement.remove(), 500);
+                        }
+                    });
+            });
+        });
+
+        document.querySelectorAll(".complete-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                let routeId = this.dataset.routeId;
+                let routeElement = document.getElementById("route-" + routeId);
+
+                fetch(`/mis-rutas/completar/${routeId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            routeElement.classList.add("fade-out");
+                            setTimeout(() => {
+                                routeElement.remove();
+                                let completedContainer = document.getElementById("completed-routes");
+                                let newCompleted = document.createElement("div");
+                                newCompleted.classList.add("col-md-4", "fade-in");
+                                newCompleted.innerHTML = `
+                                <div class="route-card completed-card">
+                                    <h5>${data.route_name}</h5>
+                                    <p class="route-info"><strong>Ubicación:</strong> ${data.route_location}</p>
+                                    <p class="route-info"><strong>Tipo:</strong> ${data.route_type}</p>
+                                    <p class="route-info"><strong>Completada el:</strong> ${data.completed_date}</p>
+                                </div>`;
+                                completedContainer.appendChild(newCompleted);
+                            }, 500);
+                        }
+                    });
+            });
+        });
+    </script>
+{% endblock %}
