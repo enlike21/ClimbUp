@@ -7,7 +7,6 @@ services:
     environment:
       APP_ENV: prod
       APP_DEBUG: "0"
-      # El resto (APP_SECRET, DATABASE_URL, MAILER_DSN, TRUSTED_*) los pones como secrets en Coolify
     volumes:
       - ./:/var/www/html:rw
       - symfony-var:/var/www/html/var
