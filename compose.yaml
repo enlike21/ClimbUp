@@ -23,8 +23,6 @@ services:
       MYSQL_PASSWORD: userpassword
     volumes:
       - database_data:/var/lib/mysql
-      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-      - ./docker/db-ssl:/etc/mysql/ssl:ro
 
   # Mailpit (dev mail)
   mailer:
