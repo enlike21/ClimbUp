@@ -1,0 +1,20 @@
+services:
+  database:
+    image: mariadb:10.6
+    container_name: climbup-db
+    environment:
+      MYSQL_ROOT_PASSWORD: VivaElBetis
+      MYSQL_DATABASE: escalada_db
+      MYSQL_USER: climbup_app
+      MYSQL_PASSWORD: 5b10a326b930be38a19c8702ea0b7932
+    volumes:
+      - database_data:/var/lib/mysql
+    networks:
+      - climbup-net
+
+volumes:
+  database_data:
+
+networks:
+  climbup-net:
+    name: climbup-net

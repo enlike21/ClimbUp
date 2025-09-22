@@ -1,30 +1,27 @@
-
 services:
-  # PHP-FPM (Symfony)
   web:
+    image: enlike20/climbup:latest
     build:
       context: .
       dockerfile: Dockerfile
-    expose:
-      - "9000"
     volumes:
       - .:/var/www/html
     depends_on:
-      - database
       - mailer
+      - database
 
-  # MariaDB
   database:
     image: mariadb:10.6
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: VivaElBetis
       MYSQL_DATABASE: escalada_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: userpassword
+      MYSQL_USER: climbup_app
+      MYSQL_PASSWORD: 5b10a326b930be38a19c8702ea0b7932
     volumes:
       - database_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
 
-  # Mailpit (dev mail)
   mailer:
     image: axllent/mailpit
     ports:
@@ -34,7 +31,6 @@ services:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
-  # Nginx
   nginx:
     image: nginx:alpine
     ports:
@@ -45,13 +41,12 @@ services:
     depends_on:
       - web
 
-  # Adminer (DB UI)
   adminer:
     image: adminer
     ports:
       - "8082:8080"
-    depends_on:
-      - database
+    environment:
+      ADMINER_DEFAULT_SERVER: climbup-db
 
 volumes:
   database_data:
