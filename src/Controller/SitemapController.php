@@ -35,6 +35,16 @@ class SitemapController extends AbstractController
             'changefreq' => 'weekly',
         ];
         $urls[] = [
+            'loc' => $this->generateUrl('app_game', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'priority' => '0.8',
+            'changefreq' => 'weekly',
+        ];
+        $urls[] = [
+            'loc' => $this->generateUrl('app_chatbot', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'priority' => '0.8',
+            'changefreq' => 'weekly',
+        ];
+        $urls[] = [
             'loc' => $this->generateUrl('login', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'priority' => '0.5',
             'changefreq' => 'monthly',
