@@ -27,7 +27,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             set -e
-            export COMPOSER_ALLOW_SUPERUSER=1
             PHP_BIN=/opt/plesk/php/8.4/bin/php
             COMPOSER_BIN="$PHP_BIN /usr/lib/plesk-9.0/composer.phar"
             cd /var/www/vhosts/climbup.es/httpdocs
@@ -36,4 +35,8 @@ jobs:
             $COMPOSER_BIN install --no-dev --optimize-autoloader --no-interaction
             $PHP_BIN bin/console cache:clear --env=prod
             $PHP_BIN bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
-            chown -R climbup.es_but5ov2ghmv:psaserv .
+            # Deploying as the site's own Plesk user (recommended) leaves every file owned by it
+            # already; only a root deploy needs to hand ownership back to that user.
+            if [ "$(id -u)" = "0" ]; then
+              chown -R climbup.es_but5ov2ghmv:psaserv .
+            fi
