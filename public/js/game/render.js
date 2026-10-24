@@ -13,7 +13,7 @@ import {
     WORLD_W, VIEW_H, DT, GRAVITY, PLAYER_RADIUS, CAMERA_TOP_FRACTION, MAX_CHARGE_TICKS,
     ZONES, clamp, lerp, metersFromY, zoneVisual, heightMeters, fallLimitY, pickupBob,
     calcJumpVelocities, chargePower,
-} from './sim.js?v=8';
+} from './sim.js?v=9';
 
 export const ART = 2; // logical px per art pixel
 const WORLD_ART_W = WORLD_W / ART;
