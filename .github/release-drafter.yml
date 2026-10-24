@@ -53,6 +53,7 @@ exclude-contributors:
   - 'dependabot[bot]'
 no-contributors-template: ''
 new-contributor-template: '- $AUTHOR_MENTION hizo su primera contribución en #$NUMBER 🎉'
+no-new-contributor-template: ''
 no-changes-template: '- Sin cambios todavía.'
 
 template: |
