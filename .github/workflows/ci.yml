@@ -21,7 +21,7 @@ jobs:
       LOCK_DSN: flock
       GROQ_API_KEY: ci-dummy-key
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -82,7 +82,7 @@ jobs:
       LOCK_DSN: flock
       GROQ_API_KEY: ci-dummy-key
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
