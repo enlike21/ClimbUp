@@ -1,5 +1,7 @@
 # ClimbUp — Plataforma de Rutas de Escalada
 
+🇪🇸 Español · 🇬🇧 [English](README.en.md)
+
 [![CI](https://github.com/enlike21/ClimbUp/actions/workflows/ci.yml/badge.svg)](https://github.com/enlike21/ClimbUp/actions/workflows/ci.yml)
 [![Licencia: AGPL-3.0-or-later](https://img.shields.io/badge/licencia-AGPL--3.0--or--later-blue.svg)](LICENSE)
 [![PRs bienvenidos](https://img.shields.io/badge/PRs-bienvenidos-brightgreen.svg)](CONTRIBUTING.md)
