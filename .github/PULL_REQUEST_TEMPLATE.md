@@ -1,6 +1,6 @@
 ## Qué cambia
 
-<!-- Resume el cambio y por qué hace falta. Enlaza el issue si lo hay: "Cierra #123". -->
+<!-- Resume el cambio y por qué hace falta. Enlaza el issue si lo hay con "Closes #123" (en inglés: GitHub no entiende "Cierra"). -->
 
 ## Cómo probarlo
 
