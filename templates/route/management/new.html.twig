@@ -42,7 +42,7 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        {{ form_label(form.name, 'Nombre de la Ruta <span class="required-indicator">*</span>', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_label(form.name, 'Nombre de la Ruta <span class="required-indicator">*</span>', {'label_attr': {'class': 'form-label'}, 'label_html': true}) }}
                         <div class="input-wrapper">
                             <i class="fas fa-map-signs input-icon"></i>
                             {{ form_widget(form.name, {'attr': {'class': 'form-input', 'placeholder': 'Ej: La Gran Pared'}}) }}
@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="form-group">
-                        {{ form_label(form.routeType, 'Tipo de Ruta <span class="required-indicator">*</span>', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_label(form.routeType, 'Tipo de Ruta <span class="required-indicator">*</span>', {'label_attr': {'class': 'form-label'}, 'label_html': true}) }}
                         <div class="input-wrapper">
                             <i class="fas fa-mountain input-icon"></i>
                             {{ form_widget(form.routeType, {'attr': {'class': 'form-select'}}) }}
@@ -62,7 +62,7 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        {{ form_label(form.difficulty, 'Dificultad <span class="required-indicator">*</span>', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_label(form.difficulty, 'Dificultad <span class="required-indicator">*</span>', {'label_attr': {'class': 'form-label'}, 'label_html': true}) }}
                         <div class="input-wrapper">
                             <i class="fas fa-signal input-icon"></i>
                             {{ form_widget(form.difficulty, {'attr': {'class': 'form-input', 'placeholder': 'Ej: 6a+'}}) }}
@@ -71,7 +71,7 @@
                     </div>
 
                     <div class="form-group">
-                        {{ form_label(form.length, 'Longitud (metros) <span class="required-indicator">*</span>', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_label(form.length, 'Longitud (metros) <span class="required-indicator">*</span>', {'label_attr': {'class': 'form-label'}, 'label_html': true}) }}
                         <div class="input-wrapper">
                             <i class="fas fa-ruler-vertical input-icon"></i>
                             {{ form_widget(form.length, {'attr': {'class': 'form-input', 'placeholder': 'Ej: 35'}}) }}
@@ -82,7 +82,7 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        {{ form_label(form.pitches, 'Número de Largos <span class="required-indicator">*</span>', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_label(form.pitches, 'Número de Largos <span class="required-indicator">*</span>', {'label_attr': {'class': 'form-label'}, 'label_html': true}) }}
                         <div class="input-wrapper">
                             <i class="fas fa-layer-group input-icon"></i>
                             {{ form_widget(form.pitches, {'attr': {'class': 'form-input', 'placeholder': 'Ej: 2'}}) }}
@@ -91,7 +91,7 @@
                     </div>
 
                     <div class="form-group">
-                        {{ form_label(form.location, 'Ubicación <span class="required-indicator">*</span>', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_label(form.location, 'Ubicación <span class="required-indicator">*</span>', {'label_attr': {'class': 'form-label'}, 'label_html': true}) }}
                         <div class="input-wrapper">
                             <i class="fas fa-map-marker-alt input-icon"></i>
                             {{ form_widget(form.location, {'attr': {'class': 'form-select'}}) }}
