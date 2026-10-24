@@ -96,6 +96,24 @@ y de la plantilla `templates/game/index.html.twig`.
   fusionarlo. Lo que se fusiona en `main` se despliega solo a producción, así que la
   revisión es obligatoria.
 
+## Versiones
+
+Cada vez que se fusiona un PR en `main`, [Release Drafter](.github/release-drafter.yml) actualiza
+un borrador de la próxima versión en [Releases](../../releases), con los cambios agrupados
+y un agradecimiento a quien los ha hecho. Las etiquetas del PR deciden dónde aparece y cómo
+sube el número de versión:
+
+| Etiqueta | Apartado en las notas | Versión |
+|---|---|---|
+| `enhancement` | ✨ Nuevas funcionalidades | sube la *minor* (1.**1**.0) |
+| `bug` | 🐛 Arreglos | sube el *patch* (1.0.**1**) |
+| `accessibility`, `documentation`, `refactor`, `dependencies` | su propio apartado | *patch* |
+| `major` | — | sube la *major* (**2**.0.0) |
+| `skip-changelog` | no aparece | — |
+
+Los mantenedores ponen la etiqueta al revisar el PR y publican la versión cuando tiene
+sentido.
+
 ## Licencia
 
 Al contribuir aceptas que tu código se publique bajo la licencia del proyecto,

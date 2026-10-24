@@ -1,0 +1,67 @@
+# Release Drafter (see .github/workflows/release-drafter.yml): after every merge into main
+# it updates a draft of the next release, grouping merged PRs by label and working out the
+# next version. Publishing the draft (Releases -> Edit -> Publish release) stays manual.
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+
+categories:
+  - title: '✨ Nuevas funcionalidades'
+    semver-increment: minor
+    when:
+      labels:
+        - 'enhancement'
+        - 'feature'
+  - title: '🐛 Arreglos'
+    semver-increment: patch
+    when:
+      labels:
+        - 'bug'
+        - 'fix'
+  - title: '♿ Accesibilidad'
+    when:
+      label: 'accessibility'
+  - title: '📚 Documentación'
+    when:
+      label: 'documentation'
+  - title: '🧹 Refactor'
+    when:
+      label: 'refactor'
+  - title: '🔧 Mantenimiento'
+    when:
+      labels:
+        - 'dependencies'
+        - 'github_actions'
+        - 'chore'
+  # Leave a PR out of the notes with the "skip-changelog" label.
+  - type: 'pre-exclude'
+    when:
+      label: 'skip-changelog'
+  # "major" label -> next major version; anything else without a minor/patch label -> patch.
+  - type: 'version-resolver'
+    semver-increment: 'major'
+    when:
+      label: 'major'
+  - type: 'version-resolver'
+    semver-increment: 'patch'
+
+change-template: '- $TITLE (#$NUMBER) $AUTHORS'
+# Escape characters that would otherwise be read as Markdown in PR titles.
+change-title-escapes: '\<*_&'
+exclude-contributors:
+  - 'enlike21'
+  - 'dependabot'
+  - 'dependabot[bot]'
+no-contributors-template: ''
+new-contributor-template: '- $AUTHOR_MENTION hizo su primera contribución en #$NUMBER 🎉'
+no-changes-template: '- Sin cambios todavía.'
+
+template: |
+  ## Cambios
+
+  $CHANGES
+
+  ## 🙌 Gracias a quienes han contribuido
+
+  $CONTRIBUTORS
+
+  $NEW_CONTRIBUTORS
