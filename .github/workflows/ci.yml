@@ -23,6 +23,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check no file is longer than 1000 lines
+        run: bin/check-file-length
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
