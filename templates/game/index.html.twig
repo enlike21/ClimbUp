@@ -1,0 +1,287 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Al Filo - Juego de Escalada - ClimbUp{% endblock %}
+{% block meta_description %}Al Filo: sube lo más alto que puedas en este juego de escalada de ClimbUp. Calcula tu salto, cuida tu fuerza y no te caigas.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('styles/pages/game.css') }}">
+{% endblock %}
+
+{% block body %}
+<section class="game-page">
+    <div class="container">
+        {# Title-screen style hero: banded pixel sky with stars, and stepped mountain silhouettes
+           along the bottom - inline SVG on a 1-unit = 1-art-pixel grid (crispEdges keeps it blocky). #}
+        <header class="game-hero">
+            <svg class="game-hero-sky" viewBox="0 0 320 64" preserveAspectRatio="xMidYMin slice" shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+                <g class="game-hero-stars">
+                    <rect x="22" y="8" width="1" height="1"/><rect x="61" y="17" width="1" height="1"/><rect x="97" y="5" width="1" height="1"/>
+                    <rect x="140" y="12" width="1" height="1"/><rect x="188" y="4" width="1" height="1"/><rect x="229" y="15" width="1" height="1"/>
+                    <rect x="266" y="7" width="1" height="1"/><rect x="301" y="19" width="1" height="1"/><rect x="45" y="27" width="1" height="1"/>
+                    <rect x="207" y="25" width="1" height="1"/>
+                </g>
+                <g class="game-hero-moon">
+                    <rect x="258" y="9" width="6" height="8"/><rect x="257" y="10" width="8" height="6"/>
+                </g>
+            </svg>
+            <svg class="game-hero-ridges" viewBox="0 0 320 64" preserveAspectRatio="xMidYMax slice" shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+                <polygon class="game-hero-ridge-far" points="0,64 0,53 2,53 4,53 4,52 6,52 8,52 8,50 10,50 10,48 12,48 12,46 14,46 14,43 16,43 16,40 18,40 18,37 20,37 20,33 22,33 22,29 24,29 24,25 26,25 26,21 28,21 28,22 30,22 30,23 32,23 32,27 34,27 34,31 36,31 36,34 38,34 38,38 40,38 40,40 42,40 42,43 44,43 44,45 46,45 46,47 48,47 48,48 50,48 52,48 52,49 54,49 54,48 56,48 58,48 58,47 60,47 60,45 62,45 62,44 64,44 64,42 66,42 66,43 68,43 68,46 70,46 70,49 72,49 72,51 74,51 74,53 76,53 76,55 78,55 78,56 80,56 80,57 82,57 84,57 86,57 86,56 88,56 88,55 90,55 90,53 92,53 92,51 94,51 94,48 96,48 96,45 98,45 98,42 100,42 100,38 102,38 102,35 104,35 104,31 106,31 106,32 108,32 108,33 110,33 112,33 112,34 114,34 116,34 118,34 118,33 120,33 122,33 122,35 124,35 124,37 126,37 126,38 128,38 128,39 130,39 130,40 132,40 134,40 136,40 138,40 138,39 140,39 140,38 142,38 142,37 144,37 144,38 146,38 146,42 148,42 148,45 150,45 150,48 152,48 152,51 154,51 154,53 156,53 156,55 158,55 158,56 160,56 160,57 162,57 162,58 164,58 166,58 166,57 168,57 168,56 170,56 170,55 172,55 172,53 174,53 174,51 176,51 176,48 178,48 178,45 180,45 180,42 182,42 182,38 184,38 184,40 186,40 186,41 188,41 188,42 190,42 190,43 192,43 194,43 196,43 198,43 198,42 200,42 200,41 202,41 202,39 204,39 204,37 206,37 206,35 208,35 208,32 210,32 210,30 212,30 214,30 216,30 218,30 218,29 220,29 220,28 222,28 222,30 224,30 224,34 226,34 226,38 228,38 228,41 230,41 230,45 232,45 232,47 234,47 234,50 236,50 236,52 238,52 238,54 240,54 240,55 242,55 242,56 244,56 246,56 248,56 248,55 250,55 250,54 252,54 252,52 254,52 254,50 256,50 256,48 258,48 258,45 260,45 260,42 262,42 262,44 264,44 264,46 266,46 266,48 268,48 268,49 270,49 270,50 272,50 272,51 274,51 276,51 276,50 278,50 280,50 280,49 282,49 282,47 284,47 284,45 286,45 286,42 288,42 288,39 290,39 290,36 292,36 292,32 294,32 294,28 296,28 296,24 298,24 298,20 300,20 302,20 302,24 304,24 304,28 306,28 306,32 308,32 308,36 310,36 310,39 312,39 312,42 314,42 314,45 316,45 316,47 318,47 318,48 320,48 320,50 322,64"/>
+                <polygon class="game-hero-ridge-near" points="0,64 0,56 2,56 2,53 4,53 4,49 6,49 6,45 8,45 8,40 10,40 12,40 12,45 14,45 14,49 16,49 16,52 18,52 18,55 20,55 20,57 22,57 22,58 24,58 26,58 28,58 28,57 30,57 30,55 32,55 34,55 34,58 36,58 36,60 38,60 38,62 40,62 40,63 42,63 44,63 44,62 46,62 46,60 48,60 48,57 50,57 50,54 52,54 52,50 54,50 54,46 56,46 58,46 58,47 60,47 62,47 64,47 64,50 66,50 66,52 68,52 68,53 70,53 72,53 74,53 74,52 76,52 76,51 78,51 78,53 80,53 80,56 82,56 82,60 84,60 84,62 86,62 86,63 88,63 88,64 90,64 92,64 92,62 94,62 94,60 96,60 96,57 98,57 98,53 100,53 100,51 102,51 102,52 104,52 104,53 106,53 106,54 108,54 108,53 110,53 110,52 112,52 112,50 114,50 114,47 116,47 118,47 120,47 120,46 122,46 122,45 124,45 124,49 126,49 126,53 128,53 128,57 130,57 130,60 132,60 132,62 134,62 134,63 136,63 138,63 138,62 140,62 140,60 142,60 142,58 144,58 144,55 146,55 148,55 148,56 150,56 150,58 152,58 152,59 154,59 156,59 156,58 158,58 158,56 160,56 160,53 162,53 162,50 164,50 164,46 166,46 166,41 168,41 168,39 170,39 170,44 172,44 172,48 174,48 174,52 176,52 176,55 178,55 178,58 180,58 180,59 182,59 182,60 184,60 186,60 186,59 188,59 188,57 190,57 190,55 192,55 192,56 194,56 194,59 196,59 196,61 198,61 198,62 200,62 202,62 204,62 204,60 206,60 206,58 208,58 208,55 210,55 210,51 212,51 212,47 214,47 214,44 216,44 216,45 218,45 220,45 220,47 222,47 222,50 224,50 224,52 226,52 226,54 228,54 228,55 230,55 232,55 234,55 234,53 236,53 236,52 238,52 238,55 240,55 240,58 242,58 242,61 244,61 244,63 246,63 246,64 248,64 250,64 250,63 252,63 252,61 254,61 254,58 256,58 256,55 258,55 258,51 260,51 260,50 262,50 262,51 264,51 266,51 268,51 270,51 270,49 272,49 272,48 274,48 274,49 276,49 278,49 280,49 280,48 282,48 284,48 284,52 286,52 286,56 288,56 288,59 290,59 290,61 292,61 292,63 294,63 294,64 296,64 296,63 298,63 298,62 300,62 300,60 302,60 302,57 304,57 304,54 306,54 308,54 308,56 310,56 310,57 312,57 314,57 316,57 316,55 318,55 318,53 320,53 320,50 322,64"/>
+            </svg>
+            <div class="game-hero-content">
+                <span class="game-page-badge"><i class="fas fa-gamepad"></i> Minijuego de ClimbUp</span>
+                <h1 class="game-hero-title">Al <span>Filo</span></h1>
+                <p class="game-hero-lead">Carga el salto, apunta y sube lo más alto que puedas. Cuida tu fuerza, esquiva las piedras sueltas y no te caigas.</p>
+                <ul class="game-hero-stats">
+                    <li><strong>7</strong><span>zonas</span></li>
+                    <li><strong>1200 m</strong><span>hasta la cumbre</span></li>
+                    <li><strong id="gameHeroRecord">0 m</strong><span>tu récord</span></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="game-layout">
+            <div class="game-main">
+                <div class="game-wrap">
+                    <div class="game-hud">
+                        <div class="game-hud-item">
+                            <i class="fas fa-arrow-up game-hud-icon"></i>
+                            <div>
+                                <span class="game-hud-label">Altura</span>
+                                <span class="game-hud-value" id="gameHeight">0 m</span>
+                            </div>
+                        </div>
+                        <div class="game-hud-item">
+                            <i class="fas fa-trophy game-hud-icon game-hud-icon-record"></i>
+                            <div>
+                                <span class="game-hud-label" id="gameRecordLabel">Récord</span>
+                                <span class="game-hud-value" id="gameRecord">0 m</span>
+                            </div>
+                        </div>
+                        <div class="game-hud-item game-hud-stamina">
+                            <i class="fas fa-hand-rock game-hud-icon"></i>
+                            <div class="game-hud-stamina-inner">
+                                <span class="game-hud-label">Fuerza <span class="game-mode-tag" id="gameModeTag">Escalada libre</span></span>
+                                <div class="game-stamina-bar"><div class="game-stamina-fill" id="gameStaminaFill"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="game-canvas-holder">
+                        <canvas id="gameCanvas" tabindex="-1" aria-label="Al Filo, juego de escalada"></canvas>
+
+                        <div class="game-corner-buttons">
+                            <button type="button" class="game-sound-btn" id="gamePauseBtn" aria-label="Pausa (Esc)">
+                                <i class="fas fa-pause"></i>
+                            </button>
+                            <button type="button" class="game-sound-btn" id="gameSoundBtn" aria-label="Silenciar sonido" aria-pressed="false">
+                                <i class="fas fa-music"></i>
+                            </button>
+                        </div>
+
+                        <div class="game-power-bar" id="gamePowerBar">
+                            <div class="game-power-fill" id="gamePowerFill"></div>
+                        </div>
+
+                        <p class="game-tutorial game-overlay-hidden" id="gameTutorial" role="status"></p>
+                        <p class="game-toast" id="gameToast" role="status" aria-live="polite"></p>
+
+                        <div class="game-overlay" id="gameStartOverlay">
+                            <div class="game-overlay-card">
+                                <canvas class="game-overlay-sprite" id="gameStartSprite" aria-hidden="true"></canvas>
+                                <h2 class="game-title">Al Filo</h2>
+                                <p>Mantén pulsado para cargar el salto, apunta y suelta para saltar.</p>
+                                <div class="game-mode-buttons">
+                                    <button class="game-btn game-btn-primary" id="gameStartBtn">
+                                        <i class="fas fa-mountain"></i> Escalada libre
+                                    </button>
+                                    <button class="game-btn game-btn-secondary" id="gameDailyBtn">
+                                        <i class="fas fa-calendar-day"></i> Reto diario
+                                    </button>
+                                </div>
+                                <p class="game-daily-best" id="gameDailyBest">La misma montaña para todos, hoy</p>
+                                <p class="game-press-start" aria-hidden="true">Pulsa espacio</p>
+                            </div>
+                        </div>
+
+                        <div class="game-overlay game-overlay-hidden" id="gamePauseOverlay" role="dialog" aria-modal="true" aria-labelledby="gamePauseTitle">
+                            <div class="game-overlay-card">
+                                <h2 id="gamePauseTitle">Pausa</h2>
+                                <div class="game-pause-actions">
+                                    <button class="game-btn game-btn-primary" id="gameResumeBtn"><i class="fas fa-play"></i> Continuar</button>
+                                    <button class="game-btn game-btn-secondary" id="gameRestartBtn"><i class="fas fa-redo-alt"></i> Reiniciar</button>
+                                    <button class="game-btn game-btn-secondary" id="gameQuitBtn"><i class="fas fa-door-open"></i> Salir</button>
+                                </div>
+                                <div class="game-settings">
+                                    <label class="game-setting">
+                                        <span><i class="fas fa-music"></i> Música</span>
+                                        <input type="range" min="0" max="100" step="5" id="gameMusicVolume">
+                                    </label>
+                                    <label class="game-setting">
+                                        <span><i class="fas fa-volume-up"></i> Efectos</span>
+                                        <input type="range" min="0" max="100" step="5" id="gameSfxVolume">
+                                    </label>
+                                    <label class="game-setting game-setting-check">
+                                        <input type="checkbox" id="gameReducedMotion">
+                                        <span>Movimiento reducido</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="game-overlay game-overlay-hidden" id="gameOverOverlay">
+                            <div class="game-overlay-card">
+                                <canvas class="game-overlay-sprite" id="gameOverIcon" aria-hidden="true"></canvas>
+                                <h2 id="gameOverTitle">Te has caído</h2>
+                                <p class="game-overlay-score">
+                                    Altura: <strong id="gameOverHeight">0 m</strong>
+                                </p>
+                                <p class="game-overlay-record" id="gameOverRecordMsg"></p>
+                                <p class="game-overlay-rank game-overlay-hidden" id="gameOverRankMsg"></p>
+                                <ul class="game-over-achievements game-overlay-hidden" id="gameOverAchievements"></ul>
+
+                                <div class="game-save-prompt game-overlay-hidden" id="gameSavePrompt">
+                                    <p><i class="fas fa-trophy"></i> ¿Guardas este récord en la clasificación?</p>
+                                    <a href="{{ path('login', {_target_path: path('app_game')}) }}" class="game-btn game-btn-primary">
+                                        <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+                                    </a>
+                                </div>
+
+                                <div class="game-overlay-actions">
+                                    <button class="game-btn game-btn-primary" id="gameRetryBtn" aria-label="Volver a intentarlo">
+                                        <i class="fas fa-redo-alt"></i>
+                                    </button>
+                                    <button class="game-btn game-btn-secondary" id="gameShareBtn" aria-label="Compartir resultado">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="game-btn game-btn-secondary" id="gameMenuBtn" aria-label="Volver al menú">
+                                        <i class="fas fa-bars"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="game-controls-legend">
+                        <span><i class="fas fa-desktop"></i> Mantén Espacio o clic + <kbd>←</kbd><kbd>→</kbd> o <kbd>A</kbd><kbd>D</kbd></span>
+                        <span><i class="fas fa-mobile-alt"></i> Mantén pulsado y arrastra a izquierda o derecha</span>
+                        <span><i class="fas fa-pause"></i> <kbd>Esc</kbd> pausa · <kbd>M</kbd> silencia</span>
+                    </div>
+                </div>
+
+                <section class="game-panel game-route-panel" aria-labelledby="gameRouteTitle">
+                    <h2 class="game-panel-title" id="gameRouteTitle"><i class="fas fa-route"></i> La ruta</h2>
+                    <p class="game-route-intro" id="gameRouteIntro">De la tienda de campaña al techo del mundo. ¿Hasta dónde llegas?</p>
+                    {# Filled in by js/game/main.js from the ZONES list in sim.js, so the route always matches the game. #}
+                    <ol class="game-route" id="gameRoute"></ol>
+                </section>
+            </div>
+
+            <aside class="game-sidebar">
+                <div class="game-panel game-card-leaderboard">
+                    <h3 class="game-panel-title"><i class="fas fa-trophy"></i> Récords</h3>
+                    <div class="game-tabs" role="tablist" aria-label="Clasificación">
+                        <button type="button" class="game-tab is-active" role="tab" aria-selected="true" data-leaderboard-tab="all">Siempre</button>
+                        <button type="button" class="game-tab" role="tab" aria-selected="false" data-leaderboard-tab="daily">Reto de hoy</button>
+                    </div>
+                    <div data-leaderboard-panel="all">
+                        <ol class="game-leaderboard-list" id="gameLeaderboardList">
+                            {% for score in topScores %}
+                                <li{% if app.user and score.user.id == app.user.id %} class="is-me"{% endif %}>
+                                    <span class="game-leaderboard-rank">{{ loop.index }}</span>
+                                    <a href="{{ path('app_public_profile', {id: score.user.id}) }}" class="game-leaderboard-name">{{ score.user.name }}</a>
+                                    {% if app.user and score.user.id == app.user.id %}<span class="game-leaderboard-me">Tú</span>{% endif %}
+                                    <span class="game-leaderboard-height">{{ score.heightMeters }} m</span>
+                                </li>
+                            {% else %}
+                                <li class="game-leaderboard-empty">Sé el primero en aparecer aquí.</li>
+                            {% endfor %}
+                        </ol>
+                        <p class="game-leaderboard-note">
+                            {% if app.user %}
+                                {% if myRank %}
+                                    Tu mejor: <strong>{{ myScore.heightMeters }} m</strong> (puesto #{{ myRank }})
+                                {% else %}
+                                    Juega una partida para entrar en la clasificación.
+                                {% endif %}
+                            {% else %}
+                                <a href="{{ path('login', {_target_path: path('app_game')}) }}">Inicia sesión</a> para guardar tu récord aquí.
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div data-leaderboard-panel="daily" hidden>
+                        <ol class="game-leaderboard-list" id="gameDailyLeaderboardList">
+                            {% for score in topDaily %}
+                                <li{% if app.user and score.user.id == app.user.id %} class="is-me"{% endif %}>
+                                    <span class="game-leaderboard-rank">{{ loop.index }}</span>
+                                    <a href="{{ path('app_public_profile', {id: score.user.id}) }}" class="game-leaderboard-name">{{ score.user.name }}</a>
+                                    {% if app.user and score.user.id == app.user.id %}<span class="game-leaderboard-me">Tú</span>{% endif %}
+                                    <span class="game-leaderboard-height">{{ score.heightMeters }} m</span>
+                                </li>
+                            {% else %}
+                                <li class="game-leaderboard-empty">Nadie ha jugado el reto de hoy todavía.</li>
+                            {% endfor %}
+                        </ol>
+                        <p class="game-leaderboard-note">
+                            La misma montaña para todos durante el día{% if myDailyRank %}. Vas <strong>#{{ myDailyRank }}</strong>{% endif %}.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="game-panel">
+                    <h3 class="game-panel-title"><i class="fas fa-user-astronaut"></i> Tu escalador</h3>
+                    <div class="game-skins" id="gameSkins" aria-label="Aspectos"></div>
+                    <h4 class="game-subtitle">Logros <span id="gameAchievementsCount">0/0</span></h4>
+                    <ul class="game-achievements" id="gameAchievements"></ul>
+                    {% if not app.user %}
+                        <p class="game-leaderboard-note">Tus logros se guardan en este navegador. <a href="{{ path('login', {_target_path: path('app_game')}) }}">Inicia sesión</a> para llevarlos a tu perfil.</p>
+                    {% endif %}
+                </div>
+
+                <div class="game-panel">
+                    <h3 class="game-panel-title"><i class="fas fa-gamepad"></i> Cómo jugar</h3>
+                    <ol class="game-steps">
+                        <li><strong>Carga</strong> el salto manteniendo pulsado.</li>
+                        <li><strong>Apunta</strong> moviéndote a izquierda o derecha mientras cargas.</li>
+                        <li><strong>Suelta</strong> para saltar a la siguiente repisa.</li>
+                    </ol>
+                </div>
+
+                <div class="game-panel">
+                    <h3 class="game-panel-title"><i class="fas fa-lightbulb"></i> Consejos</h3>
+                    <ul class="game-tips">
+                        <li><i class="fas fa-route"></i> El punteado dorado marca hacia dónde sales, pero solo el principio del salto: el resto lo calculas tú.</li>
+                        <li><i class="fas fa-bolt"></i> Encadena aterrizajes rápidos para activar el combo y sumar más puntos.</li>
+                        <li><i class="fas fa-hand-rock"></i> Cada salto gasta fuerza, pero aterrizar bien (centrado o encadenado) te devuelve fuerza al instante.</li>
+                        <li><i class="fas fa-bullseye"></i> Aterrizar en el centro de la repisa da un bonus de precisión.</li>
+                        <li><i class="fas fa-meteor"></i> Según subes, caen piedras sueltas: esquívalas en el aire.</li>
+                        <li><i class="fas fa-link"></i> Las cintas exprés flotantes te devuelven fuerza al tocarlas.</li>
+                        <li><i class="fas fa-calendar-day"></i> En el reto diario tu mejor intento del día te acompaña como fantasma.</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        window.GAME_CONFIG = {{ {
+            isLoggedIn: app.user is not null,
+            currentUserId: app.user ? app.user.id : null,
+            loginUrl: path('login', {_target_path: path('app_game')}),
+            scoreUrl: path('api_game_score'),
+            skinUrl: path('api_game_skin'),
+            csrfToken: app.user ? csrf_token('game_score') : null,
+            dailyDay: dailyDay,
+            achievements: achievements,
+            skin: skin,
+        }|json_encode|raw }};
+    </script>
+    {# Bump ?v together with the import suffixes inside js/game/*.js #}
+    <script type="module" src="{{ asset('js/game/main.js') }}?v=8"></script>
+{% endblock %}

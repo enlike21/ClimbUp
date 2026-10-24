@@ -1,0 +1,175 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestión de Usuarios - ClimbUp{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/admin/user_management.css?v=2.0') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="user-management-wrapper">
+        <div class="user-management-hero">
+            <div class="container">
+                <nav class="breadcrumbs">
+                    <a href="{{ path('homepage') }}" class="breadcrumb-item">
+                        <i class="fas fa-home"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <i class="fas fa-chevron-right breadcrumb-separator"></i>
+                    <a href="{{ path('app_admin_dashboard') }}" class="breadcrumb-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Admin</span>
+                    </a>
+                    <i class="fas fa-chevron-right breadcrumb-separator"></i>
+                    <span class="breadcrumb-item active">Gestión de Usuarios</span>
+                </nav>
+
+                <h1 class="hero-title">
+                    <i class="fas fa-users"></i>
+                    Gestión de Usuarios
+                </h1>
+            </div>
+        </div>
+
+        <div class="container">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    <div class="alert-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="alert-content">
+                        <strong>¡Éxito!</strong>
+                        <p>{{ message }}</p>
+                    </div>
+                    <button class="alert-close" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            {% endfor %}
+
+            <div class="stats-bar">
+                <div class="stat-badge">
+                    <i class="fas fa-users"></i>
+                    <span>{{ total }} usuarios registrados</span>
+                </div>
+            </div>
+
+            <div class="table-card glass-card">
+                <div class="table-responsive">
+                    <table class="user-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Roles</th>
+                            <th>Fecha Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if users|length > 0 %}
+                            {% for user in users %}
+                                <tr>
+                                    <td data-label="ID">
+                                        <span class="user-id">#{{ user.id }}</span>
+                                    </td>
+                                    <td data-label="Nombre">
+                                        <a href="{{ path('app_public_profile', {'id': user.id}) }}" title="Ver perfil público">
+                                            <strong>{{ user.name }}</strong>
+                                        </a>
+                                    </td>
+                                    <td data-label="Email">
+                                        <span class="user-email">{{ user.email }}</span>
+                                    </td>
+                                    <td data-label="Roles">
+                                        <div class="roles-container">
+                                            {% for role in user.roles %}
+                                                <span class="role-badge {% if role == 'ROLE_ADMIN' %}role-badge-admin{% else %}role-badge-user{% endif %}">
+                                                        {% if role == 'ROLE_ADMIN' %}
+                                                            <i class="fas fa-shield-alt"></i>
+                                                        {% else %}
+                                                            <i class="fas fa-user"></i>
+                                                        {% endif %}
+                                                    {{ role == 'ROLE_ADMIN' ? 'Admin' : 'Usuario' }}
+                                                    </span>
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                    <td data-label="Registro">
+                                        <span class="date-text">{{ user.createdAt|date('d/m/Y') }}</span>
+                                    </td>
+                                    <td data-label="Acciones">
+                                        <div class="action-buttons">
+                                            {% if 'ROLE_ADMIN' not in user.roles %}
+                                                <form method="post" action="{{ path('app_grant_admin', {'id': user.id}) }}" class="d-inline">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('grant_admin_' ~ user.id) }}">
+                                                    <button type="submit" class="btn-action btn-promote" title="Hacer administrador">
+                                                        <i class="fas fa-user-shield"></i>
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+
+                                            <form method="post" action="{{ path('app_delete_user', {'id': user.id}) }}" class="d-inline">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                                                <button type="button" class="btn-action btn-delete" title="Eliminar usuario" data-confirm="¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                        <h3 class="empty-state-title">No hay usuarios</h3>
+                                        <p class="empty-state-text">No hay usuarios registrados en el sistema</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {% if pages > 1 %}
+                <div class="pagination-wrapper">
+                    <nav class="pagination-nav">
+                        <ul class="pagination">
+                            <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+                                <a class="page-link" href="{{ path('app_user_management', {page: page - 1}) }}">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                            {% for p in 1..pages %}
+                                <li class="page-item {% if p == page %}active{% endif %}">
+                                    <a class="page-link" href="{{ path('app_user_management', {page: p}) }}">{{ p }}</a>
+                                </li>
+                            {% endfor %}
+                            <li class="page-item {% if page >= pages %}disabled{% endif %}">
+                                <a class="page-link" href="{{ path('app_user_management', {page: page + 1}) }}">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            {% endif %}
+
+            <div class="back-section">
+                <a href="{{ path('app_admin_dashboard') }}" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Volver al Dashboard</span>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

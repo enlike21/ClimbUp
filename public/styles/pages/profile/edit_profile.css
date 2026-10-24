@@ -1,0 +1,430 @@
+/* ============================================
+   PROFILE - Diseño profesional independiente
+   ============================================ */
+
+.profile-wrapper {
+    min-height: calc(100vh - 76px);
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ============================================
+   ALERTS
+   ============================================ */
+.profile-alert {
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto 1.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-left: 4px solid;
+    animation: slideInDown 0.3s ease;
+}
+
+.profile-alert-success {
+    border-left-color: var(--success);
+    color: var(--success);
+}
+
+.profile-alert-error {
+    border-left-color: var(--danger);
+    color: var(--danger);
+}
+
+.profile-alert i:first-child {
+    font-size: 1.25rem;
+}
+
+.profile-alert span {
+    flex: 1;
+    color: var(--light);
+}
+
+.profile-alert-close {
+    background: none;
+    border: none;
+    color: var(--light);
+    cursor: pointer;
+    padding: 0.25rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.profile-alert-close:hover {
+    opacity: 1;
+}
+
+/* ============================================
+   CONTAINER
+   ============================================ */
+.profile-container {
+    max-width: 900px;
+    width: 100%;
+    background: rgba(44, 62, 80, 0.4);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: fadeInUp 0.5s ease;
+}
+
+/* ============================================
+   HEADER - Avatar y info del usuario
+   ============================================ */
+.profile-card-header {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(46, 204, 113, 0.2));
+    padding: 3rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-avatar-large {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.profile-avatar-large i {
+    font-size: 7rem;
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.profile-status-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background: var(--success);
+    border-radius: 50%;
+    border: 3px solid rgba(44, 62, 80, 0.8);
+}
+
+.profile-user-info h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--light);
+    margin: 0 0 0.5rem;
+}
+
+.profile-email {
+    font-size: 1.1rem;
+    color: rgba(236, 240, 241, 0.8);
+    margin: 0 0 0.75rem;
+}
+
+.profile-member-since {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: rgba(236, 240, 241, 0.7);
+    margin: 0;
+}
+
+.profile-member-since i {
+    color: var(--accent);
+}
+
+.profile-public-link {
+    flex: none;
+    display: inline-flex;
+    width: fit-content;
+    padding: 0.5rem 1.1rem;
+    margin-top: 0.85rem;
+    font-size: 0.85rem;
+}
+
+/* ============================================
+   BODY - Formulario
+   ============================================ */
+.profile-card-body {
+    padding: 2.5rem;
+}
+
+.profile-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--light);
+    margin: 0 0 0.5rem;
+}
+
+.profile-section-title i {
+    color: var(--accent);
+    font-size: 1.25rem;
+}
+
+.profile-section-description {
+    color: rgba(236, 240, 241, 0.7);
+    margin: 0 0 1.5rem;
+    font-size: 0.95rem;
+}
+
+/* ============================================
+   FORM
+   ============================================ */
+.profile-form {
+    margin-top: 2rem;
+}
+
+.profile-form-group {
+    margin-bottom: 1.75rem;
+}
+
+.profile-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--light);
+    margin-bottom: 0.75rem;
+}
+
+.profile-label i {
+    color: var(--accent);
+    width: 20px;
+}
+
+.profile-input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: var(--light);
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.profile-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
+}
+
+.profile-input::placeholder {
+    color: rgba(236, 240, 241, 0.4);
+}
+
+.profile-input-disabled {
+    background: rgba(255, 255, 255, 0.03) !important;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Input group con botón de toggle */
+.profile-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.profile-input-password {
+    padding-right: 3.5rem;
+}
+
+.profile-input-icon-btn {
+    position: absolute;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: rgba(236, 240, 241, 0.5);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s;
+}
+
+.profile-input-icon-btn:hover {
+    color: var(--accent);
+}
+
+/* Help text */
+.profile-help-text {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: rgba(236, 240, 241, 0.6);
+    margin-top: 0.5rem;
+}
+
+.profile-help-text i {
+    color: var(--accent);
+}
+
+/* ============================================
+   SECTION DIVIDER
+   ============================================ */
+.profile-section-divider {
+    position: relative;
+    text-align: center;
+    margin: 3rem 0 2rem;
+}
+
+.profile-section-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.profile-section-divider span {
+    position: relative;
+    background: rgba(44, 62, 80, 0.6);
+    padding: 0 1.5rem;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ============================================
+   FORM ACTIONS
+   ============================================ */
+.profile-form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-btn {
+    flex: 1;
+    padding: 1.1rem 2rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.profile-btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    color: white;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.profile-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.profile-btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--light);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .profile-card-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1.5rem;
+    }
+
+    .profile-avatar-large i {
+        font-size: 5rem;
+    }
+
+    .profile-user-info h1 {
+        font-size: 1.75rem;
+    }
+
+    .profile-card-body {
+        padding: 2rem 1.5rem;
+    }
+
+    .profile-form-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-wrapper {
+        padding: 1rem 0.5rem;
+    }
+
+    .profile-container {
+        border-radius: 16px;
+    }
+
+    .profile-avatar-large i {
+        font-size: 4rem;
+    }
+
+    .profile-user-info h1 {
+        font-size: 1.5rem;
+    }
+
+    .profile-card-body {
+        padding: 1.5rem 1rem;
+    }
+
+    .profile-input {
+        padding: 0.9rem 1rem;
+        font-size: 16px; /* Prevents iOS zoom */
+    }
+}

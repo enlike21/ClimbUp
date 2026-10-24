@@ -1,0 +1,74 @@
+# docker-compose.yml - local development only.
+# Database credentials come from .env (see .env.example); the defaults below are for a
+# throwaway local database and must never be used anywhere else.
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: climbup-web
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - database
+      - mailer
+    networks:
+      - climbup-net
+
+  database:
+    image: mariadb:10.6
+    container_name: climbup-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_NAME:-escalada_db}
+      MYSQL_USER: ${DB_USER:-climbup_app}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-climbup}
+    volumes:
+      - database_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - climbup-net
+
+  mailer:
+    image: axllent/mailpit
+    container_name: climbup-mailer
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    networks:
+      - climbup-net
+
+  nginx:
+    image: nginx:alpine
+    container_name: climbup-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html:ro
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - web
+    networks:
+      - climbup-net
+
+  adminer:
+    image: adminer
+    container_name: climbup-adminer
+    ports:
+      - "8082:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: climbup-db
+    networks:
+      - climbup-net
+
+volumes:
+  database_data:
+
+networks:
+  climbup-net:
+    driver: bridge

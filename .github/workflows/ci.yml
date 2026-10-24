@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Read-only token: pull requests from forks run untrusted code here.
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV: test
+      APP_SECRET: ci-secret
+      DATABASE_URL: 'mysql://user:password@127.0.0.1:3306/climbup_ci?serverVersion=10.6&charset=utf8mb4'
+      MESSENGER_TRANSPORT_DSN: 'doctrine://default?auto_setup=0'
+      MAILER_DSN: 'smtp://localhost:1025'
+      LOCK_DSN: flock
+      GROQ_API_KEY: ci-dummy-key
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: ctype, iconv, dom, mbstring
+          coverage: none
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Create empty .env
+        run: touch .env
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Check coding standards
+        run: composer cs-check
+
+      - name: Warm dev cache (needed by phpstan-symfony)
+        run: php bin/console cache:warmup --env=dev
+
+      - name: Static analysis
+        run: composer phpstan
+
+      - name: Run tests
+        run: composer test

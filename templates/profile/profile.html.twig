@@ -1,0 +1,208 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tu Perfil - ClimbUp{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/profile/edit_profile.css?v=1.0') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="profile-wrapper">
+        {# Flash messages #}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="profile-alert profile-alert-{{ label }}">
+                    <i class="fas fa-{{ label == 'success' ? 'check-circle' : 'exclamation-circle' }}"></i>
+                    <span>{{ message }}</span>
+                    <button type="button" class="profile-alert-close" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <div class="profile-container">
+            {# User card with avatar and info #}
+            <div class="profile-card-header">
+                <div class="profile-avatar-large">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="profile-status-badge"></div>
+                </div>
+                <div class="profile-user-info">
+                    <h1>{{ app.user.name }}</h1>
+                    <p class="profile-email">{{ app.user.email }}</p>
+                    <p class="profile-member-since">
+                        <i class="fas fa-calendar-alt"></i>
+                        Miembro desde {{ app.user.createdAt|date('d/m/Y') }}
+                    </p>
+                    <a href="{{ path('app_public_profile', {'id': app.user.id}) }}" class="profile-btn profile-btn-secondary profile-public-link">
+                        <i class="fas fa-id-badge"></i>
+                        Ver mi perfil público
+                    </a>
+                </div>
+            </div>
+
+            {# Edit form #}
+            <div class="profile-card-body">
+                <h2 class="profile-section-title">
+                    <i class="fas fa-user-edit"></i>
+                    Información Personal
+                </h2>
+
+                {{ form_start(form, {'attr': {'class': 'profile-form'}}) }}
+
+                {# Name field #}
+                <div class="profile-form-group">
+                    <label class="profile-label">
+                        <i class="fas fa-user"></i>
+                        Nombre completo
+                    </label>
+                    {{ form_widget(form.name, {
+                        'attr': {'class': 'profile-input', 'placeholder': 'Tu nombre completo'}
+                    }) }}
+                    {{ form_errors(form.name) }}
+                </div>
+
+                {# Email field (read-only) #}
+                <div class="profile-form-group">
+                    <label class="profile-label">
+                        <i class="fas fa-envelope"></i>
+                        Correo electrónico
+                    </label>
+                    {{ form_widget(form.email, {
+                        'attr': {'class': 'profile-input profile-input-disabled'}
+                    }) }}
+                    <small class="profile-help-text">
+                        <i class="fas fa-info-circle"></i>
+                        El correo electrónico no puede ser modificado
+                    </small>
+                </div>
+
+                {# Password section #}
+                <div class="profile-section-divider">
+                    <span>Seguridad</span>
+                </div>
+
+                <h2 class="profile-section-title">
+                    <i class="fas fa-shield-alt"></i>
+                    Cambiar Contraseña
+                </h2>
+
+                <p class="profile-section-description">
+                    Deja los campos en blanco si no deseas cambiar tu contraseña
+                </p>
+
+                {# Current password - required to set a new one #}
+                <div class="profile-form-group">
+                    <label class="profile-label">
+                        <i class="fas fa-key"></i>
+                        Contraseña actual
+                    </label>
+                    <div class="profile-input-group">
+                        {{ form_widget(form.currentPassword, {
+                            'attr': {
+                                'class': 'profile-input profile-input-password',
+                                'placeholder': 'Necesaria para cambiar la contraseña'
+                            }
+                        }) }}
+                        <button type="button" class="profile-input-icon-btn">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    {{ form_errors(form.currentPassword) }}
+                </div>
+
+                {# New password #}
+                <div class="profile-form-group">
+                    <label class="profile-label">
+                        <i class="fas fa-lock"></i>
+                        Nueva contraseña
+                    </label>
+                    <div class="profile-input-group">
+                        {{ form_widget(form.plainPassword.first, {
+                            'attr': {
+                                'class': 'profile-input profile-input-password',
+                                'placeholder': 'Mínimo 8 caracteres'
+                            }
+                        }) }}
+                        <button type="button" class="profile-input-icon-btn">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <small class="profile-help-text">
+                        <i class="fas fa-info-circle"></i>
+                        Debe contener mayúsculas, minúsculas y números
+                    </small>
+                    {{ form_errors(form.plainPassword.first) }}
+                </div>
+
+                {# Confirm password #}
+                <div class="profile-form-group">
+                    <label class="profile-label">
+                        <i class="fas fa-lock"></i>
+                        Confirmar contraseña
+                    </label>
+                    <div class="profile-input-group">
+                        {{ form_widget(form.plainPassword.second, {
+                            'attr': {
+                                'class': 'profile-input profile-input-password',
+                                'placeholder': 'Repite tu contraseña'
+                            }
+                        }) }}
+                        <button type="button" class="profile-input-icon-btn">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    {{ form_errors(form.plainPassword.second) }}
+                </div>
+
+                {# Actions #}
+                <div class="profile-form-actions">
+                    <a href="{{ path('homepage') }}" class="profile-btn profile-btn-secondary">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </a>
+                    <button type="submit" class="profile-btn profile-btn-primary">
+                        <i class="fas fa-save"></i>
+                        Guardar cambios
+                    </button>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButtons = document.querySelectorAll('.profile-input-icon-btn');
+
+            toggleButtons.forEach(function(button) {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const inputGroup = this.closest('.profile-input-group');
+                    const input = inputGroup.querySelector('.profile-input-password');
+                    const icon = this.querySelector('i');
+
+                    if (input && icon) {
+                        if (input.type === 'password') {
+                            input.type = 'text';
+                            icon.classList.remove('fa-eye');
+                            icon.classList.add('fa-eye-slash');
+                        } else {
+                            input.type = 'password';
+                            icon.classList.remove('fa-eye-slash');
+                            icon.classList.add('fa-eye');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

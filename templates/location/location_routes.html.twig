@@ -1,0 +1,251 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rutas de Escalada en {{ location.name }} - ClimbUp{% endblock %}
+
+{% block meta_description %}Descubre todas las rutas de escalada en {{ location.name }}{% if location.region %}, {{ location.region }}{% endif %}. {{ routes|length }} ruta{{ routes|length != 1 ? 's' : '' }} disponible{{ routes|length != 1 ? 's' : '' }}. Consulta dificultades, tipos de escalada y detalles de cada vía.{% endblock %}
+
+{% block canonical %}{{ url('location_routes', {id: location.id}) }}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Inicio",
+            "item": "{{ url('homepage') }}"
+        },
+        {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Mapa",
+            "item": "{{ url('map') }}"
+        },
+        {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "{{ location.name }}",
+            "item": "{{ url('location_routes', {id: location.id}) }}"
+        }
+    ]
+}
+</script>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Place",
+    "name": "{{ location.name }}",
+    "url": "{{ url('location_routes', {id: location.id}) }}",
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": {{ location.latitude }},
+        "longitude": {{ location.longitude }}
+    }{% if location.region %},
+    "containedInPlace": {
+        "@type": "AdministrativeArea",
+        "name": "{{ location.region }}"
+    }{% endif %}
+}
+</script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/location/location_routes.css?v=2.0') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="location-routes-wrapper">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <a href="{{ path('homepage') }}" class="breadcrumb-item">
+                    <i class="fas fa-home"></i>
+                    <span>Inicio</span>
+                </a>
+                <i class="fas fa-chevron-right breadcrumb-separator"></i>
+                <a href="{{ path('map') }}" class="breadcrumb-item">
+                    <i class="fas fa-map"></i>
+                    <span>Mapa</span>
+                </a>
+                <i class="fas fa-chevron-right breadcrumb-separator"></i>
+                <span class="breadcrumb-item active">{{ location.name }}</span>
+            </nav>
+        </div>
+
+        <div class="location-hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="hero-text">
+                        <h1 class="hero-title">{{ location.name }}</h1>
+                        <p class="hero-subtitle">Descubre las rutas de escalada en esta ubicación</p>
+                    </div>
+                </div>
+
+                <!-- Location Info Card -->
+                <div class="location-info-card glass-card">
+                    <div class="info-item">
+                        <i class="fas fa-globe"></i>
+                        <div class="info-content">
+                            <div class="info-label">Coordenadas GPS</div>
+                            <div class="info-value">{{ location.latitude|number_format(6) }}, {{ location.longitude|number_format(6) }}</div>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-route"></i>
+                        <div class="info-content">
+                            <div class="info-label">Total de Rutas</div>
+                            <div class="info-value">{{ routes|length }}</div>
+                        </div>
+                    </div>
+
+                    <a href="https://www.google.com/maps?q={{ location.latitude }},{{ location.longitude }}"
+                       target="_blank"
+                       class="btn btn-primary">
+                        <i class="fas fa-external-link-alt"></i>
+                        <span>Abrir en Google Maps</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container routes-container">
+            {% if routes|length > 0 %}
+                <!-- Routes Grid -->
+                <div class="routes-grid">
+                    {% for route in routes %}
+                        <div class="route-card glass-card" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 50 }}">
+                            <div class="route-card-header">
+                                <h3 class="route-name">{{ route.name }}</h3>
+                                <span class="route-type-badge route-type-{{ route.routeType.value|lower }}">
+                                    {{ route.routeType.value }}
+                                </span>
+                            </div>
+
+                            <div class="route-card-body">
+                                <div class="route-info-grid">
+                                    <div class="route-info-item">
+                                        <div class="info-icon">
+                                            <i class="fas fa-signal"></i>
+                                        </div>
+                                        <div class="info-content">
+                                            <div class="info-label">Dificultad</div>
+                                            <div class="info-value difficulty-badge">{{ route.difficulty }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="route-info-item">
+                                        <div class="info-icon">
+                                            <i class="fas fa-ruler-vertical"></i>
+                                        </div>
+                                        <div class="info-content">
+                                            <div class="info-label">Longitud</div>
+                                            <div class="info-value">{{ route.length }}m</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="route-info-item">
+                                        <div class="info-icon">
+                                            <i class="fas fa-layer-group"></i>
+                                        </div>
+                                        <div class="info-content">
+                                            <div class="info-label">Largos</div>
+                                            <div class="info-value">{{ route.pitches }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="route-info-item">
+                                        <div class="info-icon">
+                                            <i class="fas fa-mountain"></i>
+                                        </div>
+                                        <div class="info-content">
+                                            <div class="info-label">Tipo</div>
+                                            <div class="info-value">{{ route.routeType.value }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="route-card-footer">
+                                <a href="{{ path('app_route_show', {'id': route.id}) }}" class="btn btn-secondary btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                    <span>Ver Detalles</span>
+                                </a>
+
+                                {% if app.user %}
+                                    <button class="btn btn-primary btn-sm save-route-btn" data-route-id="{{ route.id }}">
+                                        <i class="fas fa-bookmark"></i>
+                                        <span>Guardar</span>
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Back to Map Button -->
+                <div class="back-section">
+                    <a href="{{ path('map') }}" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver al Mapa</span>
+                    </a>
+                </div>
+
+            {% else %}
+                <!-- Empty State -->
+                <div class="empty-state glass-card">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h3 class="empty-state-title">No hay rutas disponibles</h3>
+                    <p class="empty-state-text">
+                        Esta ubicación aún no tiene rutas registradas. Vuelve más tarde o explora otras ubicaciones.
+                    </p>
+                    <div class="empty-state-actions">
+                        <a href="{{ path('map') }}" class="btn btn-primary">
+                            <i class="fas fa-map"></i>
+                            <span>Ver Mapa</span>
+                        </a>
+                        <a href="{{ path('app_route_user_view') }}" class="btn btn-secondary">
+                            <i class="fas fa-route"></i>
+                            <span>Explorar Rutas</span>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container">
+        <div class="toast toast-success" id="successToast">
+            <div class="toast-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="toast-content">
+                <div class="toast-title">¡Éxito!</div>
+                <div class="toast-message" id="toastMessage"></div>
+            </div>
+            <button class="toast-close" onclick="closeToast()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="routes-data"
+         data-check-completed="{{ path('app_check_completed_route') }}"
+         data-check-saved="{{ path('app_check_saved_route') }}"
+         data-save-route="{{ path('app_save_route') }}">
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/user_view/routes.js?v=1.0') }}"></script>
+{% endblock %}

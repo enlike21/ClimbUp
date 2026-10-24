@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /route/admin/
+Disallow: /perfil
+Disallow: /mis-rutas
+
+Sitemap: https://climbup.es/sitemap.xml

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ClimbUp{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}ClimbUp - Descubre rutas de escalada, registra tus logros y conecta con la comunidad de escaladores. Explora rutas de escalada deportiva, tradicional y boulder en España.{% endblock %}">
+    <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}">
+    <link rel="canonical" href="{% block canonical %}{{ app.request.uri }}{% endblock %}">
+
+    {# Open Graph #}
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="ClimbUp">
+    <meta property="og:title" content="{% block og_title %}{{ block('title') }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ block('meta_description') }}{% endblock %}">
+    <meta property="og:url" content="{{ block('canonical') }}">
+    <meta property="og:image" content="{% block og_image %}{{ absolute_url(asset('images/climbUP_logo_top.png')) }}{% endblock %}">
+    <meta property="og:locale" content="es_ES">
+
+    {# Twitter Card #}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ block('og_title') }}">
+    <meta name="twitter:description" content="{{ block('og_description') }}">
+    <meta name="twitter:image" content="{{ block('og_image') }}">
+
+    {% if app.user %}
+        <meta name="csrf-token" content="{{ csrf_token('saved_routes') }}">
+    {% endif %}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ asset('styles/main.css?v=2.0') }}">
+
+    {% block stylesheets %}{% endblock %}
+
+    {# Structured Data #}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "ClimbUp",
+        "url": "{{ url('homepage') }}",
+        "description": "Plataforma de rutas de escalada en España. Descubre rutas, registra logros y conecta con escaladores.",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "{{ url('app_route_user_view') }}?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    {% block structured_data %}{% endblock %}
+</head>
+<body>
+<a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+<div class="animated-bg">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+</div>
+
+<nav class="navbar">
+    <div class="container navbar-container">
+        <a href="{{ path('homepage') }}" class="navbar-brand">
+            <img src="{{ asset('images/climbUP_logo_top.png')}}" alt="ClimbUp Logo" class="logo">
+        </a>
+
+        <button class="navbar-toggler" id="navbarToggler" aria-expanded="false" aria-label="Abrir menú de navegación" aria-controls="navbarMenu">
+            <span class="toggler-icon"></span>
+            <span class="toggler-icon"></span>
+            <span class="toggler-icon"></span>
+        </button>
+
+        <div class="navbar-menu" id="navbarMenu">
+            <div class="menu-header">
+                <button class="menu-close" id="menuClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form class="navbar-search-mobile" action="{{ path('app_route_user_view') }}" method="GET">
+                <i class="fas fa-search navbar-search-icon"></i>
+                <input type="text" name="name" class="navbar-search-input" placeholder="Buscar rutas, zonas..." autocomplete="off">
+            </form>
+
+            {% set current_route = app.request.attributes.get('_route') %}
+            <ul class="navbar-nav">
+                <li><a href="{{ path('app_route_user_view') }}" class="nav-link {% if current_route == 'app_route_user_view' %}active{% endif %}"><i class="fas fa-route"></i><span>Explorar Rutas</span></a></li>
+                <li><a href="{{ path('map') }}" class="nav-link {% if current_route == 'map' %}active{% endif %}"><i class="fas fa-map"></i><span>Mapa</span></a></li>
+                <li><a href="{{ path('app_chatbot') }}" class="nav-link {% if current_route == 'app_chatbot' %}active{% endif %}"><i class="fas fa-robot"></i><span>Asistente</span></a></li>
+                <li><a href="{{ path('app_game') }}" class="nav-link {% if current_route == 'app_game' %}active{% endif %}"><i class="fas fa-gamepad"></i><span>Juego</span></a></li>
+
+                {% if app.user %}
+                    <li><a href="{{ path('app_saved_routes') }}" class="nav-link {% if current_route == 'app_saved_routes' %}active{% endif %}"><i class="fas fa-bookmark"></i><span>Mis Rutas</span></a></li>
+                    <li><a href="{{ path('app_profile') }}" class="nav-link {% if current_route == 'app_profile' %}active{% endif %}"><i class="fas fa-user"></i><span>Perfil</span></a></li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><a href="{{ path('app_admin_dashboard') }}" class="nav-link {% if current_route == 'app_admin_dashboard' %}active{% endif %}"><i class="fas fa-shield-alt"></i><span>Admin</span></a></li>
+                    {% endif %}
+                    <li><a href="{{ logout_path() }}" class="nav-link nav-link-logout"><i class="fas fa-sign-out-alt"></i><span>Cerrar Sesión</span></a></li>
+                {% else %}
+                    <li><a href="{{ path('login') }}" class="nav-link {% if current_route == 'login' %}active{% endif %}"><i class="fas fa-sign-in-alt"></i><span>Iniciar Sesión</span></a></li>
+                    <li><a href="{{ path('app_register') }}" class="nav-link nav-link-cta"><i class="fas fa-user-plus"></i><span>Registrarse</span></a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<button class="back-to-top" id="backToTop" title="Volver arriba">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<main class="main-content" id="main-content">
+    {% block body %}{% endblock %}
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="{{ asset('images/climbUP_logo_top.png') }}" alt="ClimbUp - Plataforma de rutas de escalada" class="footer-logo">
+                <p class="footer-description">La plataforma para escaladores que quieren descubrir nuevas rutas, registrar sus logros y conectar con la comunidad.</p>
+            </div>
+            <div class="footer-links">
+                <h4 class="footer-title">Navegación</h4>
+                <ul>
+                    <li><a href="{{ path('homepage') }}"><i class="fas fa-chevron-right"></i> Inicio</a></li>
+                    <li><a href="{{ path('app_route_user_view') }}"><i class="fas fa-chevron-right"></i> Explorar Rutas</a></li>
+                    <li><a href="{{ path('map') }}"><i class="fas fa-chevron-right"></i> Mapa</a></li>
+                    <li><a href="{{ path('app_game') }}"><i class="fas fa-chevron-right"></i> Juego: Al Filo</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4 class="footer-title">Plataforma</h4>
+                <ul>
+                    {% if app.user %}
+                        <li><a href="{{ path('app_saved_routes') }}"><i class="fas fa-chevron-right"></i> Mis Rutas</a></li>
+                        <li><a href="{{ path('app_profile') }}"><i class="fas fa-chevron-right"></i> Mi Perfil</a></li>
+                    {% else %}
+                        <li><a href="{{ path('app_register') }}"><i class="fas fa-chevron-right"></i> Registrarse</a></li>
+                        <li><a href="{{ path('login') }}"><i class="fas fa-chevron-right"></i> Iniciar Sesión</a></li>
+                    {% endif %}
+                    <li><a href="{{ path('about') }}"><i class="fas fa-chevron-right"></i> Sobre Mí</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {{ "now"|date("Y") }} ClimbUp. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+<script src="{{ asset('js/main.js?v=1.3') }}"></script>
+{% block javascripts %}{% endblock %}
+
+{% if app.request.attributes.get('_route') != 'app_chatbot' %}
+    <link rel="stylesheet" href="{{ asset('styles/components/chatbot-widget.css') }}">
+    {% include 'chatbot/_widget.html.twig' %}
+    <script src="{{ asset('js/chatbot.js') }}"></script>
+{% endif %}
+</body>
+</html>

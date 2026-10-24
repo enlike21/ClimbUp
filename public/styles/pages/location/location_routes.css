@@ -1,0 +1,523 @@
+/* ============================================
+   LOCATION ROUTES WRAPPER
+   ============================================ */
+.location-routes-wrapper {
+    min-height: calc(100vh - 76px);
+    padding: 2rem 0 4rem;
+}
+
+/* ============================================
+   BREADCRUMBS
+   ============================================ */
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    animation: fadeInDown 0.5s ease-out;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    font-size: 0.95rem;
+}
+
+.breadcrumb-item:hover {
+    color: var(--primary-light);
+}
+
+.breadcrumb-item.active {
+    color: var(--light);
+    font-weight: 600;
+}
+
+.breadcrumb-separator {
+    color: var(--gray);
+    font-size: 0.8rem;
+}
+
+/* ============================================
+   LOCATION HERO
+   ============================================ */
+.location-hero {
+    background: linear-gradient(135deg, rgba(212, 168, 83, 0.1), rgba(184, 146, 46, 0.1));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 3rem 0;
+    margin-bottom: 3rem;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.hero-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    font-size: 2.5rem;
+    color: white;
+    box-shadow: 0 10px 30px rgba(212, 168, 83, 0.3);
+    flex-shrink: 0;
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.hero-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: var(--light);
+    margin-bottom: 0.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--gray);
+}
+
+/* ============================================
+   LOCATION INFO CARD
+   ============================================ */
+.location-info-card {
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    animation: fadeInUp 0.6s ease-out 0.2s backwards;
+}
+
+.location-info-card .info-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+.location-info-card .info-item i {
+    font-size: 1.5rem;
+    color: var(--primary-light);
+}
+
+.location-info-card .info-label {
+    font-size: 0.85rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.location-info-card .info-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--light);
+}
+
+/* ============================================
+   ROUTES GRID
+   ============================================ */
+.routes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+/* ============================================
+   ROUTE CARD
+   ============================================ */
+.route-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    animation: fadeInUp 0.5s ease-out backwards;
+}
+
+.route-card:hover {
+    transform: translateY(-8px);
+}
+
+.route-card-header {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(212, 168, 83, 0.1), rgba(184, 146, 46, 0.1));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.route-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--light);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.route-type-badge {
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.route-type-sport {
+    background: linear-gradient(135deg, #D4A853, #B8922E);
+    color: #0A0A0A;
+}
+
+.route-type-trad {
+    background: linear-gradient(135deg, #C17850, #A55D3A);
+    color: white;
+}
+
+.route-type-boulder {
+    background: linear-gradient(135deg, #8B9D77, #6B7D5B);
+    color: white;
+}
+
+.route-card-body {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.route-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+.route-info-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.info-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(212, 168, 83, 0.15);
+    border-radius: 8px;
+    color: var(--primary-light);
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.info-content {
+    flex: 1;
+}
+
+.info-label {
+    font-size: 0.8rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.info-value {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--light);
+}
+
+.difficulty-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 6px;
+    color: #0A0A0A;
+    font-size: 0.9rem;
+}
+
+.route-card-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    gap: 0.75rem;
+}
+
+.route-card-footer .btn {
+    flex: 1;
+}
+
+.btn-sm {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
+}
+
+.save-route-btn.saved {
+    background: linear-gradient(135deg, var(--success), #059669);
+}
+
+.save-route-btn.completed {
+    background: linear-gradient(135deg, var(--gray), #475569);
+    cursor: not-allowed;
+}
+
+/* ============================================
+   BACK SECTION
+   ============================================ */
+.back-section {
+    display: flex;
+    justify-content: center;
+    animation: fadeInUp 0.6s ease-out 0.4s backwards;
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.empty-state-icon {
+    font-size: 5rem;
+    color: var(--primary);
+    opacity: 0.3;
+    margin-bottom: 1.5rem;
+}
+
+.empty-state-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--light);
+    margin-bottom: 1rem;
+}
+
+.empty-state-text {
+    font-size: 1.1rem;
+    color: var(--gray);
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+}
+
+.empty-state-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+.toast-container {
+    position: fixed;
+    top: 100px;
+    right: 2rem;
+    z-index: 9999;
+}
+
+.toast {
+    display: none;
+    min-width: 300px;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-xl);
+    animation: slideInRight 0.3s ease-out;
+}
+
+.toast.show {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.toast-success {
+    border-left: 4px solid var(--success);
+}
+
+.toast-icon {
+    font-size: 1.5rem;
+    color: var(--success);
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-title {
+    font-weight: 700;
+    color: var(--light);
+    margin-bottom: 0.25rem;
+}
+
+.toast-message {
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: var(--gray);
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color var(--transition-fast);
+}
+
+.toast-close:hover {
+    color: var(--light);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .location-routes-wrapper {
+        padding: 1rem 0 3rem;
+    }
+
+    .location-hero {
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+
+    .location-info-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .location-info-card .info-item {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .location-info-card .btn {
+        width: 100%;
+    }
+
+    .routes-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .route-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .route-card-footer {
+        flex-direction: column;
+    }
+
+    .empty-state-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .toast-container {
+        right: 1rem;
+        left: 1rem;
+    }
+
+    .toast {
+        min-width: auto;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.75rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .route-card-header {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .route-type-badge {
+        align-self: flex-start;
+    }
+}

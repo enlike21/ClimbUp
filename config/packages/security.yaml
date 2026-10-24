@@ -1,0 +1,85 @@
+# config/packages/security.yaml
+security:
+  # ============================================
+  # PASSWORD HASHERS
+  # Define how passwords are hashed in the database
+  # ============================================
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+      algorithm: auto  # Uses bcrypt/argon2i automatically
+      cost: 12  # Higher = more secure but slower (bcrypt)
+
+  # ============================================
+  # PROVIDERS
+  # Define where to load user data from
+  # ============================================
+  providers:
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: email  # Users login with email
+
+  # ============================================
+  # FIREWALLS
+  # Define authentication mechanisms
+  # ============================================
+  firewalls:
+    # Dev firewall - allows unrestricted access to dev tools
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    # Main firewall - handles all application authentication
+    main:
+      lazy: true
+      provider: app_user_provider
+
+      # Form-based authentication
+      form_login:
+        login_path: login              # Route name for login form
+        check_path: login              # Where form submits to
+        enable_csrf: true              # CSRF protection (IMPORTANT!)
+        default_target_path: homepage  # Redirect after successful login
+        always_use_default_target_path: false  # Redirect to originally requested page if exists
+
+        # Custom error messages (optional)
+        # failure_path: login
+        # failure_forward: false
+
+      # Logout configuration
+      logout:
+        path: logout                   # Route name for logout
+        target: homepage               # Redirect after logout
+        invalidate_session: true       # Destroy session on logout
+        enable_csrf: true              # logout_path() adds the token; a bare /logout link from another site can't log you out
+
+      # Rate limiting on login attempts
+      login_throttling:
+        max_attempts: 5
+        interval: '15 minutes'
+
+      # Remember me functionality ("Mantener sesión iniciada")
+      remember_me:
+        secret: '%kernel.secret%'
+        lifetime: 2592000
+        path: /
+        name: CLIMBUP_REMEMBER_ME
+        always_remember_me: false
+        httponly: true
+        samesite: lax
+
+  role_hierarchy:
+    ROLE_ADMIN: [ROLE_USER]
+  access_control:
+    - { path: ^/login, roles: PUBLIC_ACCESS }
+    - { path: ^/register, roles: PUBLIC_ACCESS }
+
+    - { path: ^/route/admin, roles: ROLE_ADMIN }
+    - { path: ^/route/new, roles: ROLE_ADMIN }
+    - { path: ^/route/\d+/edit, roles: ROLE_ADMIN }
+    - { path: ^/route/\d+/delete, roles: ROLE_ADMIN }
+
+    - { path: ^/perfil, roles: ROLE_USER }
+    - { path: ^/mis-rutas, roles: ROLE_USER }
+
+    - { path: ^/, roles: PUBLIC_ACCESS }

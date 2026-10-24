@@ -1,0 +1,16 @@
+doctrine_migrations:
+    migrations_paths:
+        # namespace is arbitrary but should be different from App\Migrations
+        # as migrations classes should NOT be autoloaded
+        'DoctrineMigrations': '%kernel.project_dir%/migrations'
+    enable_profiler: false
+    storage:
+        table_storage:
+            # The library's own default (1024) doesn't fit as a PRIMARY KEY once the
+            # connection charset is utf8mb4 (1024 * 4 bytes = 4096 > MySQL/MariaDB's
+            # 3072-byte max index length), which left `doctrine:migrations:status` and
+            # `:diff` stuck permanently reporting "metadata storage is not up to date"
+            # since the required ALTER TABLE can never actually succeed. 191 chars is
+            # comfortably under the limit even at 4 bytes/char and is plenty for our
+            # "VersionYYYYMMDDHHMMSS" class names.
+            version_column_length: 191

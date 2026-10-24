@@ -1,0 +1,78 @@
+# Cómo contribuir a ClimbUp
+
+¡Gracias por querer mejorar ClimbUp! Este documento explica cómo montar el proyecto en
+local, qué esperamos de un pull request y cómo se revisa.
+
+## Antes de empezar
+
+- **Bugs y propuestas:** abre primero un [issue](../../issues/new/choose) con la plantilla
+  que corresponda, sobre todo si el cambio es grande. Así acordamos el enfoque antes de que
+  inviertas tiempo.
+- **Vulnerabilidades de seguridad:** no abras un issue público. Sigue [SECURITY.md](SECURITY.md).
+- **Código de conducta:** al participar aceptas el [código de conducta](CODE_OF_CONDUCT.md).
+
+## Montar el proyecto en local
+
+Necesitas Docker y Docker Compose.
+
+```bash
+git clone <url-de-tu-fork> climbup && cd climbup
+cp .env.example .env          # valores de desarrollo; cambia APP_SECRET por uno aleatorio
+docker compose up -d --build
+docker compose exec web composer install
+docker compose exec web php bin/console doctrine:migrations:migrate --no-interaction
+docker compose exec web php bin/console app:import-routes data/sample_routes.csv
+```
+
+La app queda en <http://localhost:8080>, el correo de desarrollo (Mailpit) en
+<http://localhost:8025> y Adminer en <http://localhost:8082>.
+
+`data/sample_routes.csv` son **vías y escuelas inventadas**, solo para desarrollar. No
+añadas al repo datos copiados de otras webs de escalada: casi todas prohíben redistribuir su
+contenido.
+
+Para tener un usuario administrador, regístrate desde la app y después:
+
+```bash
+docker compose exec web php bin/console dbal:run-sql "UPDATE users SET roles = '[\"ROLE_ADMIN\"]' WHERE email = 'tu@email'"
+```
+
+El asistente IA necesita una clave de [Groq](https://console.groq.com) en `GROQ_API_KEY`;
+el resto de la app funciona sin ella.
+
+## Antes de abrir el pull request
+
+Lanza lo mismo que lanza la CI:
+
+```bash
+composer cs-fix      # formatea el código PHP (reglas @Symfony)
+composer phpstan     # análisis estático
+composer test        # PHPUnit
+```
+
+Si tocas el minijuego **Al Filo**: la simulación vive en `public/js/game/sim.js` y el
+servidor la repite línea a línea en `src/Service/Game/ClimbSimulation.php` para validar
+las partidas. Cualquier cambio en una debe ir en las dos, subiendo `SIM_VERSION`, y
+regenerando las partidas de referencia:
+
+```bash
+node tests/js/generate-game-fixtures.mjs
+```
+
+Si cambias algún archivo de `public/js/game/`, sube también el sufijo `?v=` de los imports
+y de la plantilla `templates/game/index.html.twig`.
+
+## Pull requests
+
+- Una cosa por PR, con una descripción de qué cambia y por qué (la plantilla te guía).
+- Añade o actualiza tests cuando cambie el comportamiento.
+- Los mensajes de commit pueden ir en español o en inglés; que expliquen el porqué.
+- La CI (estilo, PHPStan y tests) tiene que pasar, y un mantenedor revisará el PR antes de
+  fusionarlo. Lo que se fusiona en `main` se despliega solo a producción, así que la
+  revisión es obligatoria.
+
+## Licencia
+
+Al contribuir aceptas que tu código se publique bajo la licencia del proyecto,
+[AGPL-3.0-or-later](LICENSE). El nombre "ClimbUp" y el logo no forman parte de esa licencia
+(ver [TRADEMARKS.md](TRADEMARKS.md)).

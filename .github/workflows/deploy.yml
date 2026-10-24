@@ -1,0 +1,39 @@
+name: Deploy to Plesk
+
+on:
+  push:
+    branches: [main]
+
+# The deploy only needs to read the repo; the server credentials come from secrets.
+permissions:
+  contents: read
+
+# Never run two deploys on top of each other.
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Forks don't have the server secrets - skip instead of failing on their main branch.
+    if: github.repository == 'enlike21/ClimbUp'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            export COMPOSER_ALLOW_SUPERUSER=1
+            PHP_BIN=/opt/plesk/php/8.4/bin/php
+            COMPOSER_BIN="$PHP_BIN /usr/lib/plesk-9.0/composer.phar"
+            cd /var/www/vhosts/climbup.es/httpdocs
+            git fetch origin main
+            git reset --hard origin/main
+            $COMPOSER_BIN install --no-dev --optimize-autoloader --no-interaction
+            $PHP_BIN bin/console cache:clear --env=prod
+            $PHP_BIN bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+            chown -R climbup.es_but5ov2ghmv:psaserv .

@@ -1,0 +1,576 @@
+/* ============================================
+   ROUTE DETAIL WRAPPER
+   ============================================ */
+.route-detail-wrapper {
+    min-height: calc(100vh - 76px);
+    padding: 2rem 0 4rem;
+}
+
+/* ============================================
+   BREADCRUMBS
+   ============================================ */
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    animation: fadeInDown 0.5s ease-out;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    font-size: 0.95rem;
+}
+
+.breadcrumb-item:hover {
+    color: var(--primary-light);
+}
+
+.breadcrumb-item.active {
+    color: var(--light);
+    font-weight: 600;
+}
+
+.breadcrumb-separator {
+    color: var(--gray);
+    font-size: 0.8rem;
+}
+
+/* ============================================
+   ROUTE HEADER CARD
+   ============================================ */
+.route-header-card {
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.route-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.route-title-section {
+    flex: 1;
+}
+
+.route-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--light);
+    line-height: 1.2;
+}
+
+.route-badges {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.route-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.route-type-sport {
+    background: linear-gradient(135deg, #D4A853, #B8922E);
+    color: #0A0A0A;
+}
+
+.route-type-trad {
+    background: linear-gradient(135deg, #C17850, #A55D3A);
+    color: white;
+}
+
+.route-type-boulder {
+    background: linear-gradient(135deg, #8B9D77, #6B7D5B);
+    color: white;
+}
+
+.difficulty-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #0A0A0A;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+/* Route Quick Actions */
+.route-actions-quick {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn-icon-only {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.2rem;
+}
+
+.btn-save {
+    background: rgba(212, 168, 83, 0.2);
+    color: var(--primary-light);
+    border: 2px solid var(--primary);
+}
+
+.btn-save:hover {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.btn-save.saved {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.btn-share {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--light);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-share:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ============================================
+   LOCATION BANNER
+   ============================================ */
+.location-banner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(212, 168, 83, 0.1), rgba(184, 146, 46, 0.05));
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(212, 168, 83, 0.2);
+}
+
+.location-banner > i {
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.location-info {
+    flex: 1;
+}
+
+.location-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--light);
+    margin-bottom: 0.25rem;
+}
+
+.location-coords {
+    font-size: 0.9rem;
+    color: var(--gray);
+    font-family: 'Courier New', monospace;
+}
+
+/* ============================================
+   ROUTE DETAILS GRID
+   ============================================ */
+.route-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Info Card */
+.info-card {
+    padding: 2rem;
+    animation: fadeInUp 0.6s ease-out 0.1s backwards;
+}
+
+.info-card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--light);
+    margin-bottom: 2rem;
+}
+
+.info-card-title i {
+    color: var(--primary);
+}
+
+.info-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-normal);
+}
+
+.info-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
+}
+
+.info-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-primary);
+    border-radius: 12px;
+    color: white;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.info-content {
+    flex: 1;
+}
+
+.info-label {
+    font-size: 0.85rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.info-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--light);
+}
+
+/* Stats Card */
+.stats-card {
+    padding: 2rem;
+    animation: fadeInUp 0.6s ease-out 0.2s backwards;
+}
+
+.stats-card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--light);
+    margin-bottom: 2rem;
+}
+
+.stats-card-title i {
+    color: var(--success);
+}
+
+.stats-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-normal);
+}
+
+.stat-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(212, 168, 83, 0.2), rgba(184, 146, 46, 0.2));
+    border-radius: 50%;
+    color: var(--primary-light);
+    font-size: 1.5rem;
+}
+
+.stat-content {
+    text-align: left;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--light);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   ACTION BUTTONS
+   ============================================ */
+.action-buttons-section {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeInUp 0.6s ease-out 0.3s backwards;
+}
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+.toast-container {
+    position: fixed;
+    top: 100px;
+    right: 2rem;
+    z-index: 9999;
+}
+
+.toast {
+    display: none;
+    min-width: 300px;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-xl);
+    animation: slideInRight 0.3s ease-out;
+}
+
+.toast.show {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.toast-success {
+    border-left: 4px solid var(--success);
+}
+
+.toast-icon {
+    font-size: 1.5rem;
+    color: var(--success);
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-title {
+    font-weight: 700;
+    color: var(--light);
+    margin-bottom: 0.25rem;
+}
+
+.toast-message {
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: var(--gray);
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color var(--transition-fast);
+}
+
+.toast-close:hover {
+    color: var(--light);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .route-detail-wrapper {
+        padding: 1rem 0 3rem;
+    }
+
+    .route-header-card {
+        padding: 1.5rem;
+    }
+
+    .route-header-content {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .route-actions-quick {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .location-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .route-details-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .action-buttons-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .action-buttons-section .btn {
+        width: 100%;
+    }
+
+    .toast-container {
+        right: 1rem;
+        left: 1rem;
+    }
+
+    .toast {
+        min-width: auto;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .route-title {
+        font-size: 1.75rem;
+    }
+
+    .route-badges {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .breadcrumbs {
+        font-size: 0.85rem;
+    }
+}
+/* ============================================
+   SIMILAR ROUTES
+   ============================================ */
+.similar-routes-section {
+    margin-top: 2rem;
+}
+
+.similar-routes-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--light);
+    margin-bottom: 1.25rem;
+}
+
+.similar-routes-title i {
+    color: var(--primary);
+}
+
+.similar-routes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.similar-route-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.25rem;
+    text-decoration: none;
+    transition: var(--transition-normal);
+}
+
+.similar-route-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+}
+
+.similar-route-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.similar-route-header .route-name {
+    font-weight: 700;
+    color: var(--light);
+    font-size: 1rem;
+}
+
+.similar-route-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: var(--gray);
+}
+
+.similar-route-meta i {
+    color: var(--primary-light);
+    width: 16px;
+}
+
+@media (max-width: 480px) {
+    .similar-routes-grid {
+        grid-template-columns: 1fr;
+    }
+}

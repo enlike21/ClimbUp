@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sobre Mí - ClimbUp{% endblock %}
+{% block meta_description %}Conoce la historia detrás de ClimbUp, la plataforma de rutas de escalada en España creada por Enrique Vélez. Descubre la misión y los valores del proyecto.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/about.css?v=1.0') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="about-wrapper">
+        <div class="about-hero">
+            <div class="container">
+                <h1 class="hero-title">
+                    <i class="fas fa-user"></i>
+                    Sobre Mí
+                </h1>
+                <p class="hero-subtitle">El creador detrás de ClimbUp</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="about-content">
+                <div class="about-card glass-card">
+                    <div class="about-header">
+                        <h2 class="about-name">Enrique Vélez Aguilar</h2>
+                        <p class="about-role">Desarrollador Web</p>
+                    </div>
+
+                    <div class="about-body">
+                        <div class="about-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-code"></i>
+                                Donde empezó todo
+                            </h3>
+                            <p>ClimbUp fue mi <strong>primer proyecto de desarrollo web</strong>, el que desarrollé como mi <strong>Trabajo de Fin de Grado (TFG)</strong>. Desde la idea inicial hasta el despliegue en producción, trabajé en cada aspecto de la plataforma: diseño, frontend, backend, base de datos y DevOps. Fue el proyecto con el que aprendí a llevar una aplicación completa de principio a fin.</p>
+                            <p>Desde entonces he seguido creciendo profesionalmente, trabajando en el sector y acumulando experiencia en diferentes proyectos y tecnologías. Pero ClimbUp sigue teniendo un lugar especial: nació de mi pasión por la escalada y la necesidad de tener una plataforma en español donde los escaladores pudieran descubrir rutas, registrar sus logros y planificar sus próximas aventuras en la roca.</p>
+                        </div>
+
+                        <div class="about-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-laptop-code"></i>
+                                Tecnologías utilizadas
+                            </h3>
+                            <div class="tech-grid">
+                                <div class="tech-item">
+                                    <i class="fab fa-symfony"></i>
+                                    <span>Symfony 7</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-php"></i>
+                                    <span>PHP 8.2</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fas fa-database"></i>
+                                    <span>MariaDB</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-js"></i>
+                                    <span>JavaScript</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-css3-alt"></i>
+                                    <span>CSS3</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-docker"></i>
+                                    <span>Docker</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-github"></i>
+                                    <span>GitHub Actions</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fas fa-map"></i>
+                                    <span>Leaflet.js</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="about-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-comments"></i>
+                                ¿Qué te parece?
+                            </h3>
+                            <p>Me encantaría saber tu opinión sobre ClimbUp. Si tienes sugerencias, ideas para mejorar la plataforma, o simplemente quieres comentarme qué te ha parecido, no dudes en escribirme por LinkedIn. Todo feedback es bienvenido.</p>
+                            <p>También estoy abierto a oportunidades laborales y colaboraciones. Si te ha gustado lo que ves, ¡conectemos!</p>
+                        </div>
+
+                        <div class="about-cta">
+                            <a href="https://www.linkedin.com/in/enrique-velez-aguilar-51650a202/" target="_blank" rel="noopener noreferrer" class="btn btn-linkedin btn-lg">
+                                <i class="fab fa-linkedin"></i>
+                                <span>Conectar en LinkedIn</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

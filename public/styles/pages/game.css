@@ -1,0 +1,1557 @@
+/* ============================================
+   GAME PAGE - "Al Filo"
+   Everything inside the game box (HUD, overlays, buttons, legend) is styled as pixel art to
+   match the canvas: Press Start 2P, hard 0-radius edges, and "stepped" borders built from
+   offset box-shadows (four 1-direction shadows leave the corners notched, the classic way to
+   fake a pixel frame in CSS). The sidebar keeps the regular site look.
+   No text-transform: uppercase on Spanish text - Press Start 2P has no accented capitals
+   (Í, É, Á...), so "CAÍDO" would render with a fallback glyph.
+   ============================================ */
+
+.game-page {
+    --px-ink: #1b1420;
+    --px-panel: #241c38;
+    --px-panel-hi: #3a2e58;
+    --px-gold: #f2c25a;
+    --px-gold-hi: #ffe394;
+    --px-gold-lo: #a9781f;
+    --px-cream: #fff3d6;
+    --px-lilac: #a99cc8;
+    --px-red: #e2493b;
+    --px-teal: #2fd6c0;
+    --px-font: 'Press Start 2P', monospace;
+    padding: var(--spacing-xl) 0;
+    min-height: calc(100vh - 200px);
+}
+
+.game-page .container {
+    max-width: 640px;
+    width: 100%;
+    transition: max-width 0.2s ease;
+}
+
+/* Desktop gets a noticeably bigger playing field plus room for the sidebar */
+@media (min-width: 1024px) {
+    .game-page .container {
+        max-width: 1120px;
+    }
+}
+
+/* Hero: a game title screen - banded night sky, stars, stepped pixel mountains */
+.game-hero {
+    position: relative;
+    overflow: hidden;
+    margin: 6px 6px calc(var(--spacing-lg) + 6px);
+    padding: 34px var(--spacing-md) 64px;
+    text-align: center;
+    background: linear-gradient(180deg,
+        #110c20 0 22%, #181230 22% 42%, #211940 42% 60%, #2c2152 60% 76%, #3a2c64 76% 100%);
+    box-shadow:
+        0 -6px 0 0 var(--px-panel-hi),
+        0 6px 0 0 var(--px-panel-hi),
+        -6px 0 0 0 var(--px-panel-hi),
+        6px 0 0 0 var(--px-panel-hi),
+        0 14px 0 0 rgba(0, 0, 0, 0.35);
+}
+
+.game-hero-sky,
+.game-hero-ridges {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+.game-hero-sky {
+    top: 0;
+    height: 100%;
+}
+
+/* The ridges only fill the bottom band, under the stat boxes, never behind the text */
+.game-hero-ridges {
+    bottom: 0;
+    height: 46%;
+}
+
+.game-hero-stars rect {
+    fill: var(--px-cream);
+    animation: gameTwinkle 2.4s steps(1) infinite;
+}
+
+.game-hero-stars rect:nth-child(3n) {
+    animation-delay: -0.8s;
+}
+
+.game-hero-stars rect:nth-child(3n + 1) {
+    animation-delay: -1.6s;
+}
+
+@keyframes gameTwinkle {
+    0%, 70% { opacity: 1; }
+    71%, 100% { opacity: 0.25; }
+}
+
+.game-hero-moon rect {
+    fill: #e8e6f6;
+}
+
+.game-hero-ridge-far {
+    fill: #3f3470;
+}
+
+.game-hero-ridge-near {
+    fill: var(--px-ink);
+}
+
+.game-hero-content {
+    position: relative;
+}
+
+.game-page-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px 6px;
+    background: var(--px-ink);
+    color: var(--px-gold);
+    font-family: var(--px-font);
+    font-size: 8px;
+    line-height: 1.4;
+    margin-bottom: 18px;
+    box-shadow:
+        0 -2px 0 0 var(--px-gold-lo),
+        0 2px 0 0 var(--px-gold-lo),
+        -2px 0 0 0 var(--px-gold-lo),
+        2px 0 0 0 var(--px-gold-lo);
+}
+
+.game-hero-title {
+    font-family: var(--px-font);
+    font-size: 2.6rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    color: var(--px-cream);
+    text-shadow: 0 5px 0 #8a7fa8, 5px 10px 0 var(--px-ink);
+}
+
+.game-hero-title span {
+    color: var(--px-gold);
+    text-shadow: 0 5px 0 var(--px-gold-lo), 5px 10px 0 var(--px-ink);
+}
+
+.game-hero-lead {
+    color: #d8d0ea;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 520px;
+    margin: 0 auto 22px;
+    text-shadow: 0 2px 0 var(--px-ink);
+}
+
+.game-hero-stats {
+    list-style: none;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+}
+
+.game-hero-stats li {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 110px;
+    padding: 12px 12px 10px;
+    background: var(--px-panel);
+    box-shadow:
+        0 -3px 0 0 var(--px-ink),
+        0 3px 0 0 var(--px-ink),
+        -3px 0 0 0 var(--px-ink),
+        3px 0 0 0 var(--px-ink),
+        inset 0 3px 0 0 var(--px-panel-hi);
+}
+
+.game-hero-stats strong {
+    font-family: var(--px-font);
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--px-gold);
+    text-shadow: 2px 2px 0 var(--px-ink);
+}
+
+.game-hero-stats span {
+    font-family: var(--px-font);
+    font-size: 8px;
+    color: var(--px-lilac);
+}
+
+/* Layout: single column on mobile, game + sidebar on desktop */
+.game-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+}
+
+/* Grid items default to min-width: auto, which refuses to shrink below the width of their
+   content (the HUD row, in this case) - that was pushing the whole page into horizontal
+   scroll on narrow phones instead of letting the HUD wrap. */
+.game-main {
+    min-width: 0;
+}
+
+@media (min-width: 1024px) {
+    .game-layout {
+        grid-template-columns: 1fr 300px;
+    }
+}
+
+/* Game box: a pixel frame instead of the site's rounded glass card */
+.game-wrap {
+    background: var(--px-ink);
+    border-radius: 0;
+    margin: 6px;
+    box-shadow:
+        0 -6px 0 0 var(--px-panel-hi),
+        0 6px 0 0 var(--px-panel-hi),
+        -6px 0 0 0 var(--px-panel-hi),
+        6px 0 0 0 var(--px-panel-hi),
+        0 14px 0 0 rgba(0, 0, 0, 0.35);
+}
+
+/* HUD */
+.game-hud {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: 12px var(--spacing-md);
+    background: var(--px-panel);
+    border-bottom: 4px solid var(--px-ink);
+    box-shadow: inset 0 -4px 0 0 var(--px-panel-hi);
+}
+
+.game-hud-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.game-hud-icon {
+    font-size: 0.95rem;
+    color: var(--px-lilac);
+    width: 16px;
+    text-align: center;
+}
+
+.game-hud-icon-record {
+    color: var(--px-gold);
+}
+
+.game-hud-item > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.game-hud-label {
+    font-family: var(--px-font);
+    font-size: 8px;
+    color: var(--px-lilac);
+}
+
+.game-hud-value {
+    font-family: var(--px-font);
+    font-size: 13px;
+    color: var(--px-gold);
+    text-shadow: 2px 2px 0 var(--px-ink);
+}
+
+.game-hud-stamina {
+    flex: 1;
+    min-width: 90px;
+}
+
+.game-hud-stamina-inner {
+    width: 100%;
+}
+
+.game-stamina-bar {
+    position: relative;
+    width: 100%;
+    height: 12px;
+    background: var(--px-ink);
+    overflow: hidden;
+    box-shadow:
+        0 -2px 0 0 var(--px-panel-hi),
+        0 2px 0 0 var(--px-panel-hi),
+        -2px 0 0 0 var(--px-panel-hi),
+        2px 0 0 0 var(--px-panel-hi);
+}
+
+/* Segment notches over the fill - reads as a row of blocks, like a retro health bar */
+.game-stamina-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(90deg, transparent 0 10px, var(--px-ink) 10px 12px);
+    pointer-events: none;
+}
+
+.game-stamina-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(180deg, #9cf5b4 0 25%, #38c46e 25% 70%, #1f8a4f 70% 100%);
+    transition: width 0.15s steps(6);
+}
+
+.game-stamina-bar.is-low .game-stamina-fill {
+    background: linear-gradient(180deg, #ff9b8a 0 25%, var(--px-red) 25% 70%, #9c2a22 70% 100%);
+    animation: gameStaminaLowPulse 0.7s steps(2) infinite;
+}
+
+@keyframes gameStaminaLowPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+}
+
+/* A quick celebratory flash when stamina is topped up by something earned
+   (a precise landing, a combo, a clip) rather than just the slow passive regen. */
+.game-stamina-fill.is-boosted {
+    animation: gameStaminaBoost 0.45s steps(3);
+}
+
+@keyframes gameStaminaBoost {
+    0% { filter: brightness(1); }
+    30% { filter: brightness(1.9); }
+    100% { filter: brightness(1); }
+}
+
+/* Canvas holder */
+.game-canvas-holder {
+    position: relative;
+    width: 100%;
+    height: min(68vh, 560px);
+    min-height: 380px;
+    touch-action: none;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+@media (min-width: 1024px) {
+    .game-canvas-holder {
+        height: min(74vh, 680px);
+        min-height: 440px;
+    }
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+    cursor: crosshair;
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+/* Power bar (vertical, shows charge while held) */
+.game-power-bar {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    bottom: 16px;
+    width: 14px;
+    background: var(--px-ink);
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-end;
+    box-shadow:
+        0 -3px 0 0 var(--px-cream),
+        0 3px 0 0 var(--px-cream),
+        -3px 0 0 0 var(--px-cream),
+        3px 0 0 0 var(--px-cream);
+}
+
+.game-power-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent 0 10px, var(--px-ink) 10px 12px);
+    pointer-events: none;
+}
+
+.game-power-bar.is-visible {
+    opacity: 1;
+}
+
+.game-power-fill {
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(90deg, var(--px-gold-hi) 0 30%, var(--px-gold) 30% 70%, var(--px-gold-lo) 70% 100%);
+}
+
+.game-power-fill.is-maxed {
+    background: linear-gradient(90deg, #ffc08a 0 30%, #ff6b4a 30% 70%, #b8402a 70% 100%);
+    animation: gamePowerPulse 0.3s steps(2) infinite;
+}
+
+@keyframes gamePowerPulse {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.5); }
+}
+
+/* Pause + sound buttons, top-left of the canvas */
+.game-corner-buttons {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 3;
+    display: flex;
+    gap: 12px;
+}
+
+.game-sound-btn {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: var(--px-panel);
+    color: var(--px-gold);
+    font-size: 0.8rem;
+    cursor: pointer;
+    box-shadow:
+        0 -3px 0 0 var(--px-ink),
+        0 3px 0 0 var(--px-ink),
+        -3px 0 0 0 var(--px-ink),
+        3px 0 0 0 var(--px-ink),
+        inset -3px -3px 0 0 var(--px-ink),
+        inset 3px 3px 0 0 var(--px-panel-hi);
+}
+
+.game-sound-btn:hover {
+    background: var(--px-panel-hi);
+}
+
+.game-sound-btn.is-muted {
+    color: var(--px-lilac);
+}
+
+.game-mode-tag {
+    margin-left: 8px;
+    padding: 2px 4px 1px;
+    background: var(--px-ink);
+    color: var(--px-gold);
+}
+
+/* First-run tutorial prompt and achievement toasts, over the canvas */
+.game-tutorial,
+.game-toast {
+    position: absolute;
+    left: 50%;
+    z-index: 3;
+    width: max-content;
+    max-width: calc(100% - 120px);
+    margin: 0;
+    padding: 10px 12px 9px;
+    transform: translateX(-50%);
+    background: var(--px-panel);
+    color: var(--px-cream);
+    font-family: var(--px-font);
+    font-size: 9px;
+    line-height: 1.8;
+    text-align: center;
+    pointer-events: none;
+    box-shadow:
+        0 -3px 0 0 var(--px-ink),
+        0 3px 0 0 var(--px-ink),
+        -3px 0 0 0 var(--px-ink),
+        3px 0 0 0 var(--px-ink),
+        inset 0 0 0 3px var(--px-gold);
+}
+
+.game-tutorial {
+    bottom: 18px;
+}
+
+.game-toast {
+    top: 64px;
+    color: var(--px-gold);
+    opacity: 0;
+    transform: translate(-50%, 12px);
+    transition: opacity 0.2s steps(3), transform 0.2s steps(3);
+}
+
+.game-toast.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* Overlays: no blur, so the animated pixel scene stays visible behind the panel,
+   just dimmed and with faint scanlines for a CRT feel. */
+.game-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 4px),
+        rgba(14, 8, 26, 0.5);
+    padding: 14px;
+    text-align: center;
+    overflow-y: auto;
+}
+
+.game-overlay-hidden {
+    display: none;
+}
+
+.game-overlay-card {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px 20px 18px;
+    background: var(--px-panel);
+    box-shadow:
+        0 -4px 0 0 var(--px-ink),
+        0 4px 0 0 var(--px-ink),
+        -4px 0 0 0 var(--px-ink),
+        4px 0 0 0 var(--px-ink),
+        inset 0 0 0 4px var(--px-gold),
+        inset 0 0 0 6px var(--px-gold-lo),
+        inset 0 0 0 8px var(--px-ink),
+        inset 0 10px 0 0 var(--px-panel-hi),
+        8px 12px 0 0 rgba(0, 0, 0, 0.45);
+    animation: gameCardIn 0.28s steps(4);
+}
+
+@keyframes gameCardIn {
+    0% { transform: translateY(16px) scale(0.92); opacity: 0; }
+    100% { transform: none; opacity: 1; }
+}
+
+/* The climber's own sprite (drawn by js/game/main.js) instead of a font icon */
+.game-overlay-sprite {
+    display: block;
+    margin: 0 auto 10px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    animation: gameSpriteBob 1s steps(2) infinite;
+}
+
+@keyframes gameSpriteBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+.game-overlay.is-win .game-overlay-sprite {
+    animation: gameSpriteBob 0.4s steps(2) infinite;
+}
+
+.game-overlay-card h2 {
+    font-family: var(--px-font);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--px-gold);
+    text-shadow: 0 3px 0 var(--px-gold-lo), 3px 6px 0 var(--px-ink);
+    margin-bottom: 14px;
+}
+
+.game-overlay-card .game-title {
+    font-size: 28px;
+    text-shadow: 0 4px 0 var(--px-gold-lo), 4px 8px 0 var(--px-ink);
+}
+
+.game-overlay.is-win .game-overlay-card h2 {
+    animation: gameTitleFlash 0.6s steps(2) infinite;
+}
+
+@keyframes gameTitleFlash {
+    0%, 100% { color: var(--px-gold); }
+    50% { color: var(--px-cream); }
+}
+
+.game-overlay-card p {
+    font-family: var(--px-font);
+    color: var(--px-cream);
+    font-size: 9px;
+    line-height: 1.9;
+    margin-bottom: 10px;
+}
+
+.game-overlay-card > .game-btn {
+    margin-top: 14px;
+}
+
+/* Blinking "press start", arcade style */
+.game-press-start {
+    margin: 14px 0 0 !important;
+    color: var(--px-gold) !important;
+    animation: gameBlink 1s steps(1) infinite;
+}
+
+/* No space bar on a touch screen */
+@media (hover: none) {
+    .game-press-start {
+        display: none;
+    }
+}
+
+@keyframes gameBlink {
+    0%, 60% { opacity: 1; }
+    61%, 100% { opacity: 0; }
+}
+
+.game-overlay-score {
+    font-size: 11px !important;
+    color: var(--px-cream) !important;
+}
+
+.game-overlay-score strong {
+    display: block;
+    margin-top: 6px;
+    font-weight: 400;
+    font-size: 20px;
+    color: var(--px-gold);
+    text-shadow: 0 3px 0 var(--px-gold-lo), 3px 5px 0 var(--px-ink);
+}
+
+.game-overlay-record {
+    color: var(--px-lilac) !important;
+    margin-bottom: 14px !important;
+}
+
+.game-overlay-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.game-overlay-actions .game-btn {
+    flex: 0 0 auto;
+    width: 52px;
+    height: 48px;
+    padding: 0;
+    font-size: 1rem;
+}
+
+.game-mode-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.game-mode-buttons .game-btn {
+    font-size: 10px;
+}
+
+.game-daily-best {
+    margin: 12px 0 0 !important;
+    color: var(--px-lilac) !important;
+    font-size: 8px !important;
+}
+
+.game-pause-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    max-width: 240px;
+    margin: 0 auto 18px;
+}
+
+.game-pause-actions .game-btn {
+    font-size: 10px;
+}
+
+.game-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 12px 12px;
+    background: var(--px-ink);
+    text-align: left;
+}
+
+.game-setting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    font-family: var(--px-font);
+    font-size: 8px;
+    color: var(--px-cream);
+    cursor: pointer;
+}
+
+.game-setting i {
+    color: var(--px-gold);
+    margin-right: 6px;
+}
+
+/* Pixel slider: a flat ink track with a cream block thumb */
+.game-setting input[type="range"] {
+    flex: 1;
+    max-width: 150px;
+    height: 16px;
+    margin: 0;
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.game-setting input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    background: var(--px-panel-hi);
+    box-shadow: 0 0 0 2px var(--px-ink);
+}
+
+.game-setting input[type="range"]::-moz-range-track {
+    height: 6px;
+    background: var(--px-panel-hi);
+    box-shadow: 0 0 0 2px var(--px-ink);
+}
+
+.game-setting input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 16px;
+    margin-top: -5px;
+    border: none;
+    border-radius: 0;
+    background: var(--px-gold);
+    box-shadow: 0 0 0 2px var(--px-ink);
+}
+
+.game-setting input[type="range"]::-moz-range-thumb {
+    width: 12px;
+    height: 16px;
+    border: none;
+    border-radius: 0;
+    background: var(--px-gold);
+    box-shadow: 0 0 0 2px var(--px-ink);
+}
+
+.game-setting-check {
+    justify-content: flex-start;
+}
+
+.game-setting-check input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--px-gold);
+}
+
+.game-over-achievements {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 4px 0 12px;
+    padding: 0;
+}
+
+.game-over-achievements li {
+    padding: 6px 8px 5px;
+    background: var(--px-ink);
+    color: var(--px-gold);
+    font-family: var(--px-font);
+    font-size: 8px;
+    box-shadow: inset 0 0 0 2px var(--px-gold-lo);
+}
+
+/* Permanent controls legend strip under the canvas */
+.game-controls-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px var(--spacing-lg);
+    padding: 12px var(--spacing-md);
+    background: var(--px-panel);
+    border-top: 4px solid var(--px-ink);
+    box-shadow: inset 0 4px 0 0 var(--px-panel-hi);
+    font-family: var(--px-font);
+    font-size: 8px;
+    line-height: 2;
+    color: var(--px-lilac);
+}
+
+.game-controls-legend span {
+    display: block;
+}
+
+.game-controls-legend i {
+    color: var(--px-gold);
+    font-size: 0.8rem;
+    margin-right: 6px;
+}
+
+/* Keycaps */
+.game-controls-legend kbd {
+    display: inline-block;
+    min-width: 18px;
+    padding: 4px 5px 3px;
+    border-radius: 0;
+    background: var(--px-cream);
+    color: var(--px-ink);
+    font-family: var(--px-font), 'Inter', sans-serif;
+    font-size: 9px;
+    line-height: 1;
+    text-align: center;
+    box-shadow:
+        0 -2px 0 0 var(--px-ink),
+        0 2px 0 0 var(--px-ink),
+        -2px 0 0 0 var(--px-ink),
+        2px 0 0 0 var(--px-ink),
+        inset 0 -2px 0 0 #b8a98a;
+}
+
+/* Buttons: chunky pixel buttons with a bevel that flips when pressed */
+.game-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border: none;
+    border-radius: 0;
+    font-family: var(--px-font);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
+    cursor: pointer;
+    text-decoration: none !important;
+    margin: 4px;
+}
+
+.game-btn-primary {
+    background: var(--px-gold);
+    color: var(--px-ink);
+    box-shadow:
+        0 -4px 0 0 var(--px-ink),
+        0 4px 0 0 var(--px-ink),
+        -4px 0 0 0 var(--px-ink),
+        4px 0 0 0 var(--px-ink),
+        inset -4px -4px 0 0 var(--px-gold-lo),
+        inset 4px 4px 0 0 var(--px-gold-hi);
+}
+
+.game-btn-primary:hover {
+    background: var(--px-gold-hi);
+    color: var(--px-ink);
+}
+
+.game-btn-secondary {
+    background: var(--px-panel-hi);
+    color: var(--px-cream);
+    box-shadow:
+        0 -4px 0 0 var(--px-ink),
+        0 4px 0 0 var(--px-ink),
+        -4px 0 0 0 var(--px-ink),
+        4px 0 0 0 var(--px-ink),
+        inset -4px -4px 0 0 #2a2140,
+        inset 4px 4px 0 0 #574a7e;
+}
+
+.game-btn-secondary:hover {
+    background: #4a3c70;
+}
+
+.game-btn:active {
+    transform: translateY(3px);
+}
+
+.game-btn-primary:active {
+    box-shadow:
+        0 -4px 0 0 var(--px-ink),
+        0 4px 0 0 var(--px-ink),
+        -4px 0 0 0 var(--px-ink),
+        4px 0 0 0 var(--px-ink),
+        inset 4px 4px 0 0 var(--px-gold-lo);
+}
+
+.game-btn:focus-visible,
+.game-sound-btn:focus-visible {
+    outline: 3px dashed var(--px-cream);
+    outline-offset: 6px;
+}
+
+/* Panels: the sidebar cards and "La ruta" share the game box's pixel-frame look */
+.game-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-md) + 6px);
+    padding: 6px;
+}
+
+.game-panel {
+    background: var(--px-panel);
+    padding: 18px 16px 16px;
+    box-shadow:
+        0 -4px 0 0 var(--px-ink),
+        0 4px 0 0 var(--px-ink),
+        -4px 0 0 0 var(--px-ink),
+        4px 0 0 0 var(--px-ink),
+        inset 0 4px 0 0 var(--px-panel-hi),
+        0 10px 0 0 rgba(0, 0, 0, 0.3);
+}
+
+.game-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--px-font);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--px-gold);
+    text-shadow: 2px 2px 0 var(--px-ink);
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed var(--px-panel-hi);
+}
+
+.game-panel-title i {
+    color: var(--px-gold);
+    font-size: 0.85rem;
+    text-shadow: none;
+}
+
+/* How to play: numbered keycaps */
+.game-steps {
+    list-style: none;
+    counter-reset: game-step;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+.game-steps li {
+    counter-increment: game-step;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: #cfc6e2;
+    line-height: 1.5;
+}
+
+.game-steps li::before {
+    content: counter(game-step);
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    margin: 1px 2px 0;
+    background: var(--px-cream);
+    color: var(--px-ink);
+    font-family: var(--px-font);
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 -2px 0 0 var(--px-ink),
+        0 2px 0 0 var(--px-ink),
+        -2px 0 0 0 var(--px-ink),
+        2px 0 0 0 var(--px-ink),
+        inset 0 -2px 0 0 #b8a98a;
+}
+
+.game-steps li strong {
+    color: var(--px-cream);
+}
+
+/* Tips */
+.game-tips {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+.game-tips li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.83rem;
+    color: #cfc6e2;
+    line-height: 1.5;
+}
+
+.game-tips li i {
+    flex: 0 0 auto;
+    width: 16px;
+    text-align: center;
+    margin-top: 3px;
+    color: var(--px-gold);
+    font-size: 0.8rem;
+}
+
+/* Leaderboard tabs */
+.game-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.game-tab {
+    flex: 1;
+    padding: 8px 6px 7px;
+    border: none;
+    border-radius: 0;
+    background: var(--px-ink);
+    color: var(--px-lilac);
+    font-family: var(--px-font);
+    font-size: 8px;
+    cursor: pointer;
+    box-shadow: inset 0 -3px 0 0 var(--px-panel-hi);
+}
+
+.game-tab.is-active {
+    background: var(--px-panel-hi);
+    color: var(--px-gold);
+    box-shadow: inset 0 -3px 0 0 var(--px-gold);
+}
+
+.game-tab:focus-visible {
+    outline: 2px dashed var(--px-cream);
+    outline-offset: 2px;
+}
+
+/* Skins: one button per climber look, showing the sprite itself */
+.game-skins {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.game-skin {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 4px 7px;
+    border: none;
+    border-radius: 0;
+    background: var(--px-ink);
+    color: var(--px-cream);
+    cursor: pointer;
+    box-shadow: inset 0 0 0 2px var(--px-panel-hi);
+}
+
+.game-skin:hover:not(:disabled) {
+    box-shadow: inset 0 0 0 2px var(--px-gold-lo);
+}
+
+.game-skin.is-selected {
+    background: #3a2f1a;
+    box-shadow: inset 0 0 0 2px var(--px-gold);
+}
+
+.game-skin.is-locked {
+    cursor: not-allowed;
+}
+
+.game-skin.is-locked .game-skin-sprite {
+    filter: brightness(0) opacity(0.35);
+}
+
+.game-skin-sprite {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.game-skin-name {
+    font-family: var(--px-font);
+    font-size: 7px;
+}
+
+.game-skin-lock {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    color: var(--px-lilac);
+    font-size: 0.65rem;
+}
+
+.game-subtitle {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--px-font);
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--px-gold);
+    margin: 0 0 10px;
+}
+
+.game-subtitle span {
+    color: var(--px-lilac);
+}
+
+/* Achievements */
+.game-achievements {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 260px;
+    overflow-y: auto;
+    margin: 0 0 12px;
+    padding: 0 4px 0 0;
+}
+
+.game-achievement {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px;
+    background: var(--px-ink);
+    color: var(--px-lilac);
+    opacity: 0.6;
+}
+
+.game-achievement.is-unlocked {
+    opacity: 1;
+    color: var(--px-cream);
+}
+
+.game-achievement-icon {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--px-panel-hi);
+    font-size: 0.7rem;
+}
+
+.game-achievement.is-unlocked .game-achievement-icon {
+    background: var(--px-gold);
+    color: var(--px-ink);
+}
+
+.game-achievement-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    font-size: 0.75rem;
+    line-height: 1.35;
+}
+
+.game-achievement-text strong {
+    font-family: var(--px-font);
+    font-size: 8px;
+    font-weight: 400;
+    color: inherit;
+}
+
+/* Leaderboard: an arcade high-score table */
+.game-leaderboard-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0 0 14px;
+    padding: 0;
+}
+
+.game-leaderboard-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 8px;
+    background: var(--px-ink);
+    font-size: 0.83rem;
+}
+
+.game-leaderboard-list li:nth-child(even) {
+    background: #20182f;
+}
+
+.game-leaderboard-list li.is-me {
+    background: #3a2f1a;
+    box-shadow: inset 0 0 0 2px var(--px-gold);
+}
+
+.game-leaderboard-list li.game-leaderboard-empty {
+    color: var(--px-lilac);
+    font-family: var(--px-font);
+    font-size: 8px;
+    line-height: 1.8;
+    padding: 12px 10px;
+}
+
+.game-leaderboard-rank {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--px-font);
+    font-size: 9px;
+    color: var(--px-lilac);
+}
+
+/* Top three get pixel medals */
+.game-leaderboard-list li:nth-child(-n + 3) .game-leaderboard-rank {
+    color: var(--px-ink);
+    box-shadow:
+        0 -2px 0 0 var(--px-ink),
+        0 2px 0 0 var(--px-ink),
+        -2px 0 0 0 var(--px-ink),
+        2px 0 0 0 var(--px-ink),
+        inset -2px -2px 0 0 rgba(0, 0, 0, 0.25),
+        inset 2px 2px 0 0 rgba(255, 255, 255, 0.45);
+}
+
+.game-leaderboard-list li:nth-child(1) .game-leaderboard-rank {
+    background: #f2c25a;
+}
+
+.game-leaderboard-list li:nth-child(2) .game-leaderboard-rank {
+    background: #c9ccd6;
+}
+
+.game-leaderboard-list li:nth-child(3) .game-leaderboard-rank {
+    background: #d08a4e;
+}
+
+.game-leaderboard-list li.game-leaderboard-empty .game-leaderboard-rank {
+    display: none;
+}
+
+.game-leaderboard-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--px-cream);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.game-leaderboard-name:hover {
+    color: var(--px-gold);
+    text-decoration: underline;
+}
+
+.game-leaderboard-me {
+    flex: 0 0 auto;
+    padding: 3px 4px 2px;
+    background: var(--px-gold);
+    color: var(--px-ink);
+    font-family: var(--px-font);
+    font-size: 7px;
+}
+
+.game-leaderboard-height {
+    flex: 0 0 auto;
+    font-family: var(--px-font);
+    font-size: 9px;
+    color: var(--px-gold);
+}
+
+.game-leaderboard-note {
+    font-size: 0.78rem;
+    color: var(--px-lilac);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.game-leaderboard-note a,
+.game-leaderboard-note strong {
+    color: var(--px-gold);
+}
+
+/* "La ruta": each zone is a rock block, rising left to right like a staircase, with the
+   climber's sprite standing on the highest one you've reached. */
+.game-route-panel {
+    margin: calc(var(--spacing-lg) + 4px) 6px 6px;
+}
+
+.game-route-intro {
+    color: #cfc6e2;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0 0 18px;
+}
+
+.game-route {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    align-items: end;
+    gap: 6px;
+    margin: 0;
+    padding: 60px 0 0;
+}
+
+.game-route-stop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.game-route-block {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: calc(18px + var(--step) * 12px);
+    background:
+        linear-gradient(180deg, var(--cap) 0 5px, var(--rock-hi) 5px 9px, var(--rock) 9px 70%, var(--rock-lo) 70% 100%);
+    box-shadow:
+        0 -3px 0 0 var(--px-ink),
+        -3px 0 0 0 var(--px-ink),
+        3px 0 0 0 var(--px-ink),
+        0 3px 0 0 var(--px-ink);
+    filter: saturate(0.35) brightness(0.55);
+    color: var(--px-ink);
+}
+
+.game-route-stop.is-reached .game-route-block {
+    filter: none;
+}
+
+.game-route-stop.is-summit .game-route-block {
+    background: linear-gradient(180deg, #ffe394 0 4px, var(--px-gold) 4px 70%, var(--px-gold-lo) 70% 100%);
+}
+
+.game-route-climber {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    margin-bottom: 1px;
+    transform: translateX(-50%);
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    filter: none;
+}
+
+.game-route-name {
+    font-family: var(--px-font);
+    font-size: 7px;
+    line-height: 1.6;
+    color: var(--px-lilac);
+    overflow-wrap: break-word;
+}
+
+.game-route-stop.is-reached .game-route-name {
+    color: var(--px-cream);
+}
+
+.game-route-height {
+    font-family: var(--px-font);
+    font-size: 8px;
+    color: var(--px-gold-lo);
+}
+
+.game-route-stop.is-reached .game-route-height {
+    color: var(--px-gold);
+}
+
+/* Game-over: rank feedback + arcade-style "save your score" prompt */
+.game-overlay-rank {
+    color: var(--px-teal) !important;
+}
+
+.game-save-prompt {
+    margin: 12px 0;
+    padding: 14px 14px 10px;
+    background: var(--px-ink);
+    border: 2px dashed var(--px-gold-lo);
+}
+
+.game-save-prompt p {
+    color: var(--px-cream) !important;
+    margin-bottom: 12px !important;
+}
+
+.game-save-prompt p i {
+    color: var(--px-gold);
+    margin-right: 4px;
+}
+
+.game-save-prompt .game-btn {
+    width: calc(100% - 8px);
+    font-size: 9px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .game-page {
+        padding: var(--spacing-md) 0;
+    }
+
+    .game-hero {
+        padding: 26px 14px 52px;
+    }
+
+    .game-hero-title {
+        font-size: 1.8rem;
+    }
+
+    .game-hero-stats li {
+        min-width: 92px;
+    }
+
+    /* The staircase becomes a vertical climb, summit on top */
+    .game-route {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 10px;
+        padding: 0;
+    }
+
+    .game-route-stop {
+        flex-direction: row;
+        gap: 12px;
+        text-align: left;
+    }
+
+    .game-route-block {
+        flex: 0 0 auto;
+        width: calc(28px + var(--step) * 10px);
+        height: 22px;
+    }
+
+    .game-route-name {
+        flex: 1;
+        font-size: 8px;
+    }
+
+    /* No room for the sprite on a short row - a "Tú" tag marks where you are instead */
+    .game-route-climber {
+        display: none;
+    }
+
+    .game-route-stop.is-current .game-route-name::after {
+        content: 'Tú';
+        display: inline-block;
+        margin-left: 10px;
+        padding: 3px 4px 2px;
+        background: var(--px-gold);
+        color: var(--px-ink);
+        font-size: 7px;
+    }
+
+    .game-hud {
+        gap: var(--spacing-sm);
+        flex-wrap: wrap;
+    }
+
+    .game-canvas-holder {
+        height: min(60vh, 480px);
+        min-height: 340px;
+    }
+
+    .game-controls-legend {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 540px) {
+    .game-hero-lead {
+        font-size: 0.88rem;
+    }
+
+    .game-hero-stats {
+        gap: 10px;
+    }
+
+    .game-hero-stats li {
+        min-width: 0;
+        padding: 10px 8px 8px;
+    }
+
+    .game-hero-stats strong {
+        font-size: 11px;
+    }
+
+    /* Game-over is a lot to fit in a short canvas on a phone: smaller title and sprite,
+       tighter gaps between lines, icon-only retry/share buttons (full labels stay for
+       screen readers via aria-label). */
+    .game-mode-tag {
+        display: none;
+    }
+
+    .game-overlay-card {
+        padding: 18px 14px 16px;
+    }
+
+    .game-overlay-sprite {
+        margin-bottom: 8px;
+    }
+
+    .game-overlay-card h2 {
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+
+    .game-overlay-card .game-title {
+        font-size: 22px;
+    }
+
+    .game-overlay-card p {
+        font-size: 8px;
+        margin-bottom: 6px;
+    }
+
+    .game-overlay-score strong {
+        font-size: 18px;
+    }
+
+    .game-save-prompt {
+        margin: 8px 0;
+        padding: 10px 10px 6px;
+    }
+}
+
+/* Reduced motion: from the OS setting or the toggle in the pause menu */
+@media (prefers-reduced-motion: reduce) {
+    .game-page *,
+    .game-page *::before,
+    .game-page *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+.game-reduced-motion .game-page *,
+.game-reduced-motion .game-page *::before,
+.game-reduced-motion .game-page *::after {
+    animation: none !important;
+    transition: none !important;
+}

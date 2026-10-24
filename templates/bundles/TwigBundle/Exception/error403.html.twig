@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Acceso denegado - ClimbUp{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+
+{% block body %}
+    <div class="error-page">
+        <div class="container">
+            <div class="error-content">
+                <div class="error-code">403</div>
+                <h1 class="error-title">Acceso denegado</h1>
+                <p class="error-message">No tienes permisos para acceder a esta página. Si crees que es un error, inicia sesión con una cuenta autorizada.</p>
+                <div class="error-actions">
+                    <a href="{{ path('homepage') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-home"></i>
+                        <span>Volver al inicio</span>
+                    </a>
+                    <a href="{{ path('login') }}" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Iniciar sesión</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

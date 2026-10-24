@@ -1,0 +1,111 @@
+{# templates/security/login.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Iniciar Sesión - ClimbUp{% endblock %}
+
+{% block meta_description %}Inicia sesión en ClimbUp para acceder a tus rutas guardadas, registrar ascensos y conectar con la comunidad de escaladores.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/security/login_register_form.css?v=1.0') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1 class="auth-title">Bienvenido de nuevo</h1>
+            <p class="auth-subtitle">Continúa tu aventura de escalada</p>
+        </div>
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}" role="alert">
+                    <div class="alert-content">
+                        <i class="fas fa-{{ label == 'success' ? 'check-circle' : (label == 'error' ? 'exclamation-circle' : 'info-circle') }}"></i>
+                        <span>{{ message }}</span>
+                    </div>
+                    <button type="button"
+                            class="btn-close"
+                            onclick="closeAlert(this)"
+                            aria-label="Cerrar alerta">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <div class="auth-card">
+            <form method="post" class="auth-form" novalidate>
+                <div class="form-group">
+                    <label for="username" class="form-label">Correo Electrónico</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
+                        <input
+                                type="email"
+                                id="username"
+                                name="_username"
+                                class="form-control"
+                                value="{{ last_username }}"
+                                placeholder="tu@email.com"
+                                autocomplete="email"
+                                required
+                                autofocus
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+                        <input
+                                type="password"
+                                id="password"
+                                name="_password"
+                                class="form-control password-field"
+                                placeholder="••••••••"
+                                autocomplete="current-password"
+                                required
+                        >
+                        <button type="button"
+                                class="toggle-password"
+                                onclick="togglePasswordVisibility('password', this)"
+                                aria-label="Mostrar contraseña">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-check-wrapper">
+                    <label class="form-check">
+                        <input type="checkbox" name="_remember_me" class="form-check-input">
+                        <span class="form-check-label">Mantener sesión iniciada</span>
+                    </label>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                {% if app.request.query.get('_target_path') %}
+                    <input type="hidden" name="_target_path" value="{{ app.request.query.get('_target_path') }}">
+                {% endif %}
+
+                <button type="submit" class="btn btn-auth btn-submit">
+                    <span class="btn-text"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</span>
+                    <span class="btn-spinner"></span>
+                </button>
+            </form>
+
+        </div>
+
+        <div class="auth-footer">
+            <a href="{{ path('app_register') }}" class="auth-link">
+                <i class="fas fa-user-plus"></i>
+                <span>¿No tienes cuenta? Regístrate</span>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/auth_form.js?v=1.0') }}"></script>
+{% endblock %}

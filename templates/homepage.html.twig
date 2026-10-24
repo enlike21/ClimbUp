@@ -1,0 +1,234 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ClimbUp - Conquista cada cumbre | Rutas de Escalada en España{% endblock %}
+
+{% block meta_description %}Descubre las mejores rutas de escalada en España. Explora rutas de deportiva, tradicional y boulder, registra tus ascensos y conecta con la comunidad de escaladores.{% endblock %}
+
+{% block canonical %}{{ url('homepage') }}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ClimbUp",
+    "url": "{{ url('homepage') }}",
+    "logo": {
+        "@type": "ImageObject",
+        "url": "{{ absolute_url(asset('images/climbUP_logo_top.png')) }}"
+    },
+    "description": "Plataforma de rutas de escalada en España. Descubre rutas de deportiva, tradicional y boulder, registra tus ascensos y conecta con la comunidad.",
+    "areaServed": {
+        "@type": "Country",
+        "name": "España"
+    }
+}
+</script>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ClimbUp",
+    "url": "{{ url('homepage') }}",
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "{{ url('app_route_user_view') }}?name={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+    }
+}
+</script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/homepage.css?v=3.0') }}">
+{% endblock %}
+
+{% block body %}
+    {# ===== HERO - Full screen cinematic ===== #}
+    <section class="hero-section">
+        <div class="hero-background">
+            <div class="hero-bg-image"></div>
+            <div class="hero-bg-overlay"></div>
+        </div>
+
+        <div class="container">
+            <div class="hero-content">
+                <p class="hero-eyebrow">La plataforma para escaladores</p>
+                <h1 class="hero-title">
+                    Conquista cada<br>
+                    <span class="text-gradient">cumbre</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Encuentra rutas, registra ascensos y conecta con la comunidad
+                </p>
+                <div class="hero-cta">
+                    {% if app.user %}
+                        <a href="{{ path('app_route_user_view') }}" class="btn btn-primary btn-lg">
+                            Explorar Rutas
+                        </a>
+                    {% else %}
+                        <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg">
+                            Comenzar Ahora
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-scroll-hint">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    {# ===== STATS BAR ===== #}
+    <section class="stats-bar">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="{{ stats.totalRoutes }}">0</div>
+                    <div class="stat-label">Rutas</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="{{ stats.totalUsers }}">0</div>
+                    <div class="stat-label">Escaladores</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="{{ stats.totalLocations }}">0</div>
+                    <div class="stat-label">Ubicaciones</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# ===== FEATURES - Alternating rows ===== #}
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-eyebrow">Funcionalidades</p>
+                <h2 class="section-title">Todo lo que necesitas</h2>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-image-wrap">
+                    <img src="https://images.unsplash.com/photo-1522163182402-834f871fd851?w=800&q=80" alt="Explorar rutas de escalada" loading="lazy" decoding="async">
+                </div>
+                <div class="feature-text">
+                    <span class="feature-number">01</span>
+                    <h3 class="feature-title">Explora Rutas</h3>
+                    <p class="feature-description">
+                        Cientos de rutas clasificadas por dificultad, ubicación y tipo de escalada. Filtra, busca y encuentra tu próximo reto.
+                    </p>
+                    <a href="{{ path('app_route_user_view') }}" class="feature-link">
+                        Ver rutas <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="feature-row feature-row-reverse">
+                <div class="feature-image-wrap">
+                    <img src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=800&q=80" alt="Comunidad de escaladores" loading="lazy" decoding="async">
+                </div>
+                <div class="feature-text">
+                    <span class="feature-number">02</span>
+                    <h3 class="feature-title">Comunidad</h3>
+                    <p class="feature-description">
+                        Conecta con escaladores, comparte experiencias y descubre nuevas zonas a través de la comunidad.
+                    </p>
+                    <a href="{{ path('app_register') }}" class="feature-link">
+                        Unirse <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-image-wrap">
+                    <img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=800&q=80" alt="Seguimiento de progreso" loading="lazy" decoding="async">
+                </div>
+                <div class="feature-text">
+                    <span class="feature-number">03</span>
+                    <h3 class="feature-title">Seguimiento</h3>
+                    <p class="feature-description">
+                        Registra cada ascenso, marca rutas como completadas y visualiza tu progreso con estadísticas detalladas.
+                    </p>
+                    {% if app.user %}
+                        <a href="{{ path('app_saved_routes') }}" class="feature-link">
+                            Mis rutas <i class="fas fa-arrow-right"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('app_register') }}" class="feature-link">
+                            Empezar <i class="fas fa-arrow-right"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# ===== COMING SOON ===== #}
+    <section class="coming-soon-section">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-eyebrow">En desarrollo</p>
+                <h2 class="section-title">Próximamente</h2>
+            </div>
+
+            <div class="coming-soon-grid">
+                <div class="coming-soon-card glass-card">
+                    <div class="coming-soon-badge">Próximamente</div>
+                    <i class="fas fa-wifi-slash coming-soon-icon"></i>
+                    <h3>Rutas Offline</h3>
+                    <p>Descarga rutas para acceder sin conexión en la montaña</p>
+                </div>
+
+                <div class="coming-soon-card glass-card">
+                    <div class="coming-soon-badge">Próximamente</div>
+                    <i class="fas fa-trophy coming-soon-icon"></i>
+                    <h3>Retos Mensuales</h3>
+                    <p>Compite con la comunidad en desafíos de escalada cada mes</p>
+                </div>
+
+                <div class="coming-soon-card glass-card">
+                    <div class="coming-soon-badge">Próximamente</div>
+                    <i class="fas fa-mobile-alt coming-soon-icon"></i>
+                    <h3>App Móvil</h3>
+                    <p>Aplicación nativa para iOS y Android con GPS integrado</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# ===== CTA - Full screen cinematic ===== #}
+    <section class="cta-section">
+        <div class="cta-background">
+            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80" alt="Montañas bajo las estrellas" loading="lazy" decoding="async">
+        </div>
+        <div class="cta-overlay"></div>
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Tu próxima cumbre<br>te espera</h2>
+                <p class="cta-subtitle">Únete a la comunidad de escaladores</p>
+                {% if not app.user %}
+                    <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg">
+                        Crear Cuenta Gratis
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_route_user_view') }}" class="btn btn-primary btn-lg">
+                        Explorar Rutas
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/homepage.js?v=3.0') }}"></script>
+{% endblock %}

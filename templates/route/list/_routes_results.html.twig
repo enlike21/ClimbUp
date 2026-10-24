@@ -1,0 +1,175 @@
+<!-- Stats Bar -->
+<div class="stats-bar">
+    <div class="stat-badge">
+        <i class="fas fa-route"></i>
+        <span>{{ total_routes }} rutas encontradas</span>
+    </div>
+    <div class="sort-chips" id="sortChips">
+        <button type="button" class="sort-chip {% if sort|default('rating_desc') == 'rating_desc' %}active{% endif %}" data-sort="rating_desc">
+            <i class="fas fa-star"></i> Mejor valoradas
+        </button>
+        <button type="button" class="sort-chip {% if sort|default('') == 'difficulty_asc' %}active{% endif %}" data-sort="difficulty_asc">
+            <i class="fas fa-arrow-up"></i> Dificultad ↑
+        </button>
+        <button type="button" class="sort-chip {% if sort|default('') == 'difficulty_desc' %}active{% endif %}" data-sort="difficulty_desc">
+            <i class="fas fa-arrow-down"></i> Dificultad ↓
+        </button>
+        <button type="button" class="sort-chip {% if sort|default('') == 'name_asc' %}active{% endif %}" data-sort="name_asc">
+            <i class="fas fa-font"></i> A-Z
+        </button>
+    </div>
+</div>
+
+<!-- Routes Grid -->
+<div class="routes-grid" {% if routes|length == 0 %}style="display:none"{% endif %}>
+    {% for route in routes %}
+        <div class="route-card glass-card" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 50 }}">
+            <div class="route-card-header">
+                <h3 class="route-name">
+                    <a href="{{ path('app_route_show', {'id': route.id}) }}">{{ route.name }}</a>
+                </h3>
+                <span class="route-type-badge route-type-{{ route.routeType.value|lower }}">
+                    {{ route.routeType.value }}
+                </span>
+            </div>
+
+            <div class="route-card-body">
+                <div class="route-info-grid">
+                    <div class="route-info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-signal"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Dificultad</div>
+                            <div class="info-value difficulty-badge">{{ route.difficulty }}</div>
+                        </div>
+                    </div>
+
+                    <div class="route-info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-ruler-vertical"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Longitud</div>
+                            <div class="info-value">{{ route.length }}m</div>
+                        </div>
+                    </div>
+
+                    <div class="route-info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Largos</div>
+                            <div class="info-value">{{ route.pitches }}</div>
+                        </div>
+                    </div>
+
+                    <div class="route-info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Ubicación</div>
+                            <div class="info-value">{{ route.location.name }}{% if route.location.region %} <small>({{ route.location.region }})</small>{% endif %}</div>
+                        </div>
+                    </div>
+
+                    {% if route.rating %}
+                    <div class="route-info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">Valoración</div>
+                            <div class="info-value">{{ route.rating|number_format(1) }}/4</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="route-card-footer">
+                <a href="{{ path('app_route_show', {'id': route.id}) }}" class="btn btn-route-detail">
+                    <i class="fas fa-eye"></i>
+                    <span>Ver Detalle</span>
+                </a>
+                {% if app.user %}
+                    <button
+                            class="btn btn-route-save save-route-btn"
+                            data-route-id="{{ route.id }}"
+                    >
+                        <i class="fas fa-bookmark"></i>
+                        <span>Guardar</span>
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if total_pages > 1 %}
+    {% set maxVisiblePages = 5 %}
+    {% set range = (maxVisiblePages / 2)|round(0, 'floor') %}
+    {% set start = (page - range) > 1 ? (page - range) : 1 %}
+    {% set end = (start + maxVisiblePages - 1) < total_pages ? (start + maxVisiblePages - 1) : total_pages %}
+
+    <div class="pagination-wrapper">
+        <nav class="pagination-nav">
+            <ul class="pagination">
+                {% if page > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" data-page="{{ page - 1 }}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if start > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" data-page="1">1</a>
+                    </li>
+                    {% if start > 2 %}
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endif %}
+
+                {% for p in start..end %}
+                    <li class="page-item {% if p == page %}active{% endif %}">
+                        <a class="page-link" data-page="{{ p }}">{{ p }}</a>
+                    </li>
+                {% endfor %}
+
+                {% if end < total_pages %}
+                    {% if end < total_pages - 1 %}
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" data-page="{{ total_pages }}">{{ total_pages }}</a>
+                    </li>
+                {% endif %}
+
+                {% if page < total_pages %}
+                    <li class="page-item">
+                        <a class="page-link" data-page="{{ page + 1 }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+{% endif %}
+
+<!-- Empty State -->
+<div class="empty-state glass-card" {% if routes|length > 0 %}style="display:none"{% endif %}>
+    <div class="empty-state-icon">
+        <i class="fas fa-route"></i>
+    </div>
+    <h3 class="empty-state-title">No se encontraron rutas</h3>
+    <p class="empty-state-text">
+        Intenta ajustar los filtros de búsqueda o
+        <a href="{{ path('app_route_user_view') }}">ver todas las rutas</a>
+    </p>
+</div>

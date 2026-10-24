@@ -1,0 +1,7 @@
+parameters:
+    # Local file locks unless LOCK_DSN says otherwise, so the rate limiters (login, chatbot,
+    # registration) work even on installs whose .env predates the variable.
+    env(LOCK_DSN): 'flock'
+
+framework:
+    lock: '%env(LOCK_DSN)%'

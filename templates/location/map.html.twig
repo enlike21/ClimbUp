@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mapa de Rutas de Escalada - ClimbUp{% endblock %}
+
+{% block meta_description %}Mapa interactivo con todas las zonas de escalada. Encuentra ubicaciones, consulta rutas disponibles y planifica tu próxima salida de escalada.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css"/>
+    <link rel="stylesheet" href="{{ asset('styles/pages/location/map.css?v=2.0') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="map-wrapper">
+        <!-- Hero Header -->
+        <div class="map-hero">
+            <div class="container">
+                <h1 class="map-hero-title">
+                    Mapa de <span class="text-gradient">Rutas</span>
+                </h1>
+                <p class="map-hero-subtitle">
+                    Descubre ubicaciones de escalada por toda España
+                </p>
+            </div>
+        </div>
+
+        <div class="container map-container">
+            <!-- Controls Panel -->
+            <div class="map-controls glass-card">
+                <div class="control-group">
+                    <button class="btn btn-control" id="resetMapBtn" title="Centrar mapa">
+                        <i class="fas fa-crosshairs"></i>
+                        <span>Centrar Mapa</span>
+                    </button>
+
+                    <button class="btn btn-control" id="locateBtn" title="Mi ubicación">
+                        <i class="fas fa-location-arrow"></i>
+                        <span>Mi Ubicación</span>
+                    </button>
+
+                </div>
+
+                <div class="stats-group">
+                    <div class="stat-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span id="locationCount">0</span>
+                        <span class="stat-label">Ubicaciones</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Container -->
+            <div class="map-card glass-card">
+                <div id="map"></div>
+
+                <!-- Loading Overlay -->
+                <div class="map-loading" id="mapLoading">
+                    <div class="loading-spinner"></div>
+                    <p>Cargando ubicaciones...</p>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="map-legend glass-card">
+                <h4 class="legend-title">
+                    <i class="fas fa-info-circle"></i>
+                    Leyenda
+                </h4>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-marker">
+                            <i class="fas fa-map-marker-alt" style="color: var(--primary);"></i>
+                        </div>
+                        <span>Ubicación de escalada</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-marker">
+                            <i class="fas fa-layer-group" style="color: var(--secondary);"></i>
+                        </div>
+                        <span>Cluster de ubicaciones</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Location Details Modal -->
+    <div class="modal-overlay" id="locationModal">
+        <div class="modal-content glass-card">
+            <button class="modal-close" onclick="closeLocationModal()">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="modal-body" id="modalBody">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
+    <script>
+        // Pass routes to JavaScript
+        window.MAP_CONFIG = {
+            apiLocationsUrl: "{{ path('api_locations') }}",
+            locationRoutesUrl: "{{ path('location_routes', {id: '__ID__'}) }}"
+        };
+    </script>
+    <script src="{{ asset('js/map/map.js?v=2.0') }}"></script>
+{% endblock %}

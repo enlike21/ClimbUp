@@ -1,0 +1,243 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Explorar Rutas de Escalada - ClimbUp{% endblock %}
+
+{% block meta_description %}Explora todas las rutas de escalada disponibles. Filtra por tipo (deportiva, tradicional, boulder), dificultad y ubicación para encontrar tu próxima aventura.{% endblock %}
+
+{% block canonical %}{{ url('app_route_user_view') }}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Rutas de Escalada en España",
+    "description": "Listado completo de rutas de escalada deportiva, tradicional y boulder en España.",
+    "url": "{{ url('app_route_user_view') }}",
+    "numberOfItems": {{ total_routes }},
+    "itemListElement": [
+        {% for route in routes|slice(0, 10) %}
+        {
+            "@type": "ListItem",
+            "position": {{ loop.index }},
+            "url": "{{ url('app_route_show', {id: route.id}) }}",
+            "name": "{{ route.name|e('js') }}"
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
+</script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/route/list/user_view.css?v=2.1') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="routes-wrapper">
+        <!-- Hero Header -->
+        <div class="routes-hero">
+            <div class="container">
+                <h1 class="routes-hero-title">
+                    Explora <span class="text-gradient">Rutas</span>
+                </h1>
+                <p class="routes-hero-subtitle">
+                    Descubre las mejores rutas de escalada y planifica tu próxima aventura
+                </p>
+            </div>
+        </div>
+
+        <div class="container routes-container">
+            <!-- Filter Section -->
+            <div class="filter-section glass-card">
+                <div class="filter-header">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>Filtrar Rutas</span>
+                </div>
+
+                <form method="get" class="filter-form">
+                    <!-- Row 1: Search + Type -->
+                    <div class="filter-row">
+                        <div class="filter-group filter-group-grow">
+                            <label class="filter-label">
+                                <i class="fas fa-search"></i> Nombre
+                            </label>
+                            <div class="input-wrapper">
+                                <input
+                                        type="text"
+                                        name="name"
+                                        class="filter-input"
+                                        placeholder="Buscar por nombre..."
+                                        value="{{ app.request.query.get('name', '') }}"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <i class="fas fa-mountain"></i> Tipo de escalada
+                            </label>
+                            <div class="filter-chips" id="typeChips">
+                                <button type="button" class="filter-chip {% if not app.request.query.get('route_type') %}active{% endif %}" data-value="">
+                                    Todos
+                                </button>
+                                <button type="button" class="filter-chip chip-sport {% if app.request.query.get('route_type') == 'Sport' %}active{% endif %}" data-value="Sport">
+                                    <i class="fas fa-bolt"></i> Sport
+                                </button>
+                                <button type="button" class="filter-chip chip-trad {% if app.request.query.get('route_type') == 'Trad' %}active{% endif %}" data-value="Trad">
+                                    <i class="fas fa-link"></i> Trad
+                                </button>
+                                <button type="button" class="filter-chip chip-toprope {% if app.request.query.get('route_type') == 'Toprope' %}active{% endif %}" data-value="Toprope">
+                                    <i class="fas fa-arrow-up"></i> Toprope
+                                </button>
+                            </div>
+                            <input type="hidden" name="route_type" id="routeTypeInput" value="{{ app.request.query.get('route_type', '') }}">
+                        </div>
+                    </div>
+
+                    <!-- Row 1.5: Region + Location -->
+                    <div class="filter-row">
+                        {% if regions is defined and regions|length > 0 %}
+                        <div class="filter-group filter-group-grow">
+                            <label class="filter-label">
+                                <i class="fas fa-map-marked-alt"></i> Región
+                            </label>
+                            <select name="region" id="regionSelect" class="filter-input">
+                                <option value="">Todas las regiones</option>
+                                {% for r in regions %}
+                                    <option value="{{ r }}" {% if app.request.query.get('region') == r %}selected{% endif %}>{{ r }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
+
+                        {% if locations is defined and locations|length > 0 %}
+                        <div class="filter-group filter-group-grow">
+                            <label class="filter-label">
+                                <i class="fas fa-map-pin"></i> Zona de escalada
+                            </label>
+                            <select name="location" id="locationSelect" class="filter-input">
+                                <option value="">Todas las zonas</option>
+                                {% for loc in locations %}
+                                    <option value="{{ loc.id }}" data-region="{{ loc.region }}" {% if app.request.query.get('location') == loc.id %}selected{% endif %}>{{ loc.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <input type="hidden" name="sort" id="sortInput" value="{{ sort|default('rating_desc') }}">
+
+                    <!-- Row 2: Difficulty -->
+                    <div class="filter-row">
+                        <div class="filter-group filter-group-full">
+                            <label class="filter-label">
+                                <i class="fas fa-signal"></i> Nivel de dificultad
+                                <span class="filter-label-hint">Sistema francés</span>
+                            </label>
+                            <div class="difficulty-filter">
+                                <div class="difficulty-group">
+                                    <div class="difficulty-group-label">
+                                        <span class="difficulty-dot dot-green"></span> Iniciación
+                                    </div>
+                                    <div class="difficulty-chips">
+                                        {% set selectedDiffs = app.request.query.get('difficulty', '')|split(',') %}
+                                        {% for d in ['3', '3+', '4-', '4', '5-', '5', '5+'] %}
+                                            <button type="button" class="diff-chip diff-green {% if d in selectedDiffs %}active{% endif %}" data-value="{{ d }}">{{ d }}</button>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="difficulty-group">
+                                    <div class="difficulty-group-label">
+                                        <span class="difficulty-dot dot-blue"></span> Fácil
+                                    </div>
+                                    <div class="difficulty-chips">
+                                        {% for d in ['6a', '6a+', '6b', '6b+'] %}
+                                            <button type="button" class="diff-chip diff-blue {% if d in selectedDiffs %}active{% endif %}" data-value="{{ d }}">{{ d }}</button>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="difficulty-group">
+                                    <div class="difficulty-group-label">
+                                        <span class="difficulty-dot dot-yellow"></span> Intermedio
+                                    </div>
+                                    <div class="difficulty-chips">
+                                        {% for d in ['6c', '6c+', '7a', '7a+'] %}
+                                            <button type="button" class="diff-chip diff-yellow {% if d in selectedDiffs %}active{% endif %}" data-value="{{ d }}">{{ d }}</button>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="difficulty-group">
+                                    <div class="difficulty-group-label">
+                                        <span class="difficulty-dot dot-orange"></span> Avanzado
+                                    </div>
+                                    <div class="difficulty-chips">
+                                        {% for d in ['7b', '7b+', '7c', '7c+'] %}
+                                            <button type="button" class="diff-chip diff-orange {% if d in selectedDiffs %}active{% endif %}" data-value="{{ d }}">{{ d }}</button>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="difficulty-group">
+                                    <div class="difficulty-group-label">
+                                        <span class="difficulty-dot dot-red"></span> Experto
+                                    </div>
+                                    <div class="difficulty-chips">
+                                        {% for d in ['8a', '8a+', '8b', '8b+', '8c', '8c+', '9a', '9a+', '9b+', '9c', '9c+'] %}
+                                            <button type="button" class="diff-chip diff-red {% if d in selectedDiffs %}active{% endif %}" data-value="{{ d }}">{{ d }}</button>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="difficulty" id="difficultyInput" value="{{ app.request.query.get('difficulty', '') }}">
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="filter-actions">
+                        <button type="submit" class="btn btn-primary filter-btn">
+                            <i class="fas fa-search"></i>
+                            <span>Buscar</span>
+                        </button>
+
+                        <button type="button" class="btn btn-secondary filter-btn" id="clearFiltersBtn" style="display:none">
+                            <i class="fas fa-times"></i>
+                            <span>Limpiar filtros</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="routesResultsContainer">
+                {{ include('route/list/_routes_results.html.twig') }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container">
+        <div class="toast toast-success" id="successToast">
+            <div class="toast-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="toast-content">
+                <div class="toast-title">¡Éxito!</div>
+                <div class="toast-message">Ruta guardada correctamente</div>
+            </div>
+            <button class="toast-close" onclick="closeToast('successToast')">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="routes-data"
+         data-check-completed="{{ path('app_check_completed_route') }}"
+         data-check-saved="{{ path('app_check_saved_route') }}"
+         data-save-route="{{ path('app_save_route') }}">
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/user_view/routes.js?v=2.1') }}"></script>
+{% endblock %}

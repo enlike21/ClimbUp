@@ -1,0 +1,46 @@
+<div class="chatbot-widget" id="chatbotWidget">
+    <button class="chatbot-toggle" id="chatbotToggle" title="Asistente de escalada" aria-label="Abrir asistente">
+        <i class="fas fa-robot chatbot-toggle-icon"></i>
+        <i class="fas fa-times chatbot-toggle-close"></i>
+    </button>
+
+    <div class="chatbot-panel" id="chatbotPanel">
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <div class="chatbot-avatar"><i class="fas fa-robot"></i></div>
+                <div>
+                    <h4 class="chatbot-title">ClimbUp Asistente</h4>
+                    <span class="chatbot-subtitle">Busca rutas con IA</span>
+                </div>
+            </div>
+            <div class="chatbot-header-actions">
+                <a href="{{ path('app_chatbot') }}" class="chatbot-action-btn" title="Pantalla completa"><i class="fas fa-expand-alt"></i></a>
+                <button class="chatbot-action-btn" id="chatbotClearBtn" title="Nueva conversación"><i class="fas fa-trash-alt"></i></button>
+            </div>
+        </div>
+
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="chatbot-message chatbot-message-bot">
+                <div class="chatbot-msg-avatar"><i class="fas fa-robot"></i></div>
+                <div class="chatbot-msg-content">
+                    <p>¡Hola! Soy el asistente de ClimbUp. Puedo ayudarte a encontrar rutas de escalada. Prueba a preguntarme:</p>
+                    <div class="chatbot-suggestions">
+                        <button class="chatbot-suggestion" data-message="Quiero una ruta fácil de deportiva">Deportiva fácil</button>
+                        <button class="chatbot-suggestion" data-message="Las mejores rutas valoradas">Mejor valoradas</button>
+                        <button class="chatbot-suggestion" data-message="Rutas de escalada tradicional">Trad</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chatbot-typing" id="chatbotTyping">
+            <div class="chatbot-msg-avatar"><i class="fas fa-robot"></i></div>
+            <div class="chatbot-typing-dots"><span></span><span></span><span></span></div>
+        </div>
+
+        <form class="chatbot-input-area" id="chatbotForm">
+            <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Escribe tu pregunta..." autocomplete="off" maxlength="500">
+            <button type="submit" class="chatbot-send-btn"><i class="fas fa-paper-plane"></i></button>
+        </form>
+    </div>
+</div>

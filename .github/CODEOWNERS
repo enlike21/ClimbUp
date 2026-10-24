@@ -1,0 +1,6 @@
+# Changes here need a maintainer's review (enforce it with branch protection on main).
+# Workflows deploy to production, so they are the most sensitive part of the repo.
+*                     @enlike21
+/.github/             @enlike21
+/config/packages/security.yaml  @enlike21
+/migrations/          @enlike21

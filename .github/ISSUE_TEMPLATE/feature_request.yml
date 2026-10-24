@@ -1,0 +1,24 @@
+name: Proponer una mejora
+description: Una idea o funcionalidad nueva.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: ¿Qué problema resuelve?
+      description: Cuéntanos la necesidad, no solo la solución.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Propuesta
+      description: Cómo te imaginas que funcionaría.
+    validations:
+      required: true
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Colaboración
+      options:
+        - label: Me gustaría implementarlo yo con un pull request.

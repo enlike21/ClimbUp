@@ -1,0 +1,238 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panel de Administración - ClimbUp{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/admin/dashboard.css?v=2.0') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="admin-dashboard-wrapper">
+        <!-- Hero Header -->
+        <div class="admin-hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Administrador</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Panel de <span class="text-gradient">Control</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Gestiona usuarios, rutas y el contenido de la plataforma
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container dashboard-container">
+            <div class="stats-grid">
+                <div class="stat-card glass-card">
+                    <div class="stat-icon stat-icon-primary">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">{{ stats.totalRoutes }}</div>
+                        <div class="stat-label">Total Rutas</div>
+                    </div>
+                </div>
+
+                <div class="stat-card glass-card">
+                    <div class="stat-icon stat-icon-success">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">{{ stats.totalUsers }}</div>
+                        <div class="stat-label">Usuarios</div>
+                    </div>
+                </div>
+
+                <div class="stat-card glass-card">
+                    <div class="stat-icon stat-icon-accent">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">{{ stats.totalLocations }}</div>
+                        <div class="stat-label">Ubicaciones</div>
+                    </div>
+                </div>
+
+                <div class="stat-card glass-card">
+                    <div class="stat-icon stat-icon-warning">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">{{ stats.totalCompletedRoutes }}</div>
+                        <div class="stat-label">Ascensos</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Options Grid -->
+            <div class="admin-section">
+                <h2 class="section-title">
+                    <i class="fas fa-cog"></i>
+                    <span>Gestión del Sistema</span>
+                </h2>
+
+                <div class="admin-options-grid">
+                    <!-- Administrar Rutas -->
+                    <a href="{{ path('app_route_index') }}" class="admin-option-card glass-card">
+                        <div class="option-header">
+                            <div class="option-icon option-icon-primary">
+                                <i class="fas fa-mountain"></i>
+                            </div>
+                            <div class="option-badge">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        <div class="option-content">
+                            <h3 class="option-title">Administrar Rutas</h3>
+                            <p class="option-description">
+                                Crear, editar y eliminar rutas de escalada
+                            </p>
+                        </div>
+                        <div class="option-footer">
+                            <span class="option-link">
+                                Ir a Rutas
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- Administrar Usuarios -->
+                    <a href="{{ path('app_user_management') }}" class="admin-option-card glass-card">
+                        <div class="option-header">
+                            <div class="option-icon option-icon-success">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="option-badge">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        <div class="option-content">
+                            <h3 class="option-title">Administrar Usuarios</h3>
+                            <p class="option-description">
+                                Gestionar permisos y cuentas de usuario
+                            </p>
+                        </div>
+                        <div class="option-footer">
+                            <span class="option-link">
+                                Ir a Usuarios
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- Administrar Ubicaciones (Futuro) -->
+                    <div class="admin-option-card glass-card option-disabled">
+                        <div class="option-header">
+                            <div class="option-icon option-icon-accent">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </div>
+                            <div class="option-badge">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                        <div class="option-content">
+                            <h3 class="option-title">Administrar Ubicaciones</h3>
+                            <p class="option-description">
+                                Gestionar zonas y puntos de escalada
+                            </p>
+                        </div>
+                        <div class="option-footer">
+                            <span class="option-link option-link-disabled">
+                                Próximamente
+                                <i class="fas fa-hourglass-half"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Estadísticas (Futuro) -->
+                    <div class="admin-option-card glass-card option-disabled">
+                        <div class="option-header">
+                            <div class="option-icon option-icon-warning">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="option-badge">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                        <div class="option-content">
+                            <h3 class="option-title">Estadísticas</h3>
+                            <p class="option-description">
+                                Ver análisis y reportes del sistema
+                            </p>
+                        </div>
+                        <div class="option-footer">
+                            <span class="option-link option-link-disabled">
+                                Próximamente
+                                <i class="fas fa-hourglass-half"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions-section">
+                <h2 class="section-title">
+                    <i class="fas fa-bolt"></i>
+                    <span>Acciones Rápidas</span>
+                </h2>
+
+                <div class="quick-actions-grid">
+                    <a href="{{ path('app_route_new') }}" class="quick-action-btn glass-card">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Nueva Ruta</span>
+                    </a>
+
+                    <a href="{{ path('homepage') }}" class="quick-action-btn glass-card">
+                        <i class="fas fa-home"></i>
+                        <span>Ir al Inicio</span>
+                    </a>
+
+                    <a href="{{ path('map') }}" class="quick-action-btn glass-card">
+                        <i class="fas fa-map"></i>
+                        <span>Ver Mapa</span>
+                    </a>
+
+                    <a href="{{ path('app_route_user_view') }}" class="quick-action-btn glass-card">
+                        <i class="fas fa-eye"></i>
+                        <span>Vista Usuario</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stat numbers
+            const statValues = document.querySelectorAll('.stat-value');
+
+            statValues.forEach(stat => {
+                const target = parseInt(stat.textContent);
+                const duration = 1500;
+                const increment = target / (duration / 16);
+                let current = 0;
+
+                const timer = setInterval(() => {
+                    current += increment;
+
+                    if (current >= target) {
+                        stat.textContent = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 16);
+            });
+        });
+    </script>
+{% endblock %}

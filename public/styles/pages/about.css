@@ -1,0 +1,201 @@
+/* ============================================
+   ABOUT PAGE
+   ============================================ */
+
+.about-wrapper {
+    min-height: 100vh;
+}
+
+/* Hero */
+.about-hero {
+    padding: 8rem 0 3rem;
+    text-align: center;
+    position: relative;
+}
+
+.about-hero .hero-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.about-hero .hero-title i {
+    color: var(--primary);
+    font-size: 2rem;
+}
+
+.about-hero .hero-subtitle {
+    color: var(--gray);
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+/* Content */
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+}
+
+.about-card {
+    padding: 3rem;
+}
+
+/* Header */
+.about-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.about-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--light);
+    margin-bottom: 0.25rem;
+}
+
+.about-role {
+    color: var(--primary);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Sections */
+.about-section {
+    margin-bottom: 2rem;
+}
+
+.about-section .section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--light);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.about-section .section-title i {
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.about-section p {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.8;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.about-section p strong {
+    color: var(--primary-light);
+    font-weight: 600;
+}
+
+/* Tech Grid */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.tech-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.25rem 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-normal);
+}
+
+.tech-item:hover {
+    background: rgba(212, 168, 83, 0.08);
+    border-color: rgba(212, 168, 83, 0.2);
+    transform: translateY(-2px);
+}
+
+.tech-item i {
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.tech-item span {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    text-align: center;
+}
+
+/* CTA */
+.about-cta {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+}
+
+.btn-linkedin {
+    background: #0A66C2;
+    color: #fff;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 15px rgba(10, 102, 194, 0.3);
+}
+
+.btn-linkedin:hover {
+    background: #004182;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(10, 102, 194, 0.4);
+    color: #fff;
+}
+
+.btn-linkedin i {
+    font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-hero .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .about-card {
+        padding: 1.5rem;
+    }
+
+    .about-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-name {
+        font-size: 1.4rem;
+    }
+
+    .tech-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .btn-linkedin {
+        width: 100%;
+        justify-content: center;
+    }
+}

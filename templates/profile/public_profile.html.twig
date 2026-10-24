@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ profileUser.name }} - Perfil de Escalador | ClimbUp{% endblock %}
+{% block meta_description %}Perfil de escalador de {{ profileUser.name }} en ClimbUp: rutas completadas, grado máximo y últimos ascensos.{% endblock %}
+{% block canonical %}{{ url('app_public_profile', {id: profileUser.id}) }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/saved_routes/saved_routes.css?v=2.1') }}">
+    <link rel="stylesheet" href="{{ asset('styles/pages/profile/edit_profile.css?v=1.0') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="profile-wrapper">
+        <div class="profile-container">
+            <div class="profile-card-header">
+                <div class="profile-avatar-large">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="profile-status-badge"></div>
+                </div>
+                <div class="profile-user-info">
+                    <h1>{{ profileUser.name }}</h1>
+                    <p class="profile-member-since">
+                        <i class="fas fa-calendar-alt"></i>
+                        Miembro desde {{ profileUser.createdAt|date('d/m/Y') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container saved-routes-container">
+            {% if stats is not empty %}
+                <section class="user-stats-section glass-card">
+                    <div class="section-header">
+                        <div class="section-title-wrapper">
+                            <i class="fas fa-chart-bar section-icon"></i>
+                            <h2 class="section-title">Estadísticas de Escalada</h2>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stats-highlight">
+                            <div class="max-grade-card">
+                                <span class="max-grade-label">Grado máximo</span>
+                                <span class="max-grade-value">{{ stats.maxGrade ?? '—' }}</span>
+                                <span class="max-grade-sub">{{ stats.totalCompleted }} rutas completadas</span>
+                            </div>
+                        </div>
+
+                        <div class="stats-chart-card">
+                            <h4 class="stats-chart-title"><i class="fas fa-map-marked-alt"></i> Por Región</h4>
+                            <div class="stats-bars">
+                                {% set maxRegionCount = stats.byRegion|first %}
+                                {% for region, count in stats.byRegion|slice(0, 8) %}
+                                    <div class="stat-bar-row">
+                                        <span class="stat-bar-label">{{ region }}</span>
+                                        <div class="stat-bar-track">
+                                            <div class="stat-bar-fill stat-bar-region" style="width: {{ maxRegionCount > 0 ? (count / maxRegionCount * 100)|round : 0 }}%"></div>
+                                        </div>
+                                        <span class="stat-bar-value">{{ count }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="stats-chart-card">
+                            <h4 class="stats-chart-title"><i class="fas fa-signal"></i> Por Grado</h4>
+                            <div class="stats-bars">
+                                {% set maxGradeCount = max(stats.byGrade) %}
+                                {% for grade, count in stats.byGrade %}
+                                    <div class="stat-bar-row">
+                                        <span class="stat-bar-label">{{ grade }}</span>
+                                        <div class="stat-bar-track">
+                                            <div class="stat-bar-fill stat-bar-grade" style="width: {{ maxGradeCount > 0 ? (count / maxGradeCount * 100)|round : 0 }}%"></div>
+                                        </div>
+                                        <span class="stat-bar-value">{{ count }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if stats.recent|length > 0 %}
+                        <div class="recent-timeline">
+                            <h4 class="stats-chart-title"><i class="fas fa-history"></i> Últimas Completadas</h4>
+                            <div class="timeline-list">
+                                {% for item in stats.recent %}
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <span class="timeline-name">{{ item.name }}</span>
+                                            <span class="timeline-meta">
+                                                <span class="timeline-badge">{{ item.difficulty }}</span>
+                                                {{ item.location }} · {{ item.date }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </section>
+            {% else %}
+                <div class="empty-state glass-card">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3 class="empty-state-title">Aún sin ascensos registrados</h3>
+                    <p class="empty-state-text">
+                        {{ profileUser.name }} todavía no ha completado ninguna ruta en ClimbUp.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

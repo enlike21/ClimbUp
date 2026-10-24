@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error del servidor - ClimbUp{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+
+{% block body %}
+    <div class="error-page">
+        <div class="container">
+            <div class="error-content">
+                <div class="error-code">500</div>
+                <h1 class="error-title">Algo salió mal</h1>
+                <p class="error-message">Ha ocurrido un error inesperado en el servidor. Nuestro equipo ha sido notificado. Por favor, inténtalo de nuevo en unos minutos.</p>
+                <div class="error-actions">
+                    <a href="{{ path('homepage') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-home"></i>
+                        <span>Volver al inicio</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
