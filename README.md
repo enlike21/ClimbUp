@@ -373,7 +373,7 @@ defecto `http://localhost:8080`), `CYPRESS_USER_EMAIL` y `CYPRESS_USER_PASSWORD`
 
 ```
 .
-├── .github/                # CI, deploy, plantillas de issues/PR, Dependabot
+├── .github/                # CI, deploy, plantillas de issues/PR
 ├── config/                 # Configuración Symfony (services, routes, security…)
 ├── cypress/                # Tests E2E
 ├── data/sample_routes.csv  # Datos de ejemplo inventados
