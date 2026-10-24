@@ -8,9 +8,9 @@
 // All game modules are imported with the same ?v= suffix: bump it everywhere when any of
 // them changes, so browsers never mix a cached old module with a new one.
 // ============================================
-import * as S from './sim.js?v=8';
-import * as R from './render.js?v=8';
-import * as A from './audio.js?v=8';
+import * as S from './sim.js?v=9';
+import * as R from './render.js?v=9';
+import * as A from './audio.js?v=9';
 
 const $ = (id) => document.getElementById(id);
 
@@ -240,9 +240,15 @@ function boot() {
     // ============================================
     // PAUSE
     // ============================================
+    let pauseReturnFocus = null;
+
     function pause() {
         if (state !== 'playing') {
             return;
+        }
+        pauseReturnFocus = document.activeElement;
+        if (el.pauseOverlay && el.pauseOverlay.contains(pauseReturnFocus)) {
+            pauseReturnFocus = null;
         }
         state = 'paused';
         A.stopMusic();
@@ -269,7 +275,37 @@ function boot() {
             queueRelease();
         }
         A.resumeMusic();
-        canvas.focus({ preventScroll: true });
+        const returnTarget = pauseReturnFocus;
+        pauseReturnFocus = null;
+        if (returnTarget && returnTarget.isConnected && !el.pauseOverlay.contains(returnTarget) && typeof returnTarget.focus === 'function') {
+            returnTarget.focus({ preventScroll: true });
+        } else {
+            canvas.focus({ preventScroll: true });
+        }
+    }
+
+    if (el.pauseOverlay) {
+        el.pauseOverlay.addEventListener('keydown', (e) => {
+            if (e.key !== 'Tab') {
+                return;
+            }
+            const focusable = Array.from(el.pauseOverlay.querySelectorAll(
+                'button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+            )).filter((node) => !node.hasAttribute('hidden') && node.getAttribute('aria-hidden') !== 'true');
+            if (focusable.length === 0) {
+                e.preventDefault();
+                return;
+            }
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey && (document.activeElement === first || !el.pauseOverlay.contains(document.activeElement))) {
+                e.preventDefault();
+                last.focus({ preventScroll: true });
+            } else if (!e.shiftKey && (document.activeElement === last || !el.pauseOverlay.contains(document.activeElement))) {
+                e.preventDefault();
+                first.focus({ preventScroll: true });
+            }
+        });
     }
 
     function quitToTitle() {
