@@ -54,3 +54,58 @@ jobs:
 
       - name: Run tests
         run: composer test
+
+  fresh-install:
+    # What a new contributor's first run does: an empty database must reach the current
+    # schema with migrations alone, and the sample routes must import.
+    runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:10.6
+        env:
+          MARIADB_DATABASE: climbup_ci
+          MARIADB_USER: user
+          MARIADB_PASSWORD: password
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      APP_ENV: dev
+      APP_DEBUG: '0'
+      APP_SECRET: ci-secret
+      DATABASE_URL: 'mysql://user:password@127.0.0.1:3306/climbup_ci?serverVersion=10.6&charset=utf8mb4'
+      MESSENGER_TRANSPORT_DSN: 'doctrine://default?auto_setup=0'
+      MAILER_DSN: 'smtp://localhost:1025'
+      LOCK_DSN: flock
+      GROQ_API_KEY: ci-dummy-key
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: ctype, iconv, dom, mbstring, pdo_mysql
+          coverage: none
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Create empty .env
+        run: touch .env
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Run all migrations on an empty database
+        run: php bin/console doctrine:migrations:migrate --no-interaction
+
+      - name: Import the sample routes
+        run: php bin/console app:import-routes data/sample_routes.csv | tee import.log && grep -q "60 routes imported" import.log

@@ -161,8 +161,8 @@ cp .env.example .env
 # y pon tu clave de Groq si quieres usar el asistente IA.
 
 docker compose up -d --build
-
-docker compose exec web composer install --no-interaction
+# La primera vez el contenedor web instala las dependencias solo; síguelo con:
+# docker compose logs -f web   (hasta ver "Iniciando PHP-FPM")
 
 docker compose exec web php bin/console doctrine:migrations:migrate --no-interaction
 

@@ -40,11 +40,14 @@ Necesitas Docker y Docker Compose. Desde la carpeta de tu fork:
 
 ```bash
 cp .env.example .env          # valores de desarrollo; cambia APP_SECRET por uno aleatorio
-docker compose up -d --build
-docker compose exec web composer install
+docker compose up -d --build     # la primera vez instala solo las dependencias (composer install)
+docker compose logs -f web       # espera a ver "Iniciando PHP-FPM" y sal con Ctrl+C
 docker compose exec web php bin/console doctrine:migrations:migrate --no-interaction
 docker compose exec web php bin/console app:import-routes data/sample_routes.csv
 ```
+
+Las migraciones crean todas las tablas desde cero en una base de datos vacía, y la CI lo
+comprueba en cada pull request (job `fresh-install`).
 
 La app queda en <http://localhost:8080>, el correo de desarrollo (Mailpit) en
 <http://localhost:8025> y Adminer en <http://localhost:8082>.

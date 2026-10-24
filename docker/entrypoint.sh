@@ -3,6 +3,13 @@
 
 set -e
 
+# A fresh clone has no vendor/ yet (the project folder is mounted over the image's copy),
+# and without it bin/console can't even start - install the dependencies first.
+if [ ! -f vendor/autoload.php ]; then
+  echo "📦 Instalando dependencias (composer install), la primera vez tarda un poco..."
+  composer install --no-interaction --prefer-dist
+fi
+
 echo "⏳ Esperando a que la base de datos esté lista..."
 
 # Wait for database to be ready

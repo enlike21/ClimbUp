@@ -108,7 +108,8 @@
         // Pass routes to JavaScript
         window.MAP_CONFIG = {
             apiLocationsUrl: "{{ path('api_locations') }}",
-            locationRoutesUrl: "{{ path('location_routes', {id: '__ID__'}) }}"
+            // The route only accepts numeric ids, so build it with 0 and swap in the placeholder.
+            locationRoutesUrl: "{{ path('location_routes', {id: 0})|slice(0, -1) }}__ID__"
         };
     </script>
     <script src="{{ asset('js/map/map.js?v=2.0') }}"></script>
