@@ -1,0 +1,82 @@
+/* ============================================
+   GAME PAGE - "Al Filo"
+   Everything inside the game box (HUD, overlays, buttons, legend) is styled as pixel art to
+   match the canvas: Press Start 2P, hard 0-radius edges, and "stepped" borders built from
+   offset box-shadows (four 1-direction shadows leave the corners notched, the classic way to
+   fake a pixel frame in CSS). The sidebar keeps the regular site look.
+   No text-transform: uppercase on Spanish text - Press Start 2P has no accented capitals
+   (Í, É, Á...), so "CAÍDO" would render with a fallback glyph.
+   ============================================ */
+
+.game-page {
+    --px-ink: #1b1420;
+    --px-panel: #241c38;
+    --px-panel-hi: #3a2e58;
+    --px-gold: #f2c25a;
+    --px-gold-hi: #ffe394;
+    --px-gold-lo: #a9781f;
+    --px-cream: #fff3d6;
+    --px-lilac: #a99cc8;
+    --px-red: #e2493b;
+    --px-teal: #2fd6c0;
+    --px-font: 'Press Start 2P', monospace;
+    padding: var(--spacing-xl) 0;
+    min-height: calc(100vh - 200px);
+}
+
+.game-page .container {
+    max-width: 640px;
+    width: 100%;
+    transition: max-width 0.2s ease;
+}
+
+/* Desktop gets a noticeably bigger playing field plus room for the sidebar */
+@media (min-width: 1024px) {
+    .game-page .container {
+        max-width: 1120px;
+    }
+}
+
+/* Layout: single column on mobile, game + sidebar on desktop */
+.game-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+}
+
+/* Grid items default to min-width: auto, which refuses to shrink below the width of their
+   content (the HUD row, in this case) - that was pushing the whole page into horizontal
+   scroll on narrow phones instead of letting the HUD wrap. */
+.game-main {
+    min-width: 0;
+}
+
+@media (min-width: 1024px) {
+    .game-layout {
+        grid-template-columns: 1fr 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-page {
+        padding: var(--spacing-md) 0;
+    }
+}
+
+/* Reduced motion: from the OS setting or the toggle in the pause menu */
+@media (prefers-reduced-motion: reduce) {
+    .game-page *,
+    .game-page *::before,
+    .game-page *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+.game-reduced-motion .game-page *,
+.game-reduced-motion .game-page *::before,
+.game-reduced-motion .game-page *::after {
+    animation: none !important;
+    transition: none !important;
+}

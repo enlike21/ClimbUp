@@ -1,0 +1,188 @@
+/* ============================================
+   GAME PAGE - hero
+   The title-screen header: banded night sky, stars, stepped pixel mountains, stats.
+   ============================================ */
+
+/* Hero: a game title screen - banded night sky, stars, stepped pixel mountains */
+.game-hero {
+    position: relative;
+    overflow: hidden;
+    margin: 6px 6px calc(var(--spacing-lg) + 6px);
+    padding: 34px var(--spacing-md) 64px;
+    text-align: center;
+    background: linear-gradient(180deg,
+        #110c20 0 22%, #181230 22% 42%, #211940 42% 60%, #2c2152 60% 76%, #3a2c64 76% 100%);
+    box-shadow:
+        0 -6px 0 0 var(--px-panel-hi),
+        0 6px 0 0 var(--px-panel-hi),
+        -6px 0 0 0 var(--px-panel-hi),
+        6px 0 0 0 var(--px-panel-hi),
+        0 14px 0 0 rgba(0, 0, 0, 0.35);
+}
+
+.game-hero-sky,
+.game-hero-ridges {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+.game-hero-sky {
+    top: 0;
+    height: 100%;
+}
+
+/* The ridges only fill the bottom band, under the stat boxes, never behind the text */
+.game-hero-ridges {
+    bottom: 0;
+    height: 46%;
+}
+
+.game-hero-stars rect {
+    fill: var(--px-cream);
+    animation: gameTwinkle 2.4s steps(1) infinite;
+}
+
+.game-hero-stars rect:nth-child(3n) {
+    animation-delay: -0.8s;
+}
+
+.game-hero-stars rect:nth-child(3n + 1) {
+    animation-delay: -1.6s;
+}
+
+@keyframes gameTwinkle {
+    0%, 70% { opacity: 1; }
+    71%, 100% { opacity: 0.25; }
+}
+
+.game-hero-moon rect {
+    fill: #e8e6f6;
+}
+
+.game-hero-ridge-far {
+    fill: #3f3470;
+}
+
+.game-hero-ridge-near {
+    fill: var(--px-ink);
+}
+
+.game-hero-content {
+    position: relative;
+}
+
+.game-page-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px 6px;
+    background: var(--px-ink);
+    color: var(--px-gold);
+    font-family: var(--px-font);
+    font-size: 8px;
+    line-height: 1.4;
+    margin-bottom: 18px;
+    box-shadow:
+        0 -2px 0 0 var(--px-gold-lo),
+        0 2px 0 0 var(--px-gold-lo),
+        -2px 0 0 0 var(--px-gold-lo),
+        2px 0 0 0 var(--px-gold-lo);
+}
+
+.game-hero-title {
+    font-family: var(--px-font);
+    font-size: 2.6rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    color: var(--px-cream);
+    text-shadow: 0 5px 0 #8a7fa8, 5px 10px 0 var(--px-ink);
+}
+
+.game-hero-title span {
+    color: var(--px-gold);
+    text-shadow: 0 5px 0 var(--px-gold-lo), 5px 10px 0 var(--px-ink);
+}
+
+.game-hero-lead {
+    color: #d8d0ea;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 520px;
+    margin: 0 auto 22px;
+    text-shadow: 0 2px 0 var(--px-ink);
+}
+
+.game-hero-stats {
+    list-style: none;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+}
+
+.game-hero-stats li {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 110px;
+    padding: 12px 12px 10px;
+    background: var(--px-panel);
+    box-shadow:
+        0 -3px 0 0 var(--px-ink),
+        0 3px 0 0 var(--px-ink),
+        -3px 0 0 0 var(--px-ink),
+        3px 0 0 0 var(--px-ink),
+        inset 0 3px 0 0 var(--px-panel-hi);
+}
+
+.game-hero-stats strong {
+    font-family: var(--px-font);
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--px-gold);
+    text-shadow: 2px 2px 0 var(--px-ink);
+}
+
+.game-hero-stats span {
+    font-family: var(--px-font);
+    font-size: 8px;
+    color: var(--px-lilac);
+}
+
+@media (max-width: 768px) {
+    .game-hero {
+        padding: 26px 14px 52px;
+    }
+
+    .game-hero-title {
+        font-size: 1.8rem;
+    }
+
+    .game-hero-stats li {
+        min-width: 92px;
+    }
+}
+
+@media (max-width: 540px) {
+    .game-hero-lead {
+        font-size: 0.88rem;
+    }
+
+    .game-hero-stats {
+        gap: 10px;
+    }
+
+    .game-hero-stats li {
+        min-width: 0;
+        padding: 10px 8px 8px;
+    }
+
+    .game-hero-stats strong {
+        font-size: 11px;
+    }
+}

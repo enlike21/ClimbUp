@@ -1,0 +1,309 @@
+/* ============================================
+   GAME PAGE - game box
+   Frame, HUD, canvas, power bar, corner buttons, tutorial prompt and toasts.
+   ============================================ */
+
+/* Game box: a pixel frame instead of the site's rounded glass card */
+.game-wrap {
+    background: var(--px-ink);
+    border-radius: 0;
+    margin: 6px;
+    box-shadow:
+        0 -6px 0 0 var(--px-panel-hi),
+        0 6px 0 0 var(--px-panel-hi),
+        -6px 0 0 0 var(--px-panel-hi),
+        6px 0 0 0 var(--px-panel-hi),
+        0 14px 0 0 rgba(0, 0, 0, 0.35);
+}
+
+/* HUD */
+.game-hud {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: 12px var(--spacing-md);
+    background: var(--px-panel);
+    border-bottom: 4px solid var(--px-ink);
+    box-shadow: inset 0 -4px 0 0 var(--px-panel-hi);
+}
+
+.game-hud-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.game-hud-icon {
+    font-size: 0.95rem;
+    color: var(--px-lilac);
+    width: 16px;
+    text-align: center;
+}
+
+.game-hud-icon-record {
+    color: var(--px-gold);
+}
+
+.game-hud-item > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.game-hud-label {
+    font-family: var(--px-font);
+    font-size: 8px;
+    color: var(--px-lilac);
+}
+
+.game-hud-value {
+    font-family: var(--px-font);
+    font-size: 13px;
+    color: var(--px-gold);
+    text-shadow: 2px 2px 0 var(--px-ink);
+}
+
+.game-hud-stamina {
+    flex: 1;
+    min-width: 90px;
+}
+
+.game-hud-stamina-inner {
+    width: 100%;
+}
+
+.game-stamina-bar {
+    position: relative;
+    width: 100%;
+    height: 12px;
+    background: var(--px-ink);
+    overflow: hidden;
+    box-shadow:
+        0 -2px 0 0 var(--px-panel-hi),
+        0 2px 0 0 var(--px-panel-hi),
+        -2px 0 0 0 var(--px-panel-hi),
+        2px 0 0 0 var(--px-panel-hi);
+}
+
+/* Segment notches over the fill - reads as a row of blocks, like a retro health bar */
+.game-stamina-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(90deg, transparent 0 10px, var(--px-ink) 10px 12px);
+    pointer-events: none;
+}
+
+.game-stamina-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(180deg, #9cf5b4 0 25%, #38c46e 25% 70%, #1f8a4f 70% 100%);
+    transition: width 0.15s steps(6);
+}
+
+.game-stamina-bar.is-low .game-stamina-fill {
+    background: linear-gradient(180deg, #ff9b8a 0 25%, var(--px-red) 25% 70%, #9c2a22 70% 100%);
+    animation: gameStaminaLowPulse 0.7s steps(2) infinite;
+}
+
+@keyframes gameStaminaLowPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+}
+
+/* A quick celebratory flash when stamina is topped up by something earned
+   (a precise landing, a combo, a clip) rather than just the slow passive regen. */
+.game-stamina-fill.is-boosted {
+    animation: gameStaminaBoost 0.45s steps(3);
+}
+
+@keyframes gameStaminaBoost {
+    0% { filter: brightness(1); }
+    30% { filter: brightness(1.9); }
+    100% { filter: brightness(1); }
+}
+
+/* Canvas holder */
+.game-canvas-holder {
+    position: relative;
+    width: 100%;
+    height: min(68vh, 560px);
+    min-height: 380px;
+    touch-action: none;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+@media (min-width: 1024px) {
+    .game-canvas-holder {
+        height: min(74vh, 680px);
+        min-height: 440px;
+    }
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+    cursor: crosshair;
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+/* Power bar (vertical, shows charge while held) */
+.game-power-bar {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    bottom: 16px;
+    width: 14px;
+    background: var(--px-ink);
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-end;
+    box-shadow:
+        0 -3px 0 0 var(--px-cream),
+        0 3px 0 0 var(--px-cream),
+        -3px 0 0 0 var(--px-cream),
+        3px 0 0 0 var(--px-cream);
+}
+
+.game-power-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent 0 10px, var(--px-ink) 10px 12px);
+    pointer-events: none;
+}
+
+.game-power-bar.is-visible {
+    opacity: 1;
+}
+
+.game-power-fill {
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(90deg, var(--px-gold-hi) 0 30%, var(--px-gold) 30% 70%, var(--px-gold-lo) 70% 100%);
+}
+
+.game-power-fill.is-maxed {
+    background: linear-gradient(90deg, #ffc08a 0 30%, #ff6b4a 30% 70%, #b8402a 70% 100%);
+    animation: gamePowerPulse 0.3s steps(2) infinite;
+}
+
+@keyframes gamePowerPulse {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.5); }
+}
+
+/* Pause + sound buttons, top-left of the canvas */
+.game-corner-buttons {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 3;
+    display: flex;
+    gap: 12px;
+}
+
+.game-sound-btn {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: var(--px-panel);
+    color: var(--px-gold);
+    font-size: 0.8rem;
+    cursor: pointer;
+    box-shadow:
+        0 -3px 0 0 var(--px-ink),
+        0 3px 0 0 var(--px-ink),
+        -3px 0 0 0 var(--px-ink),
+        3px 0 0 0 var(--px-ink),
+        inset -3px -3px 0 0 var(--px-ink),
+        inset 3px 3px 0 0 var(--px-panel-hi);
+}
+
+.game-sound-btn:hover {
+    background: var(--px-panel-hi);
+}
+
+.game-sound-btn.is-muted {
+    color: var(--px-lilac);
+}
+
+.game-mode-tag {
+    margin-left: 8px;
+    padding: 2px 4px 1px;
+    background: var(--px-ink);
+    color: var(--px-gold);
+}
+
+/* First-run tutorial prompt and achievement toasts, over the canvas */
+.game-tutorial,
+.game-toast {
+    position: absolute;
+    left: 50%;
+    z-index: 3;
+    width: max-content;
+    max-width: calc(100% - 120px);
+    margin: 0;
+    padding: 10px 12px 9px;
+    transform: translateX(-50%);
+    background: var(--px-panel);
+    color: var(--px-cream);
+    font-family: var(--px-font);
+    font-size: 9px;
+    line-height: 1.8;
+    text-align: center;
+    pointer-events: none;
+    box-shadow:
+        0 -3px 0 0 var(--px-ink),
+        0 3px 0 0 var(--px-ink),
+        -3px 0 0 0 var(--px-ink),
+        3px 0 0 0 var(--px-ink),
+        inset 0 0 0 3px var(--px-gold);
+}
+
+.game-tutorial {
+    bottom: 18px;
+}
+
+.game-toast {
+    top: 64px;
+    color: var(--px-gold);
+    opacity: 0;
+    transform: translate(-50%, 12px);
+    transition: opacity 0.2s steps(3), transform 0.2s steps(3);
+}
+
+.game-toast.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+@media (max-width: 768px) {
+    .game-hud {
+        gap: var(--spacing-sm);
+        flex-wrap: wrap;
+    }
+
+    .game-canvas-holder {
+        height: min(60vh, 480px);
+        min-height: 340px;
+    }
+}
+
+@media (max-width: 540px) {
+    .game-mode-tag {
+        display: none;
+    }
+}

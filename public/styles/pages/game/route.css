@@ -1,0 +1,137 @@
+/* ============================================
+   GAME PAGE - "La ruta"
+   The zones of the climb as a staircase of rock blocks (a vertical list on phones).
+   ============================================ */
+
+/* "La ruta": each zone is a rock block, rising left to right like a staircase, with the
+   climber's sprite standing on the highest one you've reached. */
+.game-route-panel {
+    margin: calc(var(--spacing-lg) + 4px) 6px 6px;
+}
+
+.game-route-intro {
+    color: #cfc6e2;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0 0 18px;
+}
+
+.game-route {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    align-items: end;
+    gap: 6px;
+    margin: 0;
+    padding: 60px 0 0;
+}
+
+.game-route-stop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.game-route-block {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: calc(18px + var(--step) * 12px);
+    background:
+        linear-gradient(180deg, var(--cap) 0 5px, var(--rock-hi) 5px 9px, var(--rock) 9px 70%, var(--rock-lo) 70% 100%);
+    box-shadow:
+        0 -3px 0 0 var(--px-ink),
+        -3px 0 0 0 var(--px-ink),
+        3px 0 0 0 var(--px-ink),
+        0 3px 0 0 var(--px-ink);
+    filter: saturate(0.35) brightness(0.55);
+    color: var(--px-ink);
+}
+
+.game-route-stop.is-reached .game-route-block {
+    filter: none;
+}
+
+.game-route-stop.is-summit .game-route-block {
+    background: linear-gradient(180deg, #ffe394 0 4px, var(--px-gold) 4px 70%, var(--px-gold-lo) 70% 100%);
+}
+
+.game-route-climber {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    margin-bottom: 1px;
+    transform: translateX(-50%);
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    filter: none;
+}
+
+.game-route-name {
+    font-family: var(--px-font);
+    font-size: 7px;
+    line-height: 1.6;
+    color: var(--px-lilac);
+    overflow-wrap: break-word;
+}
+
+.game-route-stop.is-reached .game-route-name {
+    color: var(--px-cream);
+}
+
+.game-route-height {
+    font-family: var(--px-font);
+    font-size: 8px;
+    color: var(--px-gold-lo);
+}
+
+.game-route-stop.is-reached .game-route-height {
+    color: var(--px-gold);
+}
+
+@media (max-width: 768px) {
+    /* The staircase becomes a vertical climb, summit on top */
+    .game-route {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 10px;
+        padding: 0;
+    }
+
+    .game-route-stop {
+        flex-direction: row;
+        gap: 12px;
+        text-align: left;
+    }
+
+    .game-route-block {
+        flex: 0 0 auto;
+        width: calc(28px + var(--step) * 10px);
+        height: 22px;
+    }
+
+    .game-route-name {
+        flex: 1;
+        font-size: 8px;
+    }
+
+    /* No room for the sprite on a short row - a "Tú" tag marks where you are instead */
+    .game-route-climber {
+        display: none;
+    }
+
+    .game-route-stop.is-current .game-route-name::after {
+        content: 'Tú';
+        display: inline-block;
+        margin-left: 10px;
+        padding: 3px 4px 2px;
+        background: var(--px-gold);
+        color: var(--px-ink);
+        font-size: 7px;
+    }
+}

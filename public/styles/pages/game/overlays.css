@@ -1,0 +1,472 @@
+/* ============================================
+   GAME PAGE - overlays
+   Start, pause and game-over screens, settings, controls legend, keycaps and pixel buttons.
+   ============================================ */
+
+/* Overlays: no blur, so the animated pixel scene stays visible behind the panel,
+   just dimmed and with faint scanlines for a CRT feel. */
+.game-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 4px),
+        rgba(14, 8, 26, 0.5);
+    padding: 14px;
+    text-align: center;
+    overflow-y: auto;
+}
+
+.game-overlay-hidden {
+    display: none;
+}
+
+.game-overlay-card {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px 20px 18px;
+    background: var(--px-panel);
+    box-shadow:
+        0 -4px 0 0 var(--px-ink),
+        0 4px 0 0 var(--px-ink),
+        -4px 0 0 0 var(--px-ink),
+        4px 0 0 0 var(--px-ink),
+        inset 0 0 0 4px var(--px-gold),
+        inset 0 0 0 6px var(--px-gold-lo),
+        inset 0 0 0 8px var(--px-ink),
+        inset 0 10px 0 0 var(--px-panel-hi),
+        8px 12px 0 0 rgba(0, 0, 0, 0.45);
+    animation: gameCardIn 0.28s steps(4);
+}
+
+@keyframes gameCardIn {
+    0% { transform: translateY(16px) scale(0.92); opacity: 0; }
+    100% { transform: none; opacity: 1; }
+}
+
+/* The climber's own sprite (drawn by js/game/main.js) instead of a font icon */
+.game-overlay-sprite {
+    display: block;
+    margin: 0 auto 10px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    animation: gameSpriteBob 1s steps(2) infinite;
+}
+
+@keyframes gameSpriteBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+.game-overlay.is-win .game-overlay-sprite {
+    animation: gameSpriteBob 0.4s steps(2) infinite;
+}
+
+.game-overlay-card h2 {
+    font-family: var(--px-font);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--px-gold);
+    text-shadow: 0 3px 0 var(--px-gold-lo), 3px 6px 0 var(--px-ink);
+    margin-bottom: 14px;
+}
+
+.game-overlay-card .game-title {
+    font-size: 28px;
+    text-shadow: 0 4px 0 var(--px-gold-lo), 4px 8px 0 var(--px-ink);
+}
+
+.game-overlay.is-win .game-overlay-card h2 {
+    animation: gameTitleFlash 0.6s steps(2) infinite;
+}
+
+@keyframes gameTitleFlash {
+    0%, 100% { color: var(--px-gold); }
+    50% { color: var(--px-cream); }
+}
+
+.game-overlay-card p {
+    font-family: var(--px-font);
+    color: var(--px-cream);
+    font-size: 9px;
+    line-height: 1.9;
+    margin-bottom: 10px;
+}
+
+.game-overlay-card > .game-btn {
+    margin-top: 14px;
+}
+
+/* Blinking "press start", arcade style */
+.game-press-start {
+    margin: 14px 0 0 !important;
+    color: var(--px-gold) !important;
+    animation: gameBlink 1s steps(1) infinite;
+}
+
+/* No space bar on a touch screen */
+@media (hover: none) {
+    .game-press-start {
+        display: none;
+    }
+}
+
+@keyframes gameBlink {
+    0%, 60% { opacity: 1; }
+    61%, 100% { opacity: 0; }
+}
+
+.game-overlay-score {
+    font-size: 11px !important;
+    color: var(--px-cream) !important;
+}
+
+.game-overlay-score strong {
+    display: block;
+    margin-top: 6px;
+    font-weight: 400;
+    font-size: 20px;
+    color: var(--px-gold);
+    text-shadow: 0 3px 0 var(--px-gold-lo), 3px 5px 0 var(--px-ink);
+}
+
+.game-overlay-record {
+    color: var(--px-lilac) !important;
+    margin-bottom: 14px !important;
+}
+
+.game-overlay-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.game-overlay-actions .game-btn {
+    flex: 0 0 auto;
+    width: 52px;
+    height: 48px;
+    padding: 0;
+    font-size: 1rem;
+}
+
+.game-mode-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.game-mode-buttons .game-btn {
+    font-size: 10px;
+}
+
+.game-daily-best {
+    margin: 12px 0 0 !important;
+    color: var(--px-lilac) !important;
+    font-size: 8px !important;
+}
+
+.game-pause-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    max-width: 240px;
+    margin: 0 auto 18px;
+}
+
+.game-pause-actions .game-btn {
+    font-size: 10px;
+}
+
+.game-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 12px 12px;
+    background: var(--px-ink);
+    text-align: left;
+}
+
+.game-setting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    font-family: var(--px-font);
+    font-size: 8px;
+    color: var(--px-cream);
+    cursor: pointer;
+}
+
+.game-setting i {
+    color: var(--px-gold);
+    margin-right: 6px;
+}
+
+/* Pixel slider: a flat ink track with a cream block thumb */
+.game-setting input[type="range"] {
+    flex: 1;
+    max-width: 150px;
+    height: 16px;
+    margin: 0;
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.game-setting input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    background: var(--px-panel-hi);
+    box-shadow: 0 0 0 2px var(--px-ink);
+}
+
+.game-setting input[type="range"]::-moz-range-track {
+    height: 6px;
+    background: var(--px-panel-hi);
+    box-shadow: 0 0 0 2px var(--px-ink);
+}
+
+.game-setting input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 16px;
+    margin-top: -5px;
+    border: none;
+    border-radius: 0;
+    background: var(--px-gold);
+    box-shadow: 0 0 0 2px var(--px-ink);
+}
+
+.game-setting input[type="range"]::-moz-range-thumb {
+    width: 12px;
+    height: 16px;
+    border: none;
+    border-radius: 0;
+    background: var(--px-gold);
+    box-shadow: 0 0 0 2px var(--px-ink);
+}
+
+.game-setting-check {
+    justify-content: flex-start;
+}
+
+.game-setting-check input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--px-gold);
+}
+
+.game-over-achievements {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 4px 0 12px;
+    padding: 0;
+}
+
+.game-over-achievements li {
+    padding: 6px 8px 5px;
+    background: var(--px-ink);
+    color: var(--px-gold);
+    font-family: var(--px-font);
+    font-size: 8px;
+    box-shadow: inset 0 0 0 2px var(--px-gold-lo);
+}
+
+/* Permanent controls legend strip under the canvas */
+.game-controls-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px var(--spacing-lg);
+    padding: 12px var(--spacing-md);
+    background: var(--px-panel);
+    border-top: 4px solid var(--px-ink);
+    box-shadow: inset 0 4px 0 0 var(--px-panel-hi);
+    font-family: var(--px-font);
+    font-size: 8px;
+    line-height: 2;
+    color: var(--px-lilac);
+}
+
+.game-controls-legend span {
+    display: block;
+}
+
+.game-controls-legend i {
+    color: var(--px-gold);
+    font-size: 0.8rem;
+    margin-right: 6px;
+}
+
+/* Keycaps */
+.game-controls-legend kbd {
+    display: inline-block;
+    min-width: 18px;
+    padding: 4px 5px 3px;
+    border-radius: 0;
+    background: var(--px-cream);
+    color: var(--px-ink);
+    font-family: var(--px-font), 'Inter', sans-serif;
+    font-size: 9px;
+    line-height: 1;
+    text-align: center;
+    box-shadow:
+        0 -2px 0 0 var(--px-ink),
+        0 2px 0 0 var(--px-ink),
+        -2px 0 0 0 var(--px-ink),
+        2px 0 0 0 var(--px-ink),
+        inset 0 -2px 0 0 #b8a98a;
+}
+
+/* Buttons: chunky pixel buttons with a bevel that flips when pressed */
+.game-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border: none;
+    border-radius: 0;
+    font-family: var(--px-font);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
+    cursor: pointer;
+    text-decoration: none !important;
+    margin: 4px;
+}
+
+.game-btn-primary {
+    background: var(--px-gold);
+    color: var(--px-ink);
+    box-shadow:
+        0 -4px 0 0 var(--px-ink),
+        0 4px 0 0 var(--px-ink),
+        -4px 0 0 0 var(--px-ink),
+        4px 0 0 0 var(--px-ink),
+        inset -4px -4px 0 0 var(--px-gold-lo),
+        inset 4px 4px 0 0 var(--px-gold-hi);
+}
+
+.game-btn-primary:hover {
+    background: var(--px-gold-hi);
+    color: var(--px-ink);
+}
+
+.game-btn-secondary {
+    background: var(--px-panel-hi);
+    color: var(--px-cream);
+    box-shadow:
+        0 -4px 0 0 var(--px-ink),
+        0 4px 0 0 var(--px-ink),
+        -4px 0 0 0 var(--px-ink),
+        4px 0 0 0 var(--px-ink),
+        inset -4px -4px 0 0 #2a2140,
+        inset 4px 4px 0 0 #574a7e;
+}
+
+.game-btn-secondary:hover {
+    background: #4a3c70;
+}
+
+.game-btn:active {
+    transform: translateY(3px);
+}
+
+.game-btn-primary:active {
+    box-shadow:
+        0 -4px 0 0 var(--px-ink),
+        0 4px 0 0 var(--px-ink),
+        -4px 0 0 0 var(--px-ink),
+        4px 0 0 0 var(--px-ink),
+        inset 4px 4px 0 0 var(--px-gold-lo);
+}
+
+.game-btn:focus-visible,
+.game-sound-btn:focus-visible {
+    outline: 3px dashed var(--px-cream);
+    outline-offset: 6px;
+}
+
+/* Game-over: rank feedback + arcade-style "save your score" prompt */
+.game-overlay-rank {
+    color: var(--px-teal) !important;
+}
+
+.game-save-prompt {
+    margin: 12px 0;
+    padding: 14px 14px 10px;
+    background: var(--px-ink);
+    border: 2px dashed var(--px-gold-lo);
+}
+
+.game-save-prompt p {
+    color: var(--px-cream) !important;
+    margin-bottom: 12px !important;
+}
+
+.game-save-prompt p i {
+    color: var(--px-gold);
+    margin-right: 4px;
+}
+
+.game-save-prompt .game-btn {
+    width: calc(100% - 8px);
+    font-size: 9px;
+}
+
+@media (max-width: 768px) {
+    .game-controls-legend {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 540px) {
+    /* Game-over is a lot to fit in a short canvas on a phone: smaller title and sprite,
+       tighter gaps between lines, icon-only retry/share buttons (full labels stay for
+       screen readers via aria-label). */
+
+    .game-overlay-card {
+        padding: 18px 14px 16px;
+    }
+
+    .game-overlay-sprite {
+        margin-bottom: 8px;
+    }
+
+    .game-overlay-card h2 {
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+
+    .game-overlay-card .game-title {
+        font-size: 22px;
+    }
+
+    .game-overlay-card p {
+        font-size: 8px;
+        margin-bottom: 6px;
+    }
+
+    .game-overlay-score strong {
+        font-size: 18px;
+    }
+
+    .game-save-prompt {
+        margin: 8px 0;
+        padding: 10px 10px 6px;
+    }
+}

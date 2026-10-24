@@ -1,0 +1,401 @@
+/* ============================================
+   GAME PAGE - sidebar
+   Pixel panels: leaderboard with tabs, skins, achievements, how to play and tips.
+   ============================================ */
+
+/* Panels: the sidebar cards and "La ruta" share the game box's pixel-frame look */
+.game-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-md) + 6px);
+    padding: 6px;
+}
+
+.game-panel {
+    background: var(--px-panel);
+    padding: 18px 16px 16px;
+    box-shadow:
+        0 -4px 0 0 var(--px-ink),
+        0 4px 0 0 var(--px-ink),
+        -4px 0 0 0 var(--px-ink),
+        4px 0 0 0 var(--px-ink),
+        inset 0 4px 0 0 var(--px-panel-hi),
+        0 10px 0 0 rgba(0, 0, 0, 0.3);
+}
+
+.game-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--px-font);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--px-gold);
+    text-shadow: 2px 2px 0 var(--px-ink);
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed var(--px-panel-hi);
+}
+
+.game-panel-title i {
+    color: var(--px-gold);
+    font-size: 0.85rem;
+    text-shadow: none;
+}
+
+/* How to play: numbered keycaps */
+.game-steps {
+    list-style: none;
+    counter-reset: game-step;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+.game-steps li {
+    counter-increment: game-step;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: #cfc6e2;
+    line-height: 1.5;
+}
+
+.game-steps li::before {
+    content: counter(game-step);
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    margin: 1px 2px 0;
+    background: var(--px-cream);
+    color: var(--px-ink);
+    font-family: var(--px-font);
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 -2px 0 0 var(--px-ink),
+        0 2px 0 0 var(--px-ink),
+        -2px 0 0 0 var(--px-ink),
+        2px 0 0 0 var(--px-ink),
+        inset 0 -2px 0 0 #b8a98a;
+}
+
+.game-steps li strong {
+    color: var(--px-cream);
+}
+
+/* Tips */
+.game-tips {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+.game-tips li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.83rem;
+    color: #cfc6e2;
+    line-height: 1.5;
+}
+
+.game-tips li i {
+    flex: 0 0 auto;
+    width: 16px;
+    text-align: center;
+    margin-top: 3px;
+    color: var(--px-gold);
+    font-size: 0.8rem;
+}
+
+/* Leaderboard tabs */
+.game-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.game-tab {
+    flex: 1;
+    padding: 8px 6px 7px;
+    border: none;
+    border-radius: 0;
+    background: var(--px-ink);
+    color: var(--px-lilac);
+    font-family: var(--px-font);
+    font-size: 8px;
+    cursor: pointer;
+    box-shadow: inset 0 -3px 0 0 var(--px-panel-hi);
+}
+
+.game-tab.is-active {
+    background: var(--px-panel-hi);
+    color: var(--px-gold);
+    box-shadow: inset 0 -3px 0 0 var(--px-gold);
+}
+
+.game-tab:focus-visible {
+    outline: 2px dashed var(--px-cream);
+    outline-offset: 2px;
+}
+
+/* Skins: one button per climber look, showing the sprite itself */
+.game-skins {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.game-skin {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 4px 7px;
+    border: none;
+    border-radius: 0;
+    background: var(--px-ink);
+    color: var(--px-cream);
+    cursor: pointer;
+    box-shadow: inset 0 0 0 2px var(--px-panel-hi);
+}
+
+.game-skin:hover:not(:disabled) {
+    box-shadow: inset 0 0 0 2px var(--px-gold-lo);
+}
+
+.game-skin.is-selected {
+    background: #3a2f1a;
+    box-shadow: inset 0 0 0 2px var(--px-gold);
+}
+
+.game-skin.is-locked {
+    cursor: not-allowed;
+}
+
+.game-skin.is-locked .game-skin-sprite {
+    filter: brightness(0) opacity(0.35);
+}
+
+.game-skin-sprite {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.game-skin-name {
+    font-family: var(--px-font);
+    font-size: 7px;
+}
+
+.game-skin-lock {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    color: var(--px-lilac);
+    font-size: 0.65rem;
+}
+
+.game-subtitle {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--px-font);
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--px-gold);
+    margin: 0 0 10px;
+}
+
+.game-subtitle span {
+    color: var(--px-lilac);
+}
+
+/* Achievements */
+.game-achievements {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 260px;
+    overflow-y: auto;
+    margin: 0 0 12px;
+    padding: 0 4px 0 0;
+}
+
+.game-achievement {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px;
+    background: var(--px-ink);
+    color: var(--px-lilac);
+    opacity: 0.6;
+}
+
+.game-achievement.is-unlocked {
+    opacity: 1;
+    color: var(--px-cream);
+}
+
+.game-achievement-icon {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--px-panel-hi);
+    font-size: 0.7rem;
+}
+
+.game-achievement.is-unlocked .game-achievement-icon {
+    background: var(--px-gold);
+    color: var(--px-ink);
+}
+
+.game-achievement-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    font-size: 0.75rem;
+    line-height: 1.35;
+}
+
+.game-achievement-text strong {
+    font-family: var(--px-font);
+    font-size: 8px;
+    font-weight: 400;
+    color: inherit;
+}
+
+/* Leaderboard: an arcade high-score table */
+.game-leaderboard-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0 0 14px;
+    padding: 0;
+}
+
+.game-leaderboard-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 8px;
+    background: var(--px-ink);
+    font-size: 0.83rem;
+}
+
+.game-leaderboard-list li:nth-child(even) {
+    background: #20182f;
+}
+
+.game-leaderboard-list li.is-me {
+    background: #3a2f1a;
+    box-shadow: inset 0 0 0 2px var(--px-gold);
+}
+
+.game-leaderboard-list li.game-leaderboard-empty {
+    color: var(--px-lilac);
+    font-family: var(--px-font);
+    font-size: 8px;
+    line-height: 1.8;
+    padding: 12px 10px;
+}
+
+.game-leaderboard-rank {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--px-font);
+    font-size: 9px;
+    color: var(--px-lilac);
+}
+
+/* Top three get pixel medals */
+.game-leaderboard-list li:nth-child(-n + 3) .game-leaderboard-rank {
+    color: var(--px-ink);
+    box-shadow:
+        0 -2px 0 0 var(--px-ink),
+        0 2px 0 0 var(--px-ink),
+        -2px 0 0 0 var(--px-ink),
+        2px 0 0 0 var(--px-ink),
+        inset -2px -2px 0 0 rgba(0, 0, 0, 0.25),
+        inset 2px 2px 0 0 rgba(255, 255, 255, 0.45);
+}
+
+.game-leaderboard-list li:nth-child(1) .game-leaderboard-rank {
+    background: #f2c25a;
+}
+
+.game-leaderboard-list li:nth-child(2) .game-leaderboard-rank {
+    background: #c9ccd6;
+}
+
+.game-leaderboard-list li:nth-child(3) .game-leaderboard-rank {
+    background: #d08a4e;
+}
+
+.game-leaderboard-list li.game-leaderboard-empty .game-leaderboard-rank {
+    display: none;
+}
+
+.game-leaderboard-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--px-cream);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.game-leaderboard-name:hover {
+    color: var(--px-gold);
+    text-decoration: underline;
+}
+
+.game-leaderboard-me {
+    flex: 0 0 auto;
+    padding: 3px 4px 2px;
+    background: var(--px-gold);
+    color: var(--px-ink);
+    font-family: var(--px-font);
+    font-size: 7px;
+}
+
+.game-leaderboard-height {
+    flex: 0 0 auto;
+    font-family: var(--px-font);
+    font-size: 9px;
+    color: var(--px-gold);
+}
+
+.game-leaderboard-note {
+    font-size: 0.78rem;
+    color: var(--px-lilac);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.game-leaderboard-note a,
+.game-leaderboard-note strong {
+    color: var(--px-gold);
+}
