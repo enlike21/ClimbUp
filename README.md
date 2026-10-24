@@ -1,5 +1,10 @@
 # ClimbUp — Plataforma de Rutas de Escalada
 
+[![CI](https://github.com/enlike21/ClimbUp/actions/workflows/ci.yml/badge.svg)](https://github.com/enlike21/ClimbUp/actions/workflows/ci.yml)
+[![Licencia: AGPL-3.0-or-later](https://img.shields.io/badge/licencia-AGPL--3.0--or--later-blue.svg)](LICENSE)
+[![PRs bienvenidos](https://img.shields.io/badge/PRs-bienvenidos-brightgreen.svg)](CONTRIBUTING.md)
+[![Good first issues](https://img.shields.io/github/issues/enlike21/ClimbUp/good%20first%20issue?label=good%20first%20issues)](https://github.com/enlike21/ClimbUp/issues?q=is%3Aopen+label%3A%22good+first+issue%22)
+
 **ClimbUp** es una plataforma web para descubrir, gestionar y seguir rutas de escalada en España. Permite explorar rutas en un **mapa interactivo**, guardarlas, registrar ascensos, consultar estadísticas personales y contar con un **asistente IA** especializado en escalada.
 
 🌐 **Producción:** [climbup.es](https://climbup.es)
@@ -81,12 +86,13 @@ Los problemas de seguridad se informan en privado, según [SECURITY.md](SECURITY
 ```
 src/
 ├── Controller/
-│   ├── Admin/          # AdminController, AdminRouteController
+│   ├── Admin/          # AdminController (panel y usuarios), AdminRouteController (CRUD de rutas)
 │   ├── Chatbot/        # ChatbotController
+│   ├── Game/           # GameController (página del juego, partidas, aspecto)
 │   ├── Location/       # LocationController, MapController
-│   ├── Route/          # RouteController
+│   ├── Route/          # RouteController (listado paginado y detalle)
 │   ├── Security/       # LoginController, RegistrationController
-│   ├── User/           # ProfileController, SavedRoutesController
+│   ├── User/           # ProfileController, PublicProfileController, SavedRoutesController
 │   ├── HomeController
 │   └── SitemapController
 ├── Entity/
@@ -94,22 +100,36 @@ src/
 │   ├── Location        # name, latitude, longitude, region
 │   ├── User
 │   ├── UserRoute       # ruta guardada por usuario
-│   └── CompletedRoute  # ascenso registrado con fecha
+│   ├── CompletedRoute  # ascenso registrado: fecha, tipo de ascenso, valoración, notas
+│   ├── GameScore       # mejor altura de cada jugador en Al Filo
+│   ├── GameDailyScore  # mejor altura por jugador y día en el reto diario
+│   └── GameProfile     # logros, aspecto elegido y partidas jugadas
 ├── Enum/
-│   └── RouteType       # Deportiva | Tradicional | Boulder
+│   ├── RouteType       # Sport | Trad | Boulder | Toprope | Aid | Alpine
+│   └── AttemptType     # A vista | Flash | Encadenado | Top-rope
 ├── Service/
 │   ├── Ai/
 │   │   ├── AiProviderInterface
 │   │   ├── GroqProvider      # integración Groq API (Llama 3.1)
 │   │   ├── ChatbotService    # lógica de conversación + búsqueda
 │   │   └── PromptBuilder     # construcción de prompts del sistema
+│   ├── Game/
+│   │   ├── ClimbSimulation   # copia en PHP de la simulación del juego (public/js/game/sim.js)
+│   │   ├── GameRunValidator  # repite cada partida enviada antes de guardarla
+│   │   ├── GameAchievements  # logros y aspectos que desbloquean
+│   │   └── Mulberry32        # generador aleatorio con semilla, idéntico al de JS
 │   ├── GradeConversionService  # conversión YDS → escala francesa
+│   ├── LocationNameParser      # "Sector > Escuela > Región > Spain" → nombre, región, sector
 │   └── StatisticsService       # stats con caché (Symfony Cache)
 ├── EventSubscriber/
 │   └── SecurityHeadersSubscriber  # cabeceras HTTP de seguridad
 └── Command/
-    └── ImportRoutesCommand    # importación masiva de rutas desde CSV/JSON
+    ├── ImportRoutesCommand    # app:import-routes, importa rutas desde CSV
+    └── FixLocationDataCommand # corrige coordenadas y nombres de ubicaciones
 ```
+
+El juego vive en `public/js/game/` (módulos ES sin build: `sim.js`, `render.js`, `audio.js`,
+`main.js`) y sus tests de paridad con PHP en `tests/Service/Game/` y `tests/js/`.
 
 ### API interna (JSON para el mapa)
 
@@ -281,11 +301,35 @@ Las cabeceras HTTP de seguridad se añaden automáticamente en cada respuesta v�
 ## Despliegue en producción
 
 climbup.es se despliega **automáticamente** al fusionar en `main`
-(`.github/workflows/deploy.yml`): GitHub Actions entra por SSH al servidor, actualiza el
-código, instala dependencias, limpia la caché y ejecuta las migraciones. Las credenciales
-del servidor viven en los secretos del repositorio y el workflow no se ejecuta en forks.
+(`.github/workflows/deploy.yml`): GitHub Actions entra por SSH al servidor, descarga el
+código, instala dependencias, limpia la caché y ejecuta las migraciones. Todo lo que entra
+en `main` pasa por revisión y por la CI.
 
-Por eso todo lo que entra en `main` pasa por revisión y por la CI.
+El workflow es genérico: los datos de cada servidor están en la configuración del
+repositorio, no en el código, y si no están configurados (por ejemplo, en un fork) el
+despliegue simplemente no se ejecuta.
+
+### Montar tu propia instalación
+
+Para desplegar tu fork en tu propio servidor:
+
+1. **PHP 8.4** en el servidor. En hostings con varias versiones (Plesk, cPanel), apunta a
+   la ruta completa del binario 8.4: el `php` del sistema puede ser más antiguo, y
+   Composer se negará a arrancar.
+2. Despliega con el **usuario propietario de la web**, no con root: así una clave filtrada
+   solo da acceso a la web, no al servidor entero.
+3. Crea una clave SSH solo para el despliegue y autoriza su parte pública en el
+   `~/.ssh/authorized_keys` de ese usuario.
+4. En tu fork, en *Settings → Secrets and variables → Actions*:
+   - **Secrets:** `SERVER_HOST`, `SERVER_USER` y `SSH_PRIVATE_KEY`.
+   - **Variables:** `DEPLOY_PATH` (carpeta de la web en el servidor) y, si hace falta,
+     `PHP_BIN` (ruta del PHP 8.4; por defecto `php`) y `COMPOSER_PHAR` (ruta de
+     `composer.phar`; por defecto se usa el comando `composer`).
+5. En el servidor, clona tu fork en `DEPLOY_PATH` y crea un `.env.local` con
+   `APP_ENV=prod`, un `APP_SECRET` propio, tu `DATABASE_URL` y `MAILER_DSN`. Nunca lo subas
+   al repo.
+6. El nombre **ClimbUp** y el logo no están incluidos en la licencia
+   ([TRADEMARKS.md](TRADEMARKS.md)): usa otro nombre para tu instalación.
 
 ---
 

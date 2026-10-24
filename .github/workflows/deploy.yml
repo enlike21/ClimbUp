@@ -15,28 +15,30 @@ concurrency:
 
 jobs:
   deploy:
-    # Forks don't have the server secrets - skip instead of failing on their main branch.
-    if: github.repository == 'enlike21/ClimbUp'
+    # Only runs where the deploy is configured: repository variable DEPLOY_PATH plus the
+    # SERVER_HOST / SERVER_USER / SSH_PRIVATE_KEY secrets. Forks without them just skip it.
+    if: vars.DEPLOY_PATH != ''
     runs-on: ubuntu-latest
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
+        env:
+          # Server-specific paths live in repository variables (Settings -> Secrets and
+          # variables -> Actions -> Variables), so this file stays the same for every install.
+          DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+          PHP_BIN: ${{ vars.PHP_BIN || 'php' }}
+          COMPOSER_PHAR: ${{ vars.COMPOSER_PHAR }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: DEPLOY_PATH,PHP_BIN,COMPOSER_PHAR
           script: |
             set -e
-            PHP_BIN=/opt/plesk/php/8.4/bin/php
-            COMPOSER_BIN="$PHP_BIN /usr/lib/plesk-9.0/composer.phar"
-            cd /var/www/vhosts/climbup.es/httpdocs
+            if [ -n "$COMPOSER_PHAR" ]; then COMPOSER_BIN="$PHP_BIN $COMPOSER_PHAR"; else COMPOSER_BIN=composer; fi
+            cd "$DEPLOY_PATH"
             git fetch origin main
             git reset --hard origin/main
             $COMPOSER_BIN install --no-dev --optimize-autoloader --no-interaction
             $PHP_BIN bin/console cache:clear --env=prod
             $PHP_BIN bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
-            # Deploying as the site's own Plesk user (recommended) leaves every file owned by it
-            # already; only a root deploy needs to hand ownership back to that user.
-            if [ "$(id -u)" = "0" ]; then
-              chown -R climbup.es_but5ov2ghmv:psaserv .
-            fi

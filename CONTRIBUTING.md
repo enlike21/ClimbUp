@@ -11,12 +11,34 @@ local, qué esperamos de un pull request y cómo se revisa.
 - **Vulnerabilidades de seguridad:** no abras un issue público. Sigue [SECURITY.md](SECURITY.md).
 - **Código de conducta:** al participar aceptas el [código de conducta](CODE_OF_CONDUCT.md).
 
+## Por dónde empezar
+
+Si es tu primera contribución, mira los issues con la etiqueta
+[`good first issue`](https://github.com/enlike21/ClimbUp/issues?q=is%3Aopen+label%3A%22good+first+issue%22):
+son tareas acotadas y con contexto. Comenta en el issue que vas a por él para que nadie
+más lo coja a la vez. Los que tienen [`help wanted`](https://github.com/enlike21/ClimbUp/issues?q=is%3Aopen+label%3A%22help+wanted%22)
+son algo más grandes.
+
+## Flujo de trabajo
+
+1. Haz un **fork** del repo con el botón *Fork* de GitHub.
+2. Clona tu fork y añade el repo original como `upstream`:
+   ```bash
+   git clone https://github.com/TU_USUARIO/ClimbUp.git climbup && cd climbup
+   git remote add upstream https://github.com/enlike21/ClimbUp.git
+   ```
+3. Crea una rama a partir de `main` actualizado:
+   ```bash
+   git fetch upstream && git checkout -b mi-cambio upstream/main
+   ```
+4. Haz tus cambios, lanza las comprobaciones (ver más abajo) y sube la rama a tu fork.
+5. Abre el pull request contra `main` de `enlike21/ClimbUp`.
+
 ## Montar el proyecto en local
 
-Necesitas Docker y Docker Compose.
+Necesitas Docker y Docker Compose. Desde la carpeta de tu fork:
 
 ```bash
-git clone <url-de-tu-fork> climbup && cd climbup
 cp .env.example .env          # valores de desarrollo; cambia APP_SECRET por uno aleatorio
 docker compose up -d --build
 docker compose exec web composer install
