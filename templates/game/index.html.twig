@@ -6,7 +6,13 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('styles/pages/game.css') }}">
+    {# The game page styles, split by section (see public/styles/pages/game/). Order matters. #}
+    <link rel="stylesheet" href="{{ asset('styles/pages/game/base.css') }}?v=1">
+    <link rel="stylesheet" href="{{ asset('styles/pages/game/hero.css') }}?v=1">
+    <link rel="stylesheet" href="{{ asset('styles/pages/game/box.css') }}?v=1">
+    <link rel="stylesheet" href="{{ asset('styles/pages/game/overlays.css') }}?v=1">
+    <link rel="stylesheet" href="{{ asset('styles/pages/game/sidebar.css') }}?v=1">
+    <link rel="stylesheet" href="{{ asset('styles/pages/game/route.css') }}?v=1">
 {% endblock %}
 
 {% block body %}

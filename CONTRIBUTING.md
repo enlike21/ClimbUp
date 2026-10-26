@@ -73,7 +73,19 @@ Lanza lo mismo que lanza la CI:
 composer cs-fix      # formatea el código PHP (reglas @Symfony)
 composer phpstan     # análisis estático
 composer test        # PHPUnit
+bin/check-file-length  # ningún archivo de más de 1000 líneas
 ```
+
+### Tamaño de los archivos
+
+Ningún archivo puede pasar de **1000 líneas**: la CI falla si alguno lo hace. Los archivos
+largos cuestan de revisar y hacen que los PR choquen entre sí; si uno crece demasiado,
+divídelo por responsabilidades (como `public/styles/pages/game/`, que antes era un solo
+`game.css`). Quedan fuera los archivos generados (`composer.lock`, `config/reference.php`…).
+
+Algunos archivos ya eran más largos cuando se puso la regla. Tienen una excepción temporal,
+con un tope para que no sigan creciendo, en `bin/check-file-length`; cada uno tiene su issue
+para dividirlo, y al cerrarlo se quita su línea de la lista.
 
 Si tocas el minijuego **Al Filo**: la simulación vive en `public/js/game/sim.js` y el
 servidor la repite línea a línea en `src/Service/Game/ClimbSimulation.php` para validar
@@ -96,7 +108,7 @@ y de la plantilla `templates/game/index.html.twig`.
   GitHub solo deja asignar issues a quien ha participado en ellos.
 - Añade o actualiza tests cuando cambie el comportamiento.
 - Los mensajes de commit pueden ir en español o en inglés; que expliquen el porqué.
-- La CI (estilo, PHPStan y tests) tiene que pasar, y un mantenedor revisará el PR antes de
+- La CI (estilo, PHPStan, tests y tamaño de archivos) tiene que pasar, y un mantenedor revisará el PR antes de
   fusionarlo. Lo que se fusiona en `main` se despliega solo a producción, así que la
   revisión es obligatoria.
 
