@@ -1,0 +1,105 @@
+name: Assign issue to PR author
+
+# When a pull request closes an issue ("Closes #12" in its description, or linked from the
+# PR sidebar), assign the issue to whoever opened the PR, so the issue list shows who is
+# working on what.
+#
+# GitHub only lets us assign people with write access or who have taken part in the issue.
+# For a first-time contributor who hasn't, we ask them on the issue to leave a comment, and
+# the issue_comment trigger assigns them as soon as they do.
+#
+# pull_request_target runs with this repo's token even for PRs from forks. That is safe here
+# because the job never checks out or runs the PR's code: it only reads PR metadata.
+
+on:
+  pull_request_target:
+    types: [opened, reopened, edited, ready_for_review]
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+  pull-requests: read
+
+jobs:
+  assign:
+    # Comments on pull requests also fire issue_comment; only issue comments matter here.
+    if: github.event_name == 'pull_request_target' || !github.event.issue.pull_request
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const MARKER = '<!-- assign-issue-to-pr-author -->';
+
+            // Issues of this repo that the PR will close on merge.
+            const closingIssues = async (prNumber) => {
+              const { repository } = await github.graphql(`
+                query($owner: String!, $repo: String!, $pr: Int!) {
+                  repository(owner: $owner, name: $repo) {
+                    pullRequest(number: $pr) {
+                      closingIssuesReferences(first: 10) {
+                        nodes { number repository { nameWithOwner } }
+                      }
+                    }
+                  }
+                }`, { owner, repo, pr: prNumber });
+              return repository.pullRequest.closingIssuesReferences.nodes
+                .filter((issue) => issue.repository.nameWithOwner === `${owner}/${repo}`)
+                .map((issue) => issue.number);
+            };
+
+            // GitHub silently drops assignees it doesn't allow, so check the result.
+            const assign = async (issueNumber, login) => {
+              const { data } = await github.rest.issues.addAssignees({
+                owner, repo, issue_number: issueNumber, assignees: [login],
+              });
+              return data.assignees.some((a) => a.login === login);
+            };
+
+            if (context.eventName === 'pull_request_target') {
+              const pr = context.payload.pull_request;
+              const login = pr.user.login;
+              if (pr.user.type === 'Bot') return;
+
+              for (const number of await closingIssues(pr.number)) {
+                const { data: issue } = await github.rest.issues.get({ owner, repo, issue_number: number });
+                if (issue.state !== 'open' || issue.assignees.some((a) => a.login === login)) continue;
+
+                if (await assign(number, login)) {
+                  core.info(`Assigned #${number} to @${login}`);
+                  continue;
+                }
+
+                // Not allowed yet: ask them to comment on the issue, only once.
+                const comments = await github.paginate(github.rest.issues.listComments, {
+                  owner, repo, issue_number: number, per_page: 100,
+                });
+                if (comments.some((c) => c.body.includes(MARKER) && c.body.includes(`@${login}`))) continue;
+                await github.rest.issues.createComment({
+                  owner, repo, issue_number: number,
+                  body: `${MARKER}\n@${login}, gracias por abrir #${pr.number} para esto 🙌 `
+                    + 'GitHub solo deja asignar un issue a quien ha participado en él: '
+                    + 'deja cualquier comentario aquí y te lo asigno automáticamente.',
+                });
+                core.info(`Asked @${login} to comment on #${number}`);
+              }
+              return;
+            }
+
+            // issue_comment: assign the commenter if one of their open PRs closes this issue.
+            const issue = context.payload.issue;
+            const login = context.payload.comment.user.login;
+            if (context.payload.comment.user.type === 'Bot' || issue.state !== 'open') return;
+            if (issue.assignees.some((a) => a.login === login)) return;
+
+            const pulls = await github.paginate(github.rest.pulls.list, {
+              owner, repo, state: 'open', per_page: 100,
+            });
+            for (const pr of pulls.filter((p) => p.user.login === login)) {
+              if ((await closingIssues(pr.number)).includes(issue.number)) {
+                if (await assign(issue.number, login)) core.info(`Assigned #${issue.number} to @${login}`);
+                return;
+              }
+            }

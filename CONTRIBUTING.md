@@ -90,6 +90,10 @@ y de la plantilla `templates/game/index.html.twig`.
 ## Pull requests
 
 - Una cosa por PR, con una descripción de qué cambia y por qué (la plantilla te guía).
+- Si el PR resuelve un issue, escribe `Closes #123` en la descripción (en inglés: GitHub no
+  entiende «Cierra»). Así el issue se cierra solo al fusionar y se te asigna automáticamente.
+  Si es tu primera vez en ese issue, un bot te pedirá que dejes un comentario en él, porque
+  GitHub solo deja asignar issues a quien ha participado en ellos.
 - Añade o actualiza tests cuando cambie el comportamiento.
 - Los mensajes de commit pueden ir en español o en inglés; que expliquen el porqué.
 - La CI (estilo, PHPStan y tests) tiene que pasar, y un mantenedor revisará el PR antes de
